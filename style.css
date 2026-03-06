@@ -20,10 +20,11 @@ body {
 
 main {
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 4rem;
   width: 100%;
+  display: flex;
 }
-
+/* nav */
 .navbar {
   background-color: white;
   border-bottom: 1px solid #e5e7eb;
@@ -63,7 +64,7 @@ main {
 .nav-menu a.active {
   color: #2563eb;
 }
-
+/** header */
 .search-section {
   text-align: center;
   margin: 1.8rem;
@@ -129,6 +130,9 @@ main {
   background-color: #1d4ed8;
 }
 
+/* main */
+
+/* 1- filters */
 .filter-layout {
   display: flex;
   gap: 2rem;
@@ -217,6 +221,78 @@ main {
 
 .salary-inputs input:focus {
   border-color: #2563eb;
+}
+
+/* 2- job listings */
+.job-listings {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 1100px;
+  padding: 1rem 3rem;
+}
+.job-card {
+  background-color: white;
+  border-radius: 0.9rem;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.job-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
+  transform: translateY(-3px);
+  transition: all 0.3s ease;
+}
+
+.job-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.job-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+.job-company {
+  font-size: 0.95rem;
+  color: #6a7686;
+  margin-bottom: 0.75rem;
+}
+.job-info p {
+  display: inline-block;
+  gap: 1.5rem;
+  background-color: #5cd990;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: #1a1a1a;
+  margin: 0.7rem;
+  font-size: 0.875rem;
+}
+.h-line {
+  height: 1px;
+  margin: 1.5rem;
+  margin-top: 0.7rem;
+  background-color: #e5e5e5;
+}
+
+.show-job {
+  display: flex;
+  justify-content: space-between;
+}
+.posted-time {
+  font-size: 0.875rem;
+  color: #6a7686;
+}
+.show-job a {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 0.875rem;
+  cursor: pointer;
 }
 
 footer {
