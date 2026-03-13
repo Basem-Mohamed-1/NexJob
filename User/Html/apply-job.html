@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>Apply for Job - JobPortal</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div>
+          <a href="#"><i class="fa-solid fa-briefcase"></i></a>
+          <h2>JobPortal</h2>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="findJob.html" class="active">Find Jobs</a></li>
+          <li><a href="myapplications.html">My Applications</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <a href="JobDetails.html">&larr; Back to Job Details</a>
+
+      <h1>Apply for Software Engineer</h1>
+      <p>Google - Mountain View, CA</p>
+
+      <form>
+        <h3>Personal Information</h3>
+
+        <div>
+          <label for="fullname">Full Name:</label><br />
+          <input type="text" id="fullname" required placeholder="John Doe" />
+        </div>
+        <br />
+
+        <div>
+          <label for="email">Email Address:</label><br />
+          <input
+            type="email"
+            id="email"
+            required
+            placeholder="john@example.com"
+          />
+        </div>
+        <br />
+
+        <div>
+          <label for="phone">Phone Number:</label><br />
+          <input type="tel" id="phone" required placeholder="+1 234 567 890" />
+        </div>
+        <br />
+
+        <h3>Resume/CV</h3>
+
+        <div>
+          <label for="resume">Upload Resume (PDF, DOC):</label><br />
+          <input type="file" id="resume" accept=".pdf,.doc,.docx" required />
+        </div>
+        <br />
+
+        <div>
+          <label for="coverletter">Cover Letter:</label><br />
+          <textarea
+            id="coverletter"
+            rows="6"
+            cols="50"
+            placeholder="Tell us why you're a good fit for this position..."
+          ></textarea>
+        </div>
+        <br />
+
+        <h3>Additional Information</h3>
+
+        <div>
+          <label for="experience">Years of Experience:</label><br />
+          <input type="number" id="experience" min="0" required />
+        </div>
+        <br />
+
+        <div>
+          <label for="salary">Expected Salary:</label><br />
+          <input type="text" id="salary" placeholder="$80,000 - $100,000" />
+        </div>
+        <br />
+
+        <div>
+          <label for="startdate">Earliest Start Date:</label><br />
+          <input type="date" id="startdate" />
+        </div>
+        <br />
+
+        <!-- Terms and Submit -->
+        <div>
+          <label>
+            <input type="checkbox" required /> I confirm that the information
+            provided is accurate
+          </label>
+        </div>
+        <br />
+
+        <div>
+          <button type="reset">Reset</button>
+          <button type="submit">Submit Application</button>
+        </div>
+      </form>
+
+      <p><i>After submitting, you will receive a confirmation email.</i></p>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 JobPortal. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
