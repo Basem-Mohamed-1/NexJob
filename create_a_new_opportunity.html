@@ -1,0 +1,160 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Create A New Opportunity </title>
+    </head>
+
+    <body>
+        <h1> Create a New Opportunity </h1>
+        <p> Fill in the details below to publish your job listing. </p>
+
+        <form method="GET">
+            <ul>
+                <li>
+                    <strong> Job Details </strong>
+                    <ul>
+                        <li>
+                            <div>
+                                <label for="job_title"> Job Title </label>
+                                <br>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. Senior Product Designer"
+                                    name="job_title"
+                                    id="job_title"
+                                    required
+                                >
+                            </li>
+                        </div>
+
+                        <br>
+                        
+                        <li>
+                            <div>
+                                <label> Employment Type </label>
+                                <br>
+                                <input
+                                    type="radio"
+                                    name="employment_type"
+                                    id="part_time"
+                                    required
+                                >
+                                <label for="part_time"> Part-Time </label>
+                                
+                                <input
+                                    type="radio"
+                                    name="employment_type"
+                                    id="full_time"
+                                    required
+                                >
+                                <label for="full_time"> Full-Time </label>
+                            </div>
+                        </li>
+
+                        <br>
+                        
+                        <li>
+                            <div>
+                                <label for="location"> Location </label>
+                                <br>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. Cairo or Remote"
+                                    name="location"
+                                    id="location"
+                                    required
+                                >
+                            </div>
+                        </li>
+
+                        <br>
+
+                        <li>
+                            <div>
+                                <label> Salary Range </label>
+                                <br>
+                                <input
+                                    type="number"
+                                    placeholder="$ Min"
+                                    name="salary_range"
+                                    id="salary_range"
+                                    min="1000"
+                                    max="50000"
+                                    step="1000"
+                                    required
+                                >
+                                <input
+                                    type="number"
+                                    placeholder="$ Max"
+                                    name="salary_range"
+                                    id="salary_range"
+                                    min="50000"
+                                    max="100000"
+                                    step="1000"
+                                    required
+                                >
+                            </div>
+                        </li>
+
+                        <br>
+
+                    </ul>
+                </li>
+                
+                <li>
+                    <strong> Role Description </strong>
+                    <ul>
+                        <li>
+                            <div>
+                                <label for="description"> Description </label>
+                                <br>
+                                <input
+                                    type="text"
+                                    placeholder="Describe the responsibilities and requirements."
+                                    name="description"
+                                    id="description"
+                                    required
+                                >
+                            </div>
+                        </li>
+                        
+                        <br>
+
+                        <li>
+                            <div>
+                                <label for="requirements_and_skills"> Requirements & Skills </label>
+                                <br>
+                                <input
+                                    type="text"
+                                    placeholder="Write Requirements & Skills."
+                                    name="requirements_and_skills"
+                                    id="requirements_and_skills"
+                                    required
+                                >
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </li>
+            </ul>
+
+            <br>
+
+            <div>
+                <input type="button" value="Cancel" onclick="go_back()">
+                <script>
+                    function go_back() {
+                        window.history.back();
+                    }
+                </script>
+                
+                <input type="submit" value="Publish Job" onclick="go">
+                <script>
+                    function go_() {
+                        window.location.href = "my_job_postings.html";
+                    }
+                </script>
+            </div>
+        </form>
+    </body>
+</html>
