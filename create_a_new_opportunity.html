@@ -8,7 +8,7 @@
         <h1> Create a New Opportunity </h1>
         <p> Fill in the details below to publish your job listing. </p>
 
-        <form method="GET">
+        <form method="GET" action="javascript:void(0);" onsubmit="go_to_my_job_postings_file()">
             <ul>
                 <li>
                     <strong> Job Details </strong>
@@ -148,7 +148,7 @@
                     }
                 </script>
                 
-                <input type="submit" value="Publish Job" onclick="go_to_my_job_postings_file()">
+                <input type="submit" value="Publish Job">
                 <script>
                     function go_to_my_job_postings_file() {
                         window.location.href = "my_job_postings.html";
