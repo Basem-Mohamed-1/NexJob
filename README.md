@@ -5,30 +5,39 @@ NexJob is a web-based job search and recruitment platform designed to connect co
 # Project Structure
 
 <pre>
-NexJob/
-│
-├── index.html               
-│
-├── shared/
-│   ├── About.html
-│   └── Contact_us.html
-│
-├── company/                
-│   ├── Dashboard.html     
+NEXJOB/
+├── index.html          
+├── auth/
+│   ├── login.html
+│   └── signup.html
+├── company/
+│   ├── Dashboard.html       ←
 │   ├── create_opportunity.html
 │   ├── my_job_postings.html
 │   ├── edit_job.html
 │   └── company_settings.html
-│
 ├── jobseeker/             
 │   ├── findJob.html
 │   ├── job_details.html
 │   ├── apply_job.html
-│   └── my_applications.html
-│
-└── auth/
-    ├── login.html
-    └── signup.html
+│   └── my_applications.html         
+├── css/
+│   ├── auth.css
+│   ├── company.css
+│   ├── global.css
+│   ├── jobseeker.css
+│   ├── navbar.css
+│   └── shared.css
+├── js/
+|   ├── auth.js
+|   ├── company.js
+|   ├── jobseeker.js
+|   └── navbar.js
+|── assets/            
+|   └── jogphoto.jpg
+└── shared/
+    ├── About.html
+    └── Contact_us.html
 </pre>
 
 <br>
