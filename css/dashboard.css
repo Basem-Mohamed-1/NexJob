@@ -3,6 +3,8 @@
     --background-color:#F6F7F8;
     --border-color:#4285f44D;
     --border-icon-color:#dee0e3;
+    --gray-color:#74777f;
+    --color--button-text:#494b52;
 }
 
 *{
@@ -228,7 +230,6 @@ nav .items{
 .fields-cards div{
     background-color: var(--background-color);
     border-width: 1px;
-    
     padding-top: 30px;
     padding-bottom: 30px;
     padding-right: 40px;
@@ -251,6 +252,20 @@ nav .items{
     font-size: 20px;
     transition: 0.2s;
 }
+.fields-cards div h4{
+    margin-top: 40px;
+    margin-bottom: 0;
+    font-size: 15px;
+    
+
+
+}
+.fields-cards div p{
+    margin: 0;
+    font-size: 15px;
+    font-weight: 150;
+    margin-top: 10px;
+}
 
 .fields-cards div:hover a{
     background-color: #057be8;
@@ -263,5 +278,144 @@ nav .items{
 }
 
 /* End Fields content */
+
+/* Start Latest Jobs */
+
+/* hirarecy 
+latest-jobs
+    |
+container
+    |
+lastest-jobs-content
+    |
+latest-jobs-title - job-card
+                        |
+                    job-content
+                        |
+                       div
+                        |
+            company-icons - left-content
+                                |
+                            h3-job-titles 
+                                |
+                             company
+*/
+.latest-jobs{
+    background-color: #F6F7F8;
+    padding-top: 60px;
+    padding-bottom: 120px;
+}
+.lastest-jobs-content{
+    display: flex;
+    flex-direction: column;
+}
+.latest-jobs-title h3{
+    margin-bottom: 0;
+    font-size: 30px;
+    
+}
+
+.latest-jobs-title p{
+    color: var(--gray-color);
+}
+
+.job-content {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #dee0e3;
+}
+.job-card {
+    margin-bottom: 20px;
+}
+
+.job-content div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.job-content div .company-icons{
+    font-size:25px;
+    padding: 20px;
+    border-radius: 50%;
+    background-color: #F6F7F8;
+    border-width: 2px;
+    color: var(--primary-color);
+}
+.job-content .left-content{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    align-items: flex-start;
+}
+.job-content .left-content h3{
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.job-content .job-details{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 20px;
+}
+.job-content .job-details{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.job-content .job-details .company{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row;
+    color: var(--gray-color);
+}
+.job-content .job-details .company h6{
+    margin: 0;
+    padding: 0;
+}
+
+.job-content .job-applying{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+.job-content .job-applying .job-salary{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.job-content .job-applying .job-salary h4{
+    margin-bottom: 0;
+    font-size: 18px;
+
+}
+.job-content .job-applying .job-salary p{
+    margin-top:0 ;
+}
+
+.job-content .job-applying h3{
+    padding: 10px 30px;
+    border: 1px solid #dee0e3;
+    border-radius: 40px;
+    font-size: 15px;
+    color: #494b52;
+    transition: .3s;
+}
+.job-content .job-applying h3:hover{
+    background-color: var(--primary-color);
+    color: white;
+}
+
+
+
+/* End Latest Jobs */
 
 
