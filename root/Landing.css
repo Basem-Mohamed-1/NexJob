@@ -7,3 +7,35 @@
 body{
     font-family: "Inter", sans-serif;
 }
+
+.container{
+    margin-left: 120px;
+    margin-right: 120px;
+}
+
+header{
+    background-color: white ;
+}
+nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+nav .icon{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+nav .items{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+ 
+nav .auth{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+}
