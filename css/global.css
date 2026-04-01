@@ -1,0 +1,52 @@
+:root {
+  /* Main Colors */
+  --primary-blue: #057be8;
+  --primary-dark: #1e40af;
+  --light-bg: #f8fafc;
+  --white: #ffffff;
+  --text-dark: #1e2937;
+  --text-light: #64748b;
+  --border-color: #e2e8f0;
+
+  --accent-blue: #2563eb;
+  --old-blue: #4f7de1;
+  --old-blue-hover: #1d4ed8;
+  --soft-blue-gradient-start: #bee6f9;
+  --gray-100: #f3f4f6;
+  --gray-300: #e5e7eb;
+  --gray-500: #6a7686;
+  --gray-600: #4b5563;
+  --green-tag: #5cd990;
+  --radius: 12px;
+
+  --shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+
+  --shadow-hover: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: linear-gradient(
+    to right bottom,
+    var(--soft-blue-gradient-start),
+    rgb(240, 240, 240)
+  );
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+}
