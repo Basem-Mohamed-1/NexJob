@@ -1,29 +1,26 @@
+<!doctype html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <title>Create A New Opportunity</title>
-    <viewport content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Normalize File to normalize the page  -->
     <link rel="stylesheet" href="../css/normalize.css">
     
     <!-- Link to the Css File  -->
-     <link rel="stylesheet" href="../css/create_new_opportunity.css">
+    <link rel="stylesheet" href="../css/create_new_opportunity.css">
 
     <!-- Link to the Global Css File  -->
-    <link rel="stylesheet" href="../css/global.css>"
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-   
-    <!-- Link to the Fontawsome Lib -->
+    <link rel="stylesheet" href="../css/global.css">
+    
+    <!-- Link to Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Link to the Google Font API -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    
   </head>
 
   <body>
@@ -64,7 +61,7 @@
         </div>
         <!-- End Header of The Main content -->
 
-        <br>
+        <hr>
 
 
         <!-- Start Job Details Secion -->
@@ -79,7 +76,7 @@
                 <h4>Job Title</h4>
                 <div class="job-title-input">
                    <i class="fa-regular fa-address-card"></i>  
-                   <input type="text" class="job-title-input-field" placeholder="e.g Senior Product Manager">
+                   <input class="input-field" type="text" class="job-title-input-field" placeholder="e.g Senior Product Manager">
                 </div>
               </div>
 
@@ -108,7 +105,7 @@
                 <h4>Job Title</h4>
                 <div class="job-Location-input">
                    <i class="fa-regular fa-address-card"></i>  
-                   <input type="text" class="job-Location-input-field" placeholder="e.g San Fransico Ca or Remote">
+                   <input class="input-field" type="text" class="job-Location-input-field" placeholder="e.g San Fransico Ca or Remote">
                 </div>
               </div>
               <!-- End Location Type Input  -->
@@ -118,11 +115,16 @@
               <div class="job-salary">
                 <h4>Job Title</h4>
                 <div class="job-salary-input">
-                   <i class="fa-regular fa-address-card"></i>  
-                   <div class="salary-range">
+                  <div>
+                    <i class="fa-solid fa-dollar-sign"></i>
                     <input type="number" name="number" min="10" max="100" step="10">
+                  </div>
+
+                  <div>
+                    <i class="fa-solid fa-dollar-sign"></i>
                     <input type="number" name="number" min="10" max="100" step="10">
-                   </div>
+                  </div>
+
                 </div>
               </div>
               <!-- End Salary Range Type Input  -->
@@ -139,13 +141,13 @@
 
           <h3>Role Description</h3>
 
-          <From class="role-description-form">
+          <form class="role-description-form">
             <h5>Description</h5>
             <textarea name="work-description"  placeholder="Description"></textarea>
-          </div>
+          </form>
         </div>
 
-        <!-- End Role Description -->
+         <!-- End Role Description -->
 
 
         <br>
@@ -158,9 +160,9 @@
         <!-- End Button Field -->
 
       </div>
-    </section>
-    <!-- Start Main Section -->
-    
 
+       
+    </section>
+    <!-- End Main Section -->
   </body>
 </html>
