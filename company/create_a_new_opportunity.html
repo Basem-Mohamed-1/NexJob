@@ -2,178 +2,165 @@
   <head>
     <meta charset="UTF-8" />
     <title>Create A New Opportunity</title>
+    <viewport content="width=device-width, initial-scale=1.0" />
+
+    <!-- Normalize File to normalize the page  -->
+    <link rel="stylesheet" href="../css/normalize.css">
+    
+    <!-- Link to the Css File  -->
+     <link rel="stylesheet" href="../css/create_new_opportunity.css">
+
+    <!-- Link to the Global Css File  -->
+    <link rel="stylesheet" href="../css/global.css>"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+   
+    <!-- Link to the Fontawsome Lib -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Link to the Google Font API -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    
   </head>
 
   <body>
-    <nav>
-      <div>
-        <a href="Dashboard.html"><i class="fa-solid fa-briefcase"></i></a>
-        <h2>NexJob</h2>
+    
+    <!-- Header has Only The Nav Bar -->
+    <header>
+
+      <div class="container">
+        <nav>
+          
+          <div class="icon">
+            <i class="main-icon fa-solid fa-briefcase" href="Dashboard.html"></i>
+            <h2>NexJob</h2>
+          </div>
+
+          <div class="items">
+            <a href="Dashboard.html">Dashboard</a>
+            <a href="create_a_new_opportunity.html">Post a Job</a>
+            <a href="my_job_postings.html">my Jobs</a>
+            <a href="Company_settings.html">Settings</a>
+          </div>
+          
+          <i class="settings-icon fa-solid fa-bars-staggered"></i>
+           
+        </nav>
       </div>
+      
+    </header>
 
-      <div>
-        <a href="Dashboard.html">Dashboard</a>
-        <a href="create_a_new_opportunity.html">Post a Job</a>
-        <a href="my_job_postings.html">my Jobs</a>
-        <a href="Company_settings.html">Settings</a>
-      </div
-    </nav>
-    <h1>Create a New Opportunity</h1>
-    <p>Fill in the details below to publish your job listing.</p>
+    <!-- Start Main Section -->
+    <section class="main">
+      <div class= "main-container">
+        
+        <!-- Start Header of The Main Content -->
+        <div class="main-header">
+          <h1>Create a New Opportunity</h1>
+          <p>Fill in the details below to publish your job listing.</p>
+        </div>
+        <!-- End Header of The Main content -->
 
-    <form
-      method="GET"
-      action="javascript:void(0);"
-      onsubmit="go_to_my_job_postings_file()"
-    >
-      <ul>
-        <li>
-          <strong> Job Details </strong>
-          <ul>
-            <li>
-              <div>
-                <label for="job_title"> Job Title </label>
-                <br />
-                <input
-                  type="text"
-                  placeholder="e.g. Senior Product Designer"
-                  name="job_title"
-                  id="job_title"
-                  required
-                />
+        <br>
+
+
+        <!-- Start Job Details Secion -->
+        <div class="job-content">
+          <div class="job-details-container">
+            <h3>Job Details</h3>
+
+            <form class="job-details-form">
+
+              <!-- Job Title Input -->
+              <div class="job-title">
+                <h4>Job Title</h4>
+                <div class="job-title-input">
+                   <i class="fa-regular fa-address-card"></i>  
+                   <input type="text" class="job-title-input-field" placeholder="e.g Senior Product Manager">
+                </div>
               </div>
-            </li>
 
-            <br />
+              <!-- Start Employment Type Input  -->
+              <div class="job-employment">
+                <h4>Job Title</h4>
+                <div class="job-employment-input">
+                   <i class="fa-regular fa-address-card"></i> 
 
-            <li>
-              <div>
-                <label> Employment Type </label>
-                <br />
-                <input
-                  type="radio"
-                  name="employment_type"
-                  id="part_time"
-                  required
-                />
-                <label for="part_time"> Part-Time </label>
+                   <!-- Select Menu for Jobs  -->
+                   <select name="work" id="types-of-work">
+                    
+                        <option value="1">Full-Time</option>
+                        <option value="2">Part-Time</option>
+                        <option value="3">Contarct</option>
+                        <option value="4" selected>Freelance</option>
+                        <option value="5">InterntShip</option>
 
-                <input
-                  type="radio"
-                  name="employment_type"
-                  id="full_time"
-                  required
-                />
-                <label for="full_time"> Full-Time </label>
+                    </select>
+                </div>
               </div>
-            </li>
+              <!-- End Employment Type Input  -->
 
-            <br />
-
-            <li>
-              <div>
-                <label for="location"> Location </label>
-                <br />
-                <input
-                  type="text"
-                  placeholder="e.g. Cairo or Remote"
-                  name="location"
-                  id="location"
-                  required
-                />
+              <!-- Start Location Type Input  -->
+              <div class="job-Location">
+                <h4>Job Title</h4>
+                <div class="job-Location-input">
+                   <i class="fa-regular fa-address-card"></i>  
+                   <input type="text" class="job-Location-input-field" placeholder="e.g San Fransico Ca or Remote">
+                </div>
               </div>
-            </li>
+              <!-- End Location Type Input  -->
 
-            <br />
 
-            <li>
-              <div>
-                <label> Salary Range </label>
-                <br />
-                <input
-                  type="number"
-                  placeholder="$ Min"
-                  name="salary_range"
-                  id="salary_range"
-                  min="1000"
-                  max="50000"
-                  step="1000"
-                  required
-                />
-                <input
-                  type="number"
-                  placeholder="$ Max"
-                  name="salary_range"
-                  id="salary_range"
-                  min="50000"
-                  max="100000"
-                  step="1000"
-                  required
-                />
+              <!-- Start Salary Range Type Input  -->
+              <div class="job-salary">
+                <h4>Job Title</h4>
+                <div class="job-salary-input">
+                   <i class="fa-regular fa-address-card"></i>  
+                   <div class="salary-range">
+                    <input type="number" name="number" min="10" max="100" step="10">
+                    <input type="number" name="number" min="10" max="100" step="10">
+                   </div>
+                </div>
               </div>
-            </li>
+              <!-- End Salary Range Type Input  -->
 
-            <br />
-          </ul>
-        </li>
+            </form>
+          </div>
+        </div>
+        <!-- End Job Details Secion -->
 
-        <li>
-          <strong> Role Description </strong>
-          <ul>
-            <li>
-              <div>
-                <label for="description"> Description </label>
-                <br />
-                <textarea
-                  placeholder="Describe the responsibilities and requirements."
-                  name="description"
-                  id="description"
-                  rows="5"
-                  cols="50"
-                  required
-                ></textarea>
-              </div>
-            </li>
 
-            <br />
+        <!-- Start Role Description -->
+        
+        <div class="role-description">
 
-            <li>
-              <div>
-                <label for="requirements_and_skills">
-                  Requirements & Skills
-                </label>
-                <br />
-                <textarea
-                  placeholder="Write Requirements & Skills."
-                  name="requirements_and_skills"
-                  id="requirements_and_skills"
-                  rows="5"
-                  cols="50"
-                  required
-                ></textarea>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
+          <h3>Role Description</h3>
 
-      <br />
+          <From class="role-description-form">
+            <h5>Description</h5>
+            <textarea name="work-description"  placeholder="Description"></textarea>
+          </div>
+        </div>
 
-      <div>
-        <input type="button" value="Cancel" onclick="go_back()" />
-        <script>
-          function go_back() {
-            window.history.back();
-          }
-        </script>
+        <!-- End Role Description -->
 
-        <input type="submit" value="Publish Job" />
-        <script>
-          function go_to_my_job_postings_file() {
-            window.location.href = "my_job_postings.html";
-          }
-        </script>
+
+        <br>
+        
+        <!-- Start Button Field -->
+        <div class="submit-field">
+          <h3>Cancle</h3>
+          <h3>Publish Job</h3>    
+        </div>
+        <!-- End Button Field -->
+
       </div>
-    </form>
+    </section>
+    <!-- Start Main Section -->
+    
+
   </body>
 </html>
