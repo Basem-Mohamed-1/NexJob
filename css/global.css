@@ -1,31 +1,115 @@
+/* ============================================
+   GLOBAL.CSS - All Colors & Variables
+   ============================================ */
+
+/* Light Mode (Default) */
 :root {
-  /* Main Colors */
-  --primary-blue: #057be8;
+  /* Primary Colors */
+  --primary: #2563eb;
   --primary-dark: #1e40af;
-  --light-bg: #f8fafc;
-  --white: #ffffff;
-  --text-dark: #1e2937;
-  --text-light: #64748b;
-  --border-color: #e2e8f0;
-  --dark-color: #1e2937;
-  --accent-blue: #2563eb;
-  --old-blue: #4f7de1;
-  --old-blue-hover: #1d4ed8;
-  --soft-blue-gradient-start: #bee6f9;
-  --gray-100: #f3f4f6;
-  --gray-300: #e5e7eb;
-  --gray-500: #6a7686;
-  --gray-600: #4b5563;
-  --green-tag: #5cd990;
-  --radius: 12px;
+  --primary-light: #3b82f6;
+  --primary-bg-light: #eff6ff;
 
-  --shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  /* Background Colors */
+  --bg-body: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-section: #f8fafc;
+  --bg-gradient-start: #e0f2fe;
+  --bg-gradient-end: #f0f9ff;
 
-  --shadow-hover: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
+  /* Text Colors */
+  --text-heading: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+
+  /* Border Colors */
+  --border-light: #e2e8f0;
+  --border-medium: #cbd5e1;
+
+  /* Status Colors */
+  --status-applied: #3b82f6;
+  --status-interview: #eab308;
+  --status-offer: #a855f7;
+  --status-hired: #22c55e;
+  --status-applied-bg: #dbeafe;
+  --status-interview-bg: #fef9c3;
+  --status-offer-bg: #f3e8ff;
+  --status-hired-bg: #dcfce7;
+
+  /* Tag Colors */
+  --tag-bg: #f1f5f9;
+  --tag-text: #475569;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+
+  /* Hero Gradient */
+  --hero-gradient-start: #2563eb;
+  --hero-gradient-end: #1e40af;
+
+  /* Footer */
+  --footer-bg: #0f172a;
+  --footer-text: #94a3b8;
+  --footer-link: #cbd5e1;
 }
 
-/* Base Styles */
+/* Dark Mode */
+[data-theme="dark"] {
+  /* Primary Colors */
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa;
+  --primary-bg-light: #1e3a5f;
+
+  /* Background Colors */
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --bg-section: #1e293b;
+  --bg-gradient-start: #1e293b;
+  --bg-gradient-end: #0f172a;
+
+  /* Text Colors */
+  --text-heading: #f1f5f9;
+  --text-body: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+
+  /* Border Colors */
+  --border-light: #334155;
+  --border-medium: #475569;
+
+  /* Status Colors */
+  --status-applied-bg: #1e3a5f;
+  --status-interview-bg: #3f3a1a;
+  --status-offer-bg: #3a1e5f;
+  --status-hired-bg: #1a3f2a;
+
+  /* Tag Colors */
+  --tag-bg: #334155;
+  --tag-text: #cbd5e1;
+
+  /* Shadow */
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+
+  /* Hero Gradient */
+  --hero-gradient-start: #1e3a5f;
+  --hero-gradient-end: #0f172a;
+
+  /* Footer */
+  --footer-bg: #020617;
+  --footer-text: #64748b;
+  --footer-link: #94a3b8;
+}
+
+/* Base Reset */
 * {
   margin: 0;
   padding: 0;
@@ -33,20 +117,16 @@
 }
 
 body {
-  font-family:
-    "Segoe UI",
-    system-ui,
-    -apple-system,
-    sans-serif;
-  background: linear-gradient(
-    to right bottom,
-    var(--soft-blue-gradient-start),
-    rgb(240, 240, 240)
-  );
-  color: var(--text-dark);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: var(--bg-body);
+  color: var(--text-body);
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Inter", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }

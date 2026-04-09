@@ -7,43 +7,170 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/jobseeker.css" />
     <title>My Applications</title>
   </head>
+
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <div>
-          <a href="#"><i class="fa-solid fa-briefcase"></i></a>
+        <div class="logo">
+          <a href="../index.html"><i class="fa-solid fa-briefcase"></i></a>
           <h2>NexJob</h2>
         </div>
+
         <ul class="nav-menu">
           <li><a href="home.html">Home</a></li>
-          <li><a href="findJob.html" class="active">Find Jobs</a></li>
-          <li><a href="myapplications.html">My Applications</a></li>
-          <li><a href="../../auth/login.html">Logout</a></li>
+          <li><a href="findJob.html">Find Jobs</a></li>
+          <li>
+            <a href="myapplications.html" class="active">My Applications</a>
+          </li>
+          <li><a href="../auth/login.html">Logout</a></li>
         </ul>
+        <button
+          id="darkModeToggle"
+          class="dark-mode-toggle"
+          aria-label="Toggle dark mode"
+        >
+          <i class="fas fa-moon"></i>
+        </button>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </nav>
 
-    <h1>My Applied Jobs</h1>
-    <p>Below is a list of the positions you have already applied for.</p>
+    <!-- Applied Jobs header-->
+    <header class="Applied_Jobs_header">
+      <h1>My Applied Jobs</h1>
+      <p>Track the status of your job applications.</p>
+    </header>
 
-    <ul>
-      <li>
-        <h2>Software Engineer</h2>
-        <p>Company: xyz</p>
-        <p>Status: Under Review</p>
-        <p>Applied on: March 10, 2026</p>
-        <a href="JobDetails.html">View Application Details</a>
-      </li>
-      <hr />
-      <li>
-        <h2>UI/UX Designer</h2>
-        <p>Company: xyz</p>
-        <p>Status: Interview Scheduled</p>
-        <p>Applied on: March 05, 2026</p>
-        <a href="JobDetails.html">View Application Details</a>
-      </li>
-    </ul>
+    <!-- Applied Jobs Statistics -->
+    <!-- 
+    here contain 4 divs each of a simple statistic
+    1- applied
+    2- interview
+    3- offer
+    4- hired
+    -->
+    <section class="Applied_Jobs_Statistics">
+      <div class="Statistics">
+        <div class="Applied">
+          <h2>Applied</h2>
+          <p>12</p>
+        </div>
+
+        <div class="Interview">
+          <h2>Interview</h2>
+          <p>3</p>
+        </div>
+
+        <div class="Offer">
+          <h2>Offer</h2>
+          <p>4</p>
+        </div>
+
+        <div class="Hired">
+          <h2>Hired</h2>
+          <p>1</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- search bar and a filter bar -->
+    <div>
+      <div class="search-Applications_Bar">
+        <form>
+          <i class="fas fa-search"></i>
+          <div class="text-1">
+            <input type="text" placeholder=" Search Applications " />
+          </div>
+        </form>
+      </div>
+      <div class="filter-Applications_Button">
+        <i class="fas fa-filter"></i>
+        <button>Filter</button>
+      </div>
+    </div>
+
+    <!-- Applied Jobs section -->
+    <section class="Applied_Jobs">
+      <div>
+        <div>
+          <p>company & Role</p>
+        </div>
+        <div>
+          <p>date apllied</p>
+        </div>
+        <div>
+          <p>status</p>
+        </div>
+        <div>
+          <p>view details</p>
+        </div>
+      </div>
+
+      <div class="Applied_Jobs_Cards">
+        <div class="Applied_Jobs_Card-1">
+          <!--job name-->
+          <div class="Applied_Jobs_Card_Role">
+            <h3>Software Engineer</h3>
+            <p>Google - Mountain View, CA</p>
+          </div>
+          <!--date applied-->
+          <div class="Applied_Jobs_Card_Date">
+            <p class="applied-time">Oct 1, 2022</p>
+          </div>
+
+          <div class="Applied_Jobs_Card_Status">
+            <p>Full-time</p>
+            <p>Remote</p>
+          </div>
+          <!---->
+          <div class="Applied_Jobs_Card_Action">
+            <a href="JobDetails.html">View Details -></a>
+          </div>
+        </div>
+        <!--card one end-->
+
+        <div class="Applied_Jobs_Card-1">
+          <!---->
+          <div class="Applied_Jobs_Card_Role">
+            <h3>Data Analytics</h3>
+            <p>Oracle - Sacramento, CA</p>
+          </div>
+          <!---->
+          <div class="Applied_Jobs_Card_Date">
+            <p class="applied-time">Oct 1, 2022</p>
+          </div>
+
+          <div class="Applied_Jobs_Card_Status">
+            <p>Part-Time</p>
+            <p>On-site</p>
+          </div>
+          <!---->
+          <div class="Applied_Jobs_Card_Action">
+            <a href="JobDetails.html">View Details -></a>
+          </div>
+        </div>
+        <!--card two end-->
+      </div>
+      <!--Applied_Jobs_Cards end-->
+    </section>
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 NexJob. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="../shared/About.html">About</a>
+          <a href="../shared/Contact_us.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+    <script src="../js/navbar.js"></script>
   </body>
 </html>
