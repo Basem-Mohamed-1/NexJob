@@ -20,21 +20,7 @@ navLinks.forEach(function (link) {
   });
 });
 
-// Navbar scroll effect
-window.addEventListener("scroll", function () {
-  const navbar = document.querySelector(".navbar");
-  if (navbar) {
-    if (window.scrollY > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
-  }
-});
-
-// ============================================
 // DARK MODE TOGGLE
-// ============================================
 const darkModeToggle = document.getElementById("darkModeToggle");
 
 // Check for saved theme
