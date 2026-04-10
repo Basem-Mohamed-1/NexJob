@@ -3,73 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Job Details</title>
+    <title>Job Details - NexJob</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/jobseeker.css" />
   </head>
   <body>
-    <header>
-      <nav class="navbar">
-        <div class="nav-container">
-          <div>
-            <a href="#"><i class="fa-solid fa-briefcase"></i></a>
-            <h2>NexJob</h2>
-          </div>
-          <ul class="nav-menu">
-            <li><a href="home.html">Home</a></li>
-            <li><a href="findJob.html" class="active">Find Jobs</a></li>
-            <li><a href="myapplications.html">My Applications</a></li>
-            <li><a href="../../auth/login.html">Logout</a></li>
-          </ul>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <a href="../index.html"><i class="fa-solid fa-briefcase"></i></a>
+          <h2>NexJob</h2>
         </div>
-      </nav>
-    </header>
+
+        <ul class="nav-menu">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="findJob.html">Find Jobs</a></li>
+          <li><a href="myapplications.html">My Applications</a></li>
+          <li><a href="../auth/login.html">Logout</a></li>
+        </ul>
+        <button
+          id="darkModeToggle"
+          class="dark-mode-toggle"
+          aria-label="Toggle dark mode"
+        >
+          <i class="fas fa-moon"></i>
+        </button>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
 
     <main>
-      <a href="findJob.html">&larr; Back to Jobs List</a>
+      <div class="job-detail-container">
+        <a href="findJob.html" class="back-link"> ← Back to Jobs </a>
 
-      <div class="job-header">
-        <h1 class="job-title">Software Engineer</h1>
-        <div class="job-meta">
-          Location: Remote | Type: Full-Time | Department: Engineering
+        <div class="job-detail-card">
+          <h1 class="job-title">Software Engineer</h1>
+
+          <div class="job-meta">
+            <span><i class="fa-solid fa-building"></i> Google</span>
+            <span
+              ><i class="fa-solid fa-location-dot"></i> Remote / Mountain View,
+              CA</span
+            >
+            <span><i class="fa-solid fa-clock"></i> Full-Time</span>
+            <span><i class="fa-solid fa-dollar-sign"></i> $120k - $160k</span>
+          </div>
+
+          <div class="job-description">
+            <h3 class="section-title">About the Role</h3>
+            <p>
+              We are looking for a passionate Software Engineer to design,
+              develop, and maintain scalable web applications. You will work
+              with a talented team to build high-quality software solutions.
+            </p>
+
+            <h3 class="section-title">Key Responsibilities</h3>
+            <ul>
+              <li>Write clean, maintainable, and efficient code</li>
+              <li>Design and implement new features and improvements</li>
+              <li>Collaborate with cross-functional teams</li>
+              <li>Troubleshoot, debug, and optimize existing systems</li>
+              <li>Participate in code reviews and technical discussions</li>
+            </ul>
+
+            <h3 class="section-title">Requirements</h3>
+            <ul>
+              <li>3+ years of experience in software development</li>
+              <li>Strong knowledge of JavaScript, React, and Node.js</li>
+              <li>Experience with databases (PostgreSQL, MongoDB)</li>
+              <li>Familiarity with cloud platforms (AWS/GCP)</li>
+              <li>Excellent problem-solving and communication skills</li>
+            </ul>
+          </div>
+
+          <div class="apply-section">
+            <h3>Ready to apply for this position?</h3>
+            <p>
+              If you believe you are a good fit, submit your application now.
+            </p>
+            <a href="apply-job.html" class="apply-btn">Apply for this Job</a>
+          </div>
         </div>
       </div>
-
-      <div class="job-description">
-        <h3>About the Role</h3>
-        <p>
-          We are looking for a passionate Software Engineer to design, develop,
-          and install software solutions. You will be working with a highly
-          skilled team to build scalable applications.
-        </p>
-
-        <h3>Key Responsibilities</h3>
-        <ul>
-          <li>Write well-designed, testable, and efficient code.</li>
-          <li>
-            Integrate software components into a fully functional software
-            system.
-          </li>
-          <li>Troubleshoot, debug, and upgrade existing systems.</li>
-        </ul>
-
-        <h3>Requirements</h3>
-        <ul>
-          <li>Proven experience as a Software Engineer or similar role.</li>
-          <li>Familiarity with Agile development methodologies.</li>
-          <li>
-            Experience with software design and development in a test-driven
-            environment.
-          </li>
-        </ul>
-      </div>
-      <div class="apply-section">
-        <hr />
-        <h3>Ready to apply?</h3>
-        <p>
-          If you meet the requirements and are interested in this position,
-          click the button below.
-        </p>
-        <a href="apply-job.html"><button>Apply for this Job</button></a>
-      </div>
     </main>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 NexJob. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="../shared/About.html">About</a>
+          <a href="../shared/Contact_us.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/navbar.js"></script>
   </body>
 </html>
