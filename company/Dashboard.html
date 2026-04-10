@@ -4,49 +4,62 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NexJob</title>
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/normalize.css">
-    <link rel="stylesheet" href="../css/global.css">
-    
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    
-  </head>
-  
-  <body>
-    <header>
-      <div class="container">
-        <nav>
-          
-          <div class="icon">
-            <i class="main-icon fa-solid fa-briefcase" href="Dashboard.html"></i>
-            <h2>NexJob</h2>
-          </div>
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <link rel="stylesheet" href="../css/normalize.css" />
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
 
-          <div class="items">
-            <a href="Dashboard.html">Dashboard</a>
-            <a href="create_a_new_opportunity.html">Post a Job</a>
-            <a href="my_job_postings.html">my Jobs</a>
-            <a href="Company_settings.html">Settings</a>
-          </div>
-          
-          <i class="settings-icon fa-solid fa-bars-staggered"></i>
-          
-          
-        </nav>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <a href="Dashboard.html"><i class="fa-solid fa-briefcase"></i></a>
+          <h2>NexJob</h2>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a href="Dashboard.html" class="active">Dashboard</a></li>
+          <li><a href="create_a_new_opportunity.html">Post a Job</a></li>
+          <li><a href="my_job_postings.html">My Jobs</a></li>
+          <li><a href="Company_settings.html">Settings</a></li>
+        </ul>
+
+        <button
+          id="darkModeToggle"
+          class="dark-mode-toggle"
+          aria-label="Toggle dark mode"
+        >
+          <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
-      
-    </header>
+    </nav>
 
     <section class="welcome-section">
       <div class="container">
         <div class="welcome">
           <div class="info">
             <p class="trust">trusted by a alot of companies</p>
-            <h1>Find your <span class="welcome-span">dream job</span> in minutes</h1>
+            <h1>
+              Find your <span class="welcome-span">dream job</span> in minutes
+            </h1>
             <p>
               connecting the world's most talented professionals with
               industry-leading companies. Your next big career move starts here
@@ -96,14 +109,16 @@
       </div>
     </section>
 
-  <!-- End Fiels Section-->
+    <!-- End Fiels Section-->
 
     <section class="latest-jobs">
       <div class="container">
         <div class="lastest-jobs-content">
           <div class="latest-jobs-title">
             <h3>Latest Job Openings</h3>
-            <p>Fresh opportunities from verified employers, updated every hour.</p>
+            <p>
+              Fresh opportunities from verified employers, updated every hour.
+            </p>
           </div>
           <div class="job-card">
             <div class="job-content">
@@ -127,7 +142,7 @@
                   </div>
                 </div>
               </div>
-              <hr class="horizontal-line"/>
+              <hr class="horizontal-line" />
               <div class="job-applying">
                 <div class="job-salary">
                   <h4>$140k - $180k</h4>
@@ -136,7 +151,6 @@
                 <h3>Apply Now</h3>
               </div>
             </div>
-          
           </div>
           <div class="job-card">
             <div class="job-content">
@@ -160,7 +174,7 @@
                   </div>
                 </div>
               </div>
-               <hr class="horizontal-line"/>
+              <hr class="horizontal-line" />
               <div class="job-applying">
                 <div class="job-salary">
                   <h4>$140k - $180k</h4>
@@ -169,7 +183,6 @@
                 <h3>Apply Now</h3>
               </div>
             </div>
-          
           </div>
           <div class="job-card">
             <div class="job-content">
@@ -193,7 +206,7 @@
                   </div>
                 </div>
               </div>
-              <hr class="horizontal-line"/>
+              <hr class="horizontal-line" />
               <div class="job-applying">
                 <div class="job-salary">
                   <h4>$140k - $180k</h4>
@@ -202,7 +215,6 @@
                 <h3 class="browse-rest">Apply Now</h3>
               </div>
             </div>
-          
           </div>
         </div>
         <div class="browse-more">
@@ -217,8 +229,8 @@
           <div class="next-step-text">
             <h1>Ready to take the next step in your career?</h1>
             <p>
-              Join thousands of professionals who have found their passion through
-              JobPortal. Your success story starts with one click.
+              Join thousands of professionals who have found their passion
+              through JobPortal. Your success story starts with one click.
             </p>
           </div>
           <div class="create-account">
@@ -234,9 +246,12 @@
         <div class="about">
           <div class="about-content">
             <div class="icon">
-                <i class="main-icon fa-solid fa-briefcase" href="Dashboard.html"></i>
-                <h2>NexJob</h2>
-              </div>
+              <i
+                class="main-icon fa-solid fa-briefcase"
+                href="Dashboard.html"
+              ></i>
+              <h2>NexJob</h2>
+            </div>
             <p>
               Making the job hunt easier for everyone. We provide the tools and
               resources you need to find your next great opportunity.
@@ -246,6 +261,6 @@
         </div>
       </div>
     </footer>
-
+    <script src="../js/navbar.js"></script>
   </body>
 </html>
