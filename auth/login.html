@@ -3,33 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Log in – NexJob</title>
   </head>
   <body>
-    <h1>NexJob</h1>
 
-    <h2>Login</h2>
+    <section class="sec">
+      <div class="cont">
 
-    <form id="login-form">
-      <label for="login-username">Username</label><br />
-      <input
-        type="text"
-        id="login-username"
-        name="username"
-        placeholder="Enter your username"
-      /><br /><br />
+        <h1>Hello Again!</h1>
+        <h2>Enter your details to continue</h2>
 
-      <label for="login-password">Password</label><br />
-      <input
-        type="password"
-        id="login-password"
-        name="password"
-        placeholder="Enter your password"
-      /><br /><br />
+        <form id="login-form">
 
-      <button type="submit">Login</button>
-    </form>
+          <div class="userinputs">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" name="username" placeholder="Enter your username"/>
 
-    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" placeholder="Enter your password"/>
+          </div>
+
+          <button type="submit">Login <ion-icon name="arrow-forward"></ion-icon></button>
+
+        </form>
+
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+
+      </div>
+    </section>
+
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <script src="../js/login.js" defer></script>
   </body>
 </html>
