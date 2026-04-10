@@ -17,15 +17,6 @@ function initSmoothScroll() {
   });
 }
 
-// ============================================
-// 2. SCROLL ANIMATIONS (Fade-in effects)
-// ============================================
-// Purpose: Elements fade in as user scrolls down
-// How it works:
-// - Intersection Observer watches for elements entering viewport
-// - When element becomes visible, adds "visible" class
-// - CSS handles the actual animation (opacity/transform)
-
 function initScrollAnimations() {
   // Options for the observer
   const observerOptions = {
