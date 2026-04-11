@@ -286,3 +286,58 @@ p a
     font-size: 0.85rem;
   }
 } 
+
+/* RESPONSIVE ------------------------------------- */
+
+@media (max-width: 650px) {
+  .sec {
+    align-items: flex-start;
+    padding-top: 100px;
+  }
+
+  .cont {
+    width: 90%;
+    padding: 30px 30px;
+  }
+
+  .sec .cont h1 {
+    font-size: 36px;
+  }
+
+  .sec .cont h2 {
+    font-size: 16px;
+  }
+
+  .btns span {
+    width: 46%;
+    height: 85px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pass {
+    flex-direction: column;
+  }
+
+  .pass span {
+    width: 100%;
+  }
+
+  .btns {
+    gap: 10px;
+  }
+
+  .btns span {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .cont {
+    padding: 25px 20px;
+  }
+
+  .sec .cont h1 {
+    font-size: 28px;
+  }
+}
