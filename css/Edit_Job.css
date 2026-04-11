@@ -1,0 +1,195 @@
+/* =========================
+   BASE (MOBILE FIRST)
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(to right, #eef3f9, #e6edf7);
+  color: #333;
+}
+
+/* Container */
+
+.main {
+  width: 95%;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Titles */
+
+.main h2 {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.main p {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Back link */
+
+.main a {
+  text-decoration: none;
+  color: #4a7bd1;
+  font-size: 14px;
+}
+
+/* =========================
+   FORM ELEMENTS
+========================= */
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Focus effect */
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4a7bd1;
+  box-shadow: 0 0 0 2px rgba(74,123,209,0.15);
+}
+
+/* Salary stacked (mobile) */
+
+.salary-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-actions input {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+input[type="reset"] {
+  background: #f1f1f1;
+}
+
+input[type="submit"] {
+  background: #4a7bd1;
+  color: white;
+}
+
+/* =========================
+   TABLET (≥ 768px)
+========================= */
+
+@media (min-width: 768px) {
+
+  .main {
+    width: 85%;
+    padding: 30px;
+  }
+
+  .main h2 {
+    font-size: 26px;
+  }
+
+  /* Two-column layout */
+  form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* Full width fields */
+  textarea,
+  .form-actions,
+  .form-group:nth-child(1),
+  .form-group:nth-child(6),
+  .form-group:nth-child(7),
+  .form-group:nth-child(8) {
+    grid-column: span 2;
+  }
+
+  /* Salary side-by-side */
+  .salary-wrapper {
+    flex-direction: row;
+  }
+
+  .salary-wrapper input {
+    width: 100%;
+  }
+
+  /* Buttons row */
+  .form-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/* =========================
+   DESKTOP (≥ 1024px)
+========================= */
+
+@media (min-width: 1024px) {
+
+  .main {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+  }
+
+  body {
+    font-size: 16px;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 13px;
+    font-size: 15px;
+  }
+
+  .main h2 {
+    font-size: 30px;
+  }
+}
