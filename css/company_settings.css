@@ -1,5 +1,5 @@
 
-/* Company Settings — styles (reordered, no functional changes) */
+/* Company Settings*/
 
 /* Page wrapper */
 .page-container {
@@ -42,6 +42,14 @@ padding: 32px;
 box-shadow: var(--shadow);
 margin-bottom: 24px;
 animation: cardIn 0.4s ease both;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover interaction for settings cards */
+.main form:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), var(--shadow-xl);
 }
 
 @keyframes cardIn {

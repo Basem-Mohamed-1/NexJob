@@ -100,6 +100,14 @@
   box-shadow: var(--shadow);
   animation: cardIn 0.4s ease both;
   animation-delay: 0.08s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover interaction card */
+.main form:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), var(--shadow-xl);
 }
 
 @keyframes cardIn {

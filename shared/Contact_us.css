@@ -15,6 +15,19 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Hover interaction for contact cards */
+.contact-form-container,
+.contact-info-container {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form-container:hover,
+.contact-info-container:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), var(--shadow-xl);
+}
+
 /* inputs only */
 input[type="text"],
 input[type="email"],
@@ -54,6 +67,7 @@ input[type="submit"] {
 input[type="reset"] {
   background: #e5e7eb;
 }
+
 /* Toast notification */
 #toast {
 position: fixed;
