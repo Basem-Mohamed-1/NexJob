@@ -4,9 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const minSalary = form.querySelector('input[name="salary_min"]');
   const maxSalary = form.querySelector('input[name="salary_max"]');
 
-  // ==============================
   // TOAST
-  // ==============================
  function showToast(message, type = "success") {
   let toast = document.getElementById("toast");
 
@@ -27,9 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toast.classList.remove("show");
   }, 2500);
 }
-  // ==============================
   // SALARY VALIDATION
-  // ==============================
 function validateSalary() {
   const salaryError = document.getElementById("salaryError");
 
@@ -57,9 +53,7 @@ function validateSalary() {
 
   return true;
 }
-  // ==============================
   // FORM SUBMIT
-  // ==============================
   form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -70,7 +64,5 @@ function validateSalary() {
   localStorage.setItem("editedJob", JSON.stringify(jobData));
 
   showToast("Job updated successfully", "success");
-
-  // reset AFTER toast trigger (safe order)
   form.reset();
 });});

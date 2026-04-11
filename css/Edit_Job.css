@@ -1,195 +1,280 @@
-/* =========================
-   BASE (MOBILE FIRST)
-========================= */
-
-* {
-  box-sizing: border-box;
+/* EDIT JOB PAGE STYLES */
+/* -------------------- Page Wrapper -------------------- */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-body {
+/* -------------------- Navbar / Header -------------------- */
+.header {
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary);
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(to right, #eef3f9, #e6edf7);
-  color: #333;
+  padding: 0;
 }
 
-/* Container */
+.nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
+.nav a {
+  text-decoration: none;
+  color: var(--text-body);
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav a:hover {
+  color: var(--primary);
+  background: var(--primary-bg-light);
+}
+
+.nav hr { display: none; }
+
+/* -------------------- Main Container -------------------- */
+.main-content,
 .main {
-  width: 95%;
-  margin: 20px auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  flex: 1;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 100px 24px 60px;
 }
 
-/* Titles */
-
+/* -------------------- Page Title -------------------- */
 .main h2 {
-  font-size: 22px;
-  margin-bottom: 5px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.4px;
+  margin: 22px 0 6px;
 }
 
-.main p {
-  font-size: 14px;
-  color: #777;
+.main > p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
 }
 
 /* Back link */
-
-.main a {
+.main > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-weight: 500;
+  font-size: 0.9rem;
   text-decoration: none;
-  color: #4a7bd1;
-  font-size: 14px;
+  transition: gap 0.2s;
 }
 
-/* =========================
-   FORM ELEMENTS
-========================= */
+.main > a:hover { gap: 10px; }
 
+/* -------------------- Form Card -------------------- */
+.main form {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+  animation: cardIn 0.4s ease both;
+  animation-delay: 0.08s;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hide stray <br> */
+.main form br { display: none; }
+
+/* -------------------- Form Groups -------------------- */
 .form-group {
-  margin-bottom: 16px;
-}
-
-label {
-  font-weight: 600;
-  margin-bottom: 6px;
-  display: block;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 11px;
-  border-radius: 8px;
-  border: 1px solid #dcdcdc;
-  font-size: 14px;
-  transition: 0.25s;
-}
-
-textarea {
-  resize: vertical;
-}
-
-/* Focus effect */
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: #4a7bd1;
-  box-shadow: 0 0 0 2px rgba(74,123,209,0.15);
-}
-
-/* Salary stacked (mobile) */
-
-.salary-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
+  margin-bottom: 20px;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
 
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="url"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--bg-section);
+  border: 1.5px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-body);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.field-error {
+  display: none;
+  font-size: 0.8rem;
+  color: #ef4444;
+  margin-top: 2px;
+}
+.field-error.visible { display: block; }
+
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+
+/* -------------------- Salary Grid -------------------- */
+.salary-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.salary-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* -------------------- Buttons -------------------- */
 .form-actions {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
 }
 
-.form-actions input {
-  padding: 12px;
-  border: none;
+.form-actions input[type="submit"],
+.form-actions input[type="reset"] {
+  padding: 10px 26px;
   border-radius: 8px;
-  font-weight: bold;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
-input[type="reset"] {
-  background: #f1f1f1;
+.form-actions input[type="submit"] {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
-input[type="submit"] {
-  background: #4a7bd1;
-  color: white;
+.form-actions input[type="submit"]:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
 }
 
-/* =========================
-   TABLET (≥ 768px)
-========================= */
-
-@media (min-width: 768px) {
-
-  .main {
-    width: 85%;
-    padding: 30px;
-  }
-
-  .main h2 {
-    font-size: 26px;
-  }
-
-  /* Two-column layout */
-  form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  /* Full width fields */
-  textarea,
-  .form-actions,
-  .form-group:nth-child(1),
-  .form-group:nth-child(6),
-  .form-group:nth-child(7),
-  .form-group:nth-child(8) {
-    grid-column: span 2;
-  }
-
-  /* Salary side-by-side */
-  .salary-wrapper {
-    flex-direction: row;
-  }
-
-  .salary-wrapper input {
-    width: 100%;
-  }
-
-  /* Buttons row */
-  .form-actions {
-    flex-direction: row;
-    justify-content: flex-end;
-  }
+.form-actions input[type="reset"] {
+  background: var(--bg-section);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-light);
+}
+/* Toast notification */
+#toast {
+position: fixed;
+bottom: 28px;
+right: 28px;
+background: var(--bg-card);
+color: var(--text-body);
+padding: 13px 22px;
+border-radius: 10px;
+font-size: 0.9rem;
+font-weight: 500;
+box-shadow: var(--shadow-xl);
+border: 1px solid var(--border-light);
+opacity: 0;
+transform: translateY(14px);
+transition: opacity 0.3s, transform 0.3s;
+pointer-events: none;
+z-index: 9999;
+max-width: 320px;
 }
 
-/* =========================
-   DESKTOP (≥ 1024px)
-========================= */
+#toast.show  { opacity: 1; transform: translateY(0); }
+#toast.success { border-left: 4px solid #22c55e; }
+#toast.error   { border-left: 4px solid #ef4444; }
 
-@media (min-width: 1024px) {
+/* -------------------- Footer -------------------- */
+footer {
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 32px 24px;
+  margin-top: auto;
+}
 
-  .main {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 40px;
-  }
+footer .container { max-width: 1280px; margin: 0 auto; }
+footer .about-content { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+footer .icon { display: flex; align-items: center; gap: 10px; }
+footer .main-icon { font-size: 1.5rem; color: var(--primary-light); }
+footer .icon h2 { font-size: 1.2rem; font-weight: 700; color: var(--footer-link); margin: 0; }
+footer .about p { font-size: 0.88rem; max-width: 800px; }
+footer .copy-right { font-size: 0.8rem; opacity: 0.7; }
 
-  body {
-    font-size: 16px;
-  }
+/* -------------------- Responsive -------------------- */
+@media (max-width: 768px) {
+  .main { padding: 90px 16px 48px; }
+  .salary-row { grid-template-columns: 1fr; }
+  .form-actions { flex-direction: column; }
+  .form-actions input { width: 100%; }
+}
 
-  input,
-  select,
-  textarea {
-    padding: 13px;
-    font-size: 15px;
-  }
-
-  .main h2 {
-    font-size: 30px;
-  }
+@media (max-width: 480px) {
+  .main h2 { font-size: 1.25rem; }
 }

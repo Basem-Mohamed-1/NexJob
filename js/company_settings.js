@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ==============================
   // ELEMENTS
-  // ==============================
   const desc = document.getElementById("company_desc");
   const counter = document.querySelector(".char-counter");
 
@@ -12,9 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const securityForm = confirmPassword.closest("form");
 
-  // ==============================
   // TOAST
-  // ==============================
   function showToast(message, type = "success") {
     const toast = document.createElement("div");
     toast.id = "toast";
@@ -31,9 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2500);
   }
 
-  // ==============================
   // CHARACTER COUNTER
-  // ==============================
   if (desc) {
     counter.textContent = `${desc.value.length} / 500`;
 
@@ -41,10 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       counter.textContent = `${desc.value.length} / 500`;
     });
   }
-
-  // ==============================
   // PASSWORD STRENGTH
-  // ==============================
   function getStrength(pwd) {
     let score = 0;
 
@@ -93,9 +84,7 @@ document.querySelectorAll(".toggle-password").forEach(icon => {
     this.classList.toggle("fa-eye-slash", isHidden);
   });
 });
-  // ==============================
   // SECURITY FORM VALIDATION
-  // ==============================
   if (securityForm) {
     securityForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -117,10 +106,8 @@ document.querySelectorAll(".toggle-password").forEach(icon => {
       strengthLabel.textContent = "";
     });
   }
-
-  // ==============================
   // SAVE ACCOUNT + PROFILE + NOTIFICATIONS
-  // ==============================
+
   const forms = document.querySelectorAll("main form");
 
   forms.forEach((form, index) => {
