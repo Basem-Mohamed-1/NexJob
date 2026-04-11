@@ -1,56 +1,118 @@
-<!doctype html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/signup.css"/>
+    <link rel="stylesheet" href="../css/global.css"/>
+    <link rel="stylesheet" href="../css/navbar.css"/>
+    <link rel="stylesheet" href="../css/normalize.css"/>
+
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Sign Up – NexJob</title>
-  </head>
+  </head> 
   <body>
-    <h1>NexJob</h1>
 
-    <h2>Sign Up</h2>
+    <!--NAV BAR-->
 
-    <form id="signup-form">
-      <label for="signup-username">Username</label><br />
-      <input
-        type="text"
-        id="signup-username"
-        name="username"
-        placeholder="Choose a username"
-      /><br /><br />
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <a href="../jobseeker/home.html"><i class="fa-solid fa-briefcase"></i></a>
+          <h2>NexJob</h2>
+        </div>
 
-      <label for="signup-email">Email</label><br />
-      <input
-        type="email"
-        id="signup-email"
-        name="email"
-        placeholder="you@example.com"
-      /><br /><br />
+        <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </nav>
 
-      <label for="signup-password">Password</label><br />
-      <input
-        type="password"
-        id="signup-password"
-        name="password"
-        placeholder="Create a password"
-      /><br /><br />
+    <!--THE SECTION-->
 
-      <label for="signup-confirm">Confirm Password</label><br />
-      <input
-        type="password"
-        id="signup-confirm"
-        name="confirm_password"
-        placeholder="Repeat your password"
-      /><br /><br />
+    <section class="sec">
 
-      <label for="signup-isadmin">
-        <input type="checkbox" id="signup-isadmin" name="is_admin" />
-        I am a Company Admin </label
-      ><br /><br />
+      <div class="cont"> 
 
-      <button type="submit">Create Account</button>
-    </form>
+      <h1>Create Account</h1>
+      <h2 >Join us to find your next opportunity</h2>
+        
+        <!-- ------------------------------------------------------ BUTTONS ---------------------------------- -->
 
-    <p>Already have an account? <a href="login.html">Login</a></p>
+      <div class="btns">
+        <span class="job-seeker">
+        <p>Jop seeker</p>
+        <ion-icon name="search"></ion-icon>
+        </span>
+        <span class="admin">
+        <p>Company admin</p>
+        <ion-icon name="briefcase"></ion-icon>
+        </span>
+      </div>
+
+        <!-- ------------------------------------------------------ SIGN-UP FORM ---------------------------------- -->
+
+        <form id="signup-form" class="form1 active" onsubmit="signupSubmitFunction(event)">
+          
+          <div class="userinputs">
+
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" name="username" placeholder="Choose a username"/>
+            <p class="usernamep" style="margin: -10px 0px 10px 0px; text-align: left; color: red;" ></p> <!--for validation if needed-->
+
+
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" name="email" placeholder="you@example.com"/>
+            <p class="emailp" style="margin: -10px 0px 10px 0px; text-align: left; color: red;"></p> <!--for validation if needed-->
+
+            <label for="admin-signup-companyname" class="hidden">Company name</label>
+            <input type="text" id="admin-signup-companyname" name="Companyname" class="hidden" placeholder="Enter Company name"/>
+
+          </div>
+
+          <div class="pass">
+
+            <span>
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" name="password" placeholder="Create a password"/>
+            </span>
+
+            <span>
+              <label for="signup-confirm">Confirm Password</label>
+              <input type="password" id="signup-confirm" name="confirm_password" placeholder="Confirm password"/>
+            </span>
+          </div>
+          <div class="strengthBar"><div class="filledBar"></div></div>
+          <p class="strengthText"></p>
+
+          <p class="passp" style="margin: -10px 0px 10px 0px; text-align: left; color: red;"></p> <!--for validation if needed-->
+          <p class="confirmpassp" style="margin: -10px 0px 10px 0px; text-align: left; color: red;"></p> <!--for validation if needed-->
+          
+          <button type="submit" id="seekersubmitButton">Create Account <ion-icon name="arrow-forward"></ion-icon></button>
+
+      </form>
+
+        <p>Already have an account? <a href="login.html">Login</a></p>
+        
+      </div>
+      
+    </section> 
+
+    <!--THE FOTTER-->
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 NexJob. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="../shared/About.html">About</a>
+          <a href="../shared/Contact_us.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../js/navbar.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script> 
+    <script src="../js/signup.js" defer></script>
   </body>
 </html>
