@@ -2,15 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NexJob - My Job Postings</title>
+    <!-- Global Styles + Navbar -->
     <link rel="stylesheet" href="../css/global.css" />
-    <link rel="stylesheet" href="../css/normalize.css">
     <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/company.css" />
-    <title>My Job Postings</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Page Specific Styles -->
+    <link rel="stylesheet" href="../css/my_job_postings.css" />
   </head>
   <body>
     <header>
@@ -76,111 +82,7 @@
             </thead>
             <tbody>
               <!-- Row 1 -->
-              <tr>
-                <td>
-                  <div class="job-title-cell">Senior Product Designer</div>
-                  <span class="job-meta">Remote • Full-time</span>
-                </td>
-                <td><span class="status-badge status-open">Open</span></td>
-                <td>Oct 24, 2023</td>
-                <td>
-                  <div class="applicants-info">
-                    <div class="applicant-avatars">
-                      <span class="avatar-chip">JD</span>
-                      <span class="avatar-chip">MK</span>
-                      <span class="avatar-chip">+5</span>
-                    </div>
-                    <span class="total-count">12 Total</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="Edit_job.html" style="text-decoration: none">
-                      <button class="action-icon" title="Edit Job">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </a>
-                    <button class="action-icon" title="Delete">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <!-- Row 2 -->
-              <tr>
-                <td>
-                  <div class="job-title-cell">Frontend Developer</div>
-                  <span class="job-meta">San Francisco, CA • Contract</span>
-                </td>
-                <td><span class="status-badge status-open">Open</span></td>
-                <td>Oct 10, 2023</td>
-                <td>
-                  <div class="applicants-info">
-                    <div class="applicant-avatars">
-                      <span class="avatar-chip">AL</span>
-                      <span class="avatar-chip">TS</span>
-                      <span class="avatar-chip">+24</span>
-                    </div>
-                    <span class="total-count">36 Total</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="Edit_job.html" style="text-decoration: none">
-                      <button class="action-icon" title="Edit Job">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </a>
-                    <button class="action-icon" title="Delete">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <!-- Row 3 -->
-              <tr>
-                <td>
-                  <div class="job-title-cell">Marketing Manager</div>
-                  <span class="job-meta">New York, NY • Full-time</span>
-                </td>
-                <td><span class="status-badge status-closed">Closed</span></td>
-                <td>Sep 15, 2023</td>
-                <td><span class="filled-text">Position Filled</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="Edit_job.html" style="text-decoration: none">
-                      <button class="action-icon" title="Edit Job">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </a>
-                    <button class="action-icon" title="Delete">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <!-- Row 4: -->
-              <tr>
-                <td>
-                  <div class="job-title-cell">UX Researcher</div>
-                  <span class="job-meta">Remote • Part-time</span>
-                </td>
-                <td><span class="status-badge status-draft">Draft</span></td>
-                <td>Last edited 2d ago</td>
-                <td><span class="filled-text">Not Published</span></td>
-                <td>
-                  <div class="action-buttons">
-                    <a href="Edit_job.html" style="text-decoration: none">
-                      <button class="action-icon" title="Edit Job">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </a>
-                    <button class="action-icon" title="Delete">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              <tr></tr>
             </tbody>
           </table>
         </div>
@@ -196,5 +98,7 @@
       </div>
     </main>
     <script src="../js/navbar.js"></script>
+    <script src="../js/storage.js"></script>
+    <script src="../js/company.js"></script>
   </body>
 </html>
