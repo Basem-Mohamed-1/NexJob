@@ -1,0 +1,125 @@
+.main-content {
+  max-width: 1000px;
+  margin: 100px auto 40px;
+  padding: 20px;
+}
+
+/* containers */
+.about-block-container1,
+.about-block-container2,
+.about-block-container3,
+.about-block-container4 {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-md);
+  opacity: 1;
+}
+/* Smooth interaction on hover */
+.about-block-container1,
+.about-block-container2,
+.about-block-container3,
+.about-block-container4 {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default; /* or pointer if you want it to feel clickable */
+}
+
+/* Hover effect */
+.about-block-container1:hover,
+.about-block-container2:hover,
+.about-block-container3:hover,
+.about-block-container4:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+/* highlight*/
+.about-block-container1:hover,
+.about-block-container2:hover,
+.about-block-container3:hover,
+.about-block-container4:hover {
+  border-color: var(--primary);
+}
+/* Footer */
+footer {
+background: var(--footer-bg);
+color: var(--footer-text);
+padding: 32px 24px;
+margin-top: auto;
+}
+
+footer .container {
+max-width: 1280px;
+margin: 0 auto;
+}
+
+footer .about-content {
+display: flex;
+align-items: center;
+gap: 6px;
+margin-bottom: 10px;
+}
+
+footer .icon {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+footer .main-icon {
+font-size: 1.5rem;
+color: var(--primary-light);
+}
+
+footer .icon h2 {
+font-size: 1.2rem;
+font-weight: 700;
+color: var(--footer-link);
+margin: 0;
+border: none;
+padding: 0;
+}
+
+footer .about p {
+font-size: 0.88rem;
+color: var(--footer-text);
+max-width: 800px;
+margin-bottom: 10px;
+}
+
+footer .copy-right {
+font-size: 0.8rem;
+color: var(--footer-text);
+opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+.main {
+padding: 90px 16px 48px;
+}
+
+.main form {
+padding: 22px 18px;
+}
+
+.form-actions {
+flex-direction: column;
+}
+
+.form-actions input {
+width: 100%;
+text-align: center;
+}
+
+.main h2 {
+font-size: 1.45rem;
+}
+}
+
+@media (max-width: 480px) {
+.main h2 {
+font-size: 1.25rem;
+}
+}

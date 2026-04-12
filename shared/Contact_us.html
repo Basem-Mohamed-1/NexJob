@@ -1,72 +1,95 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Contact Us - NexJob</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-  </head>
 
-  <body>
-    <header>
-      <h1>NexJob</h1>
-      <nav>
-        <a href="../index.html">Home</a> | <a href="About.html">About</a> |
-        <a href="../auth/login.html">Log in</a> |
-        <a href="../auth/signup.html">Sign Up</a>
-      </nav>
-      <hr />
-    </header>
-
-    <main class="main-content">
-      <h2>Contact Us</h2>
-      <p>
-        If you have any questions or feedback, feel free to contact us using the
-        form below.
-      </p>
-      <section>
-        <div class="contact-form-container">
-          <h3>Send Us a Message</h3>
-          <form action="#" method="post">
-            <label for="name">Full Name:</label><br />
-            <input type="text" id="name" name="name" required />
-            <br /><br />
-            <label for="email">Email Address:</label><br />
-            <input type="email" id="email" name="email" required />
-            <br /><br />
-            <label for="subject">Subject:</label><br />
-            <input type="text" id="subject" name="subject" required />
-            <br /><br />
-            <label for="message">Message:</label><br />
-            <textarea
-              id="message"
-              name="message"
-              rows="6"
-              cols="50"
-              required
-            ></textarea>
-            <br /><br />
-            <input type="submit" value="Send Message" />
-            <input type="reset" value="Clear Form" />
-          </form>
-        </div>
-      </section>
-      <section>
-        <div class="contact-info-container">
-          <h3>Other Contact Information</h3>
-          <p>Email: support@NexJob.com</p>
-          <p>Phone: +20 000 000 0000</p>
-          <p>Address: Giza, Egypt</p>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="footer-container">
-        <p>&copy; 2026 NexJob. All rights reserved.</p>
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Us - NexJob</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="Contact_us.css" />
+</head>
+ 
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a href="Contact_us.html"><i class="fa-solid fa-briefcase"></i></a>
+        <h2>NexJob</h2>
       </div>
-    </footer>
-  </body>
+
+      <ul class="nav-menu">
+        <li><a href="../root/index.html">Home</a></li>
+        <li><a href="../shared/About.html">About</a></li>
+        <li><a href="../shared/Contact_us.html" class="active">Contact</a></li>
+      </ul>
+
+      <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+  <main class="main-content">
+    <h2>Contact Us</h2>
+    <p>
+      If you have any questions or feedback, feel free to contact us using the
+      form below.
+    </p>
+    <br />
+    <section>
+      <div class="contact-form-container">
+        <h3>Send Us a Message</h3>
+        <form action="#" method="get"> <!-- will be updated to POST and connected to backend in the future -->
+          <label for="name">Full Name:<span class="required">*</span></label><br />
+          <input type="text" id="name" name="name" required />
+          <br /><br />
+          <label for="email">Email Address:<span class="required">*</span></label><br />
+          <input type="email" id="email" name="email" required />
+          <br /><br />
+          <label for="subject">Subject:<span class="required">*</span></label><br />
+          <input type="text" id="subject" name="subject" required />
+          <br /><br />
+          <label for="message">Message:<span class="required">*</span></label><br />
+          <textarea id="message" name="message" rows="6" cols="50" required></textarea>
+          <br /><br />
+          <input type="submit" value="Send Message" />
+          <input type="reset" value="Clear Form" />
+        </form>
+      </div>
+    </section>
+    <section>
+      <div class="contact-info-container">
+        <h3>Other Contact Information</h3>
+        <p>Email: support@NexJob.com</p>
+        <p>Phone: +20 000 000 0000</p>
+        <p>Address: Giza, Egypt</p>
+      </div>
+    </section>
+    <div id="toast"></div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="about">
+        <div class="about-content">
+          <div class="icon">
+            <i class="main-icon fa-solid fa-briefcase"></i>
+            <h2>NexJob</h2>
+          </div>
+          <br />
+        </div>
+        <p class="copy-right">&copy; 2026 NexJob. All rights reserved</p>
+      </div>
+    </div>
+  </footer>
+  <script src="../js/navbar.js"></script>
+  <script src="../js/Contact_us.js"></script>
+</body>
+
 </html>
