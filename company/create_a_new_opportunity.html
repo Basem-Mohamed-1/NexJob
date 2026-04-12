@@ -1,176 +1,251 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-     <link
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Opportunity - NexJob</title>
+
+    <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <link rel="stylesheet" href="../css/global.css" />
-    <link rel="stylesheet" href="../css/normalize.css">
     <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/Edit_job.css" />
     <link rel="stylesheet" href="../css/company.css" />
-    <title>Create A New Opportunity</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Normalize File to normalize the page  -->
-    <link rel="stylesheet" href="../css/normalize.css">
-    
-    <!-- Link to the Css File  -->
-    <link rel="stylesheet" href="../css/create_new_opportunity.css">
-
-    <!-- Link to the Global Css File  -->
-    <link rel="stylesheet" href="../css/global.css">
-    
-    <!-- Link to Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Link to the Google Font API -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   </head>
 
   <body>
-    
-    <!-- Header has Only The Nav Bar -->
-    <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <a href="Dashboard.html"><i class="fa-solid fa-briefcase"></i></a>
+          <h2>NexJob</h2>
+        </div>
 
+        <ul class="nav-menu">
+          <li><a href="Dashboard.html">Dashboard</a></li>
+          <li>
+            <a href="create_a_new_opportunity.html" class="active"
+              >Post a Job</a
+            >
+          </li>
+          <li><a href="my_job_postings.html">My Jobs</a></li>
+          <li><a href="Company_settings.html">Settings</a></li>
+        </ul>
+
+        <button
+          id="darkModeToggle"
+          class="dark-mode-toggle"
+          aria-label="Toggle dark mode"
+        >
+          <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main">
+      <h2>Create New Opportunity</h2>
+      <p>Fill in the details below to publish your job listing.</p>
+
+      <form action="#" method="get">
+        <!-- Job Title -->
+        <div class="form-group">
+          <label for="job_title"
+            >Job Title:<span class="required">*</span></label
+          ><br />
+          <input
+            type="text"
+            id="job_title"
+            name="job_title"
+            placeholder="e.g. Senior Product Manager"
+            required
+          />
+        </div>
+        <br />
+
+        <!-- Company Name -->
+        <div class="form-group">
+          <label for="company_name"
+            >Company Name:<span class="required">*</span></label
+          ><br />
+          <input
+            type="text"
+            id="company_name"
+            name="company_name"
+            placeholder="Your company name"
+            required
+          />
+        </div>
+        <br />
+
+        <!-- Job Status -->
+        <div class="form-group">
+          <label for="status">Job Status:<span class="required">*</span></label
+          ><br />
+          <select id="status" name="status" required>
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+        <br />
+
+        <!-- Salary Range -->
+        <div class="form-group">
+          <label>Salary Range:<span class="required">*</span></label
+          ><br />
+          <input
+            type="number"
+            name="salary_min"
+            placeholder="Minimum Salary"
+            min="1000"
+            step="500"
+            required
+          />
+          <input
+            type="number"
+            name="salary_max"
+            placeholder="Maximum Salary"
+            min="10000"
+            step="500"
+            required
+          />
+          <small class="field-error" id="salaryError"></small>
+        </div>
+        <br />
+
+        <!-- Location -->
+        <div class="form-group">
+          <label for="location">Location:<span class="required">*</span></label
+          ><br />
+          <input
+            type="text"
+            id="location"
+            name="location"
+            placeholder="e.g. San Francisco, CA or Remote"
+            required
+          />
+        </div>
+        <br />
+
+        <!-- Employment Type -->
+        <div class="form-group">
+          <label for="employment_type"
+            >Employment Type:<span class="required">*</span></label
+          ><br />
+          <select id="employment_type" name="employment_type" required>
+            <option value="Full-Time">Full-Time</option>
+            <option value="Part-Time">Part-Time</option>
+            <option value="Freelance">Freelance</option>
+          </select>
+        </div>
+        <br />
+
+        <!-- Experience -->
+        <div class="form-group">
+          <label for="experience"
+            >Years of Experience:<span class="required">*</span></label
+          ><br />
+          <input
+            type="text"
+            id="experience"
+            name="experience"
+            placeholder="e.g. 3+ years"
+            required
+          />
+        </div>
+        <br />
+
+        <!-- Job Description -->
+        <div class="form-group">
+          <label for="description"
+            >Job Description:<span class="required">*</span></label
+          ><br />
+          <textarea
+            id="description"
+            name="description"
+            rows="8"
+            cols="60"
+            placeholder="Describe the role and what you're looking for..."
+            required
+          ></textarea>
+        </div>
+        <br />
+
+        <!-- Responsibilities -->
+        <div class="form-group">
+          <label for="responsibilities"
+            >Responsibilities:<span class="required">*</span></label
+          ><br />
+          <textarea
+            id="responsibilities"
+            name="responsibilities"
+            rows="6"
+            cols="60"
+            placeholder="Enter each responsibility on a new line or separated by commas"
+            required
+          ></textarea>
+        </div>
+        <br />
+
+        <!-- Requirements -->
+        <div class="form-group">
+          <label for="requirements"
+            >Requirements:<span class="required">*</span></label
+          ><br />
+          <textarea
+            id="requirements"
+            name="requirements"
+            rows="6"
+            cols="60"
+            placeholder="Enter each requirement on a new line or separated by commas"
+            required
+          ></textarea>
+        </div>
+        <br />
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <input
+            type="reset"
+            value="Cancel"
+            onclick="window.location.href = 'my_job_postings.html'"
+          />
+          <input type="submit" value="Publish Job" />
+        </div>
+      </form>
+    </main>
+
+    <footer>
       <div class="container">
-        <nav>
-          
-          <div class="icon">
-            <i class="main-icon fa-solid fa-briefcase" href="Dashboard.html"></i>
-            <h2>NexJob</h2>
+        <div class="about">
+          <div class="about-content">
+            <div class="icon">
+              <i
+                class="main-icon fa-solid fa-briefcase"
+                href="Dashboard.html"
+              ></i>
+              <h2>NexJob</h2>
+            </div>
+            <p>
+              Making the job hunt easier for everyone. We provide the tools and
+              resources you need to find your next great opportunity.
+            </p>
           </div>
-
-          <div class="items">
-            <a href="Dashboard.html">Dashboard</a>
-            <a href="create_a_new_opportunity.html">Post a Job</a>
-            <a href="my_job_postings.html">my Jobs</a>
-            <a href="Company_settings.html">Settings</a>
-          </div>
-          
-          <i class="settings-icon fa-solid fa-bars-staggered"></i>
-           
-        </nav>
+          <p class="copy-right">&copy; 2026 NexJob. All rights reserved</p>
+        </div>
       </div>
-      
-    </header>
+    </footer>
 
-    <!-- Start Main Section -->
-    <section class="main">
-      <div class= "main-container">
-        
-        <!-- Start Header of The Main Content -->
-        <div class="main-header">
-          <h1>Create a New Opportunity</h1>
-          <p>Fill in the details below to publish your job listing.</p>
-        </div>
-        <!-- End Header of The Main content -->
-
-        <hr>
-
-
-        <!-- Start Job Details Secion -->
-        <div class="job-content">
-          <div class="job-details-container">
-            <h3>Job Details</h3>
-
-            <form class="job-details-form">
-
-              <!-- Job Title Input -->
-              <div class="job-title">
-                <h4>Job Title</h4>
-                <div class="job-title-input">
-                   <i class="fa-regular fa-address-card"></i>  
-                   <input class="input-field" type="text" class="job-title-input-field" placeholder="e.g Senior Product Manager">
-                </div>
-              </div>
-
-              <!-- Start Employment Type Input  -->
-              <div class="job-employment">
-                <h4>Job Title</h4>
-                <div class="job-employment-input">
-                   <i class="fa-regular fa-address-card"></i> 
-
-                   <!-- Select Menu for Jobs  -->
-                   <select name="work" id="types-of-work">
-                    
-                        <option value="1">Full-Time</option>
-                        <option value="2">Part-Time</option>
-                        <option value="3">Contarct</option>
-                        <option value="4" selected>Freelance</option>
-                        <option value="5">InterntShip</option>
-
-                    </select>
-                </div>
-              </div>
-              <!-- End Employment Type Input  -->
-
-              <!-- Start Location Type Input  -->
-              <div class="job-Location">
-                <h4>Job Title</h4>
-                <div class="job-Location-input">
-                   <i class="fa-regular fa-address-card"></i>  
-                   <input class="input-field" type="text" class="job-Location-input-field" placeholder="e.g San Fransico Ca or Remote">
-                </div>
-              </div>
-              <!-- End Location Type Input  -->
-
-
-              <!-- Start Salary Range Type Input  -->
-              <div class="job-salary">
-                <h4>Job Title</h4>
-                <div class="job-salary-input">
-                  <div>
-                    <i class="fa-solid fa-dollar-sign"></i>
-                    <input type="number" name="number" min="10" max="100" step="10">
-                  </div>
-
-                  <div>
-                    <i class="fa-solid fa-dollar-sign"></i>
-                    <input type="number" name="number" min="10" max="100" step="10">
-                  </div>
-
-                </div>
-              </div>
-              <!-- End Salary Range Type Input  -->
-
-            </form>
-          </div>
-        </div>
-        <!-- End Job Details Secion -->
-
-
-        <!-- Start Role Description -->
-        
-        <div class="role-description">
-
-          <h3>Role Description</h3>
-
-          <form class="role-description-form">
-            <h5>Description</h5>
-            <textarea name="work-description"  placeholder="Description"></textarea>
-          </form>
-        </div>
-
-         <!-- End Role Description -->
-
-
-        <hr>
-        
-        <!-- Start Button Field -->
-        <div class="submit-field">
-          <h3>Cancle</h3>
-          <h3>Publish Job</h3>    
-        </div>
-        <!-- End Button Field -->
-
-      </div>
-
-       
-    </section>
-    <!-- End Main Section -->
+    <script src="../js/storage.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/company.js"></script>
   </body>
 </html>
