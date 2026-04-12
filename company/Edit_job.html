@@ -15,7 +15,7 @@
   <div class="nav-container">
 
     <div class="logo">
-      <a href="Edit_job.html"></a><i class="fa-solid fa-briefcase"></i>
+      <a href="Dashboard.html"></a><i class="fa-solid fa-briefcase"></i>
       <h2>NexJob</h2>
     </div>
 
@@ -43,18 +43,21 @@
     <h2>Edit Job Listing</h2>
     <p>Update the job details.</p>
     <form action="#" method="get">
+
       <div class="form-group">
-        <label for="job_title">Job Title:</label><br />
+        <label for="job_title">Job Title:<span class="required">*</span></label><br />
         <input type="text" id="job_title" name="job_title" required />
       </div>
+
       <br />
       <div class="form-group">
-        <label for="company_name">Company Name:</label><br />
+        <label for="company_name">Company Name:<span class="required">*</span></label><br />
         <input type="text" id="company_name" name="company_name" required />
       </div>
       <br />
+
       <div class="form-group">
-        <label for="status">Job Status:</label><br />
+        <label for="status">Job Status:<span class="required">*</span></label><br />
         <select id="status" name="status" required>
           <option value="">Select Status</option>
           <option value="open">Open</option>
@@ -62,37 +65,44 @@
         </select>
       </div>
       <br />
+
       <div class="form-group">
-        <label>Salary Range:</label><br />
+        <label>Salary Range:<span class="required">*</span></label><br />
         <input type="number" name="salary_min" placeholder="Minimum Salary" min="1000" step="500" required />
         <input type="number" name="salary_max" placeholder="Maximum Salary" min="10000" step="500" required />
         <small class="field-error" id="salaryError"></small>
       </div>
       <br />
+
       <div class="form-group">
-        <label for="experience">Years of Experience:</label><br />
+        <label for="experience">Years of Experience:<span class="required">*</span></label><br />
         <input type="number" id="experience" name="experience" min="0" step="1" required />
       </div>
       <br />
+
       <div class="form-group">
-        <label for="description">Job Description:</label><br />
+        <label for="description">Job Description:<span class="required">*</span></label><br />
         <textarea id="description" name="description" rows="8" cols="60" required></textarea>
       </div>
       <br />
+
       <div class="form-group">
-        <label for="responsibilities">Responsibilities:</label><br />
+        <label for="responsibilities">Responsibilities:<span class="required">*</span></label><br />
         <textarea id="responsibilities" name="responsibilities" rows="6" cols="60" required></textarea>
       </div>
       <br />
+
       <div class="form-group">
-        <label for="requirements">Requirements:</label><br />
+        <label for="requirements">Requirements:<span class="required">*</span></label><br />
         <textarea id="requirements" name="requirements" rows="6" cols="60" required></textarea>
       </div>
+
       <br />
       <div class="form-actions">
         <input type="reset" value="Cancel" />
         <input type="submit" value="Update Job" />
       </div>
+
     </form>
   </main>
 
@@ -100,14 +110,17 @@
     <div class="container">
       <div class="about">
         <div class="about-content">
+
           <div class="icon">
-            <i class="main-icon fa-solid fa-briefcase" href="Edit_job.html"></i>
+            <i class="main-icon fa-solid fa-briefcase" href="Dashboard.html"></i>
             <h2>NexJob</h2>
           </div>
+
           <p>
             Making the job hunt easier for everyone. We provide the tools and
             resources you need to find your next great opportunity.
           </p>
+
         </div>
         <p class="copy-right">&copy; 2026 NexJob. All rights reserved</p>
       </div>

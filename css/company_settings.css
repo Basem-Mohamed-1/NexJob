@@ -230,6 +230,11 @@ border: 1.5px solid var(--border-light);
 background: var(--border-light);
 color: var(--text-body);
 }
+/* Required field indicator */
+.required {
+  color: #ef4444; /* red */
+  margin-left: 3px;
+}
 
 /* Toast notification */
 #toast {
