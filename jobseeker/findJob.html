@@ -16,13 +16,13 @@
     <nav class="navbar">
       <div class="nav-container">
         <div class="logo">
-          <a href="../index.html"><i class="fa-solid fa-briefcase"></i></a>
+          <a href="./home.html"><i class="fa-solid fa-briefcase"></i></a>
           <h2>NexJob</h2>
         </div>
 
         <ul class="nav-menu">
           <li><a href="home.html">Home</a></li>
-          <li><a href="findJob.html" class="active">Find Jobs</a></li>
+          <li><a href="#" class="active">Find Jobs</a></li>
           <li><a href="myapplications.html">My Applications</a></li>
           <li><a href="../auth/login.html">Logout</a></li>
         </ul>
@@ -48,10 +48,21 @@
         <form>
           <i class="fas fa-briefcase"></i>
           <div class="text-1">
-            <input type="text" placeholder="Job title, keywords" />
+            <input
+              type="text"
+              id="search-title"
+              placeholder="Job title, keywords"
+            />
           </div>
           <i class="fas fa-chart-line"></i>
-          <input type="text" placeholder="Year of experience" />
+          <div class="text-2">
+            <input
+              type="number"
+              id="search-experience"
+              placeholder="Years of experience"
+              min="0"
+            />
+          </div>
           <button type="submit">Search</button>
         </form>
       </div>
@@ -71,10 +82,10 @@
                 <input type="checkbox" /> Full-time
               </label>
               <label class="filter-checkbox">
-                <input type="checkbox" /> Contract
+                <input type="checkbox" /> Part-Time
               </label>
               <label class="filter-checkbox">
-                <input type="checkbox" /> Remote
+                <input type="checkbox" /> Freelance
               </label>
             </div>
           </div>
@@ -83,13 +94,13 @@
             <h4>Date Posted</h4>
             <div class="filter-options">
               <label class="filter-radio">
-                <input type="radio" name="date" /> Any time
+                <input type="radio" name="date" value="any" /> Any time
               </label>
               <label class="filter-radio">
-                <input type="radio" name="date" /> Past 24 hours
+                <input type="radio" name="date" value="24h" /> Past 24 hours
               </label>
               <label class="filter-radio">
-                <input type="radio" name="date" /> Past week
+                <input type="radio" name="date" value="week" /> Past week
               </label>
             </div>
           </div>
@@ -111,37 +122,6 @@
       </div>
       <section class="job-listings">
         <h2>Job Listings</h2>
-        <div class="job-card">
-          <div class="job-header">
-            <div class="job-icon"></div>
-            <div class="job-title-section">
-              <h3>Software Engineer</h3>
-              <p class="company">
-                <i class="fa-solid fa-building"></i> Google - Mountain View, CA
-              </p>
-            </div>
-          </div>
-          <div class="job-tags">
-            <span class="job-tag"
-              ><i class="fa-solid fa-clock"></i> Full-time</span
-            >
-            <span class="job-tag"
-              ><i class="fa-solid fa-location-dot"></i> Remote</span
-            >
-            <span class="job-tag"
-              ><i class="fa-solid fa-dollar-sign"></i> $120k - $160k</span
-            >
-          </div>
-          <div class="h-line"></div>
-          <div class="show-job">
-            <span class="posted-time">
-              <i class="fa-regular fa-calendar"></i> Posted 2 days ago
-            </span>
-            <a href="JobDetails.html" class="view-details">
-              View Details <i class="fa-solid fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
       </section>
     </main>
 
@@ -155,5 +135,7 @@
       </div>
     </footer>
     <script src="../js/navbar.js"></script>
+    <script src="../js/storage.js"></script>
+    <script src="../js/jobseeker.js"></script>
   </body>
 </html>
