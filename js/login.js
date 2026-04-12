@@ -8,6 +8,7 @@ loginUsername.oninput = checkInputs;
 loginPassword.oninput = checkInputs;
 
 function checkInputs() {
+  document.getElementsByClassName("passwordp")[0].innerHTML = "";
   if (loginUsername.value != "" && loginPassword.value != "") {
     Btn.disabled = false;
   } else {
@@ -22,8 +23,8 @@ function loginSubmitFunction(event) {
 
   var found = users.find(
     (user) =>
-      user.username == loginUsername.value &&
-      user.password == loginPassword.value,
+      user.username === loginUsername.value &&
+      user.password === loginPassword.value,
   );
 
   if (found) {
