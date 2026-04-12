@@ -68,6 +68,12 @@ input[type="reset"] {
   background: #e5e7eb;
 }
 
+/* Required field indicator */
+.required {
+  color: #ef4444; /* red */
+  margin-left: 3px;
+}
+
 /* Toast notification */
 #toast {
 position: fixed;

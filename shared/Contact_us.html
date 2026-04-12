@@ -46,16 +46,16 @@
       <div class="contact-form-container">
         <h3>Send Us a Message</h3>
         <form action="#" method="get"> <!-- will be updated to POST and connected to backend in the future -->
-          <label for="name">Full Name:</label><br />
+          <label for="name">Full Name:<span class="required">*</span></label><br />
           <input type="text" id="name" name="name" required />
           <br /><br />
-          <label for="email">Email Address:</label><br />
+          <label for="email">Email Address:<span class="required">*</span></label><br />
           <input type="email" id="email" name="email" required />
           <br /><br />
-          <label for="subject">Subject:</label><br />
+          <label for="subject">Subject:<span class="required">*</span></label><br />
           <input type="text" id="subject" name="subject" required />
           <br /><br />
-          <label for="message">Message:</label><br />
+          <label for="message">Message:<span class="required">*</span></label><br />
           <textarea id="message" name="message" rows="6" cols="50" required></textarea>
           <br /><br />
           <input type="submit" value="Send Message" />
