@@ -1,26 +1,8 @@
-// put all the Dom function here
-document.addEventListener("DOMContentLoaded", function () {
-  initSmoothScroll();
-});
-
-function initSmoothScroll() {
-  const anchorLinks = document.querySelectorAll('a[href="#"]');
-  anchorLinks.forEach((link) => {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      const targetSection = document.getElementById("main");
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: "smooth" });
-      }
-    });
-  });
-}
 document.addEventListener("DOMContentLoaded", function () {
   initSmoothScroll();
 
   const currentPage = window.location.pathname;
 
-  // Check if user is logged in and is job seeker
   if (!isJobSeeker()) {
     // Only redirect if not on login/signup pages
     if (
@@ -59,7 +41,6 @@ function loadAllJobs() {
   const jobListings = document.querySelector(".job-listings");
   if (!jobListings) return;
 
-  // Keep the title
   const title = jobListings.querySelector("h2");
   jobListings.innerHTML = "";
   if (title) jobListings.appendChild(title);
@@ -128,31 +109,59 @@ function createJobCard(job) {
 
 function setupJobSearch() {
   const searchForm = document.querySelector(".search-box form");
-  const searchInputOne = document.querySelector('.text-1 input[type="text"]');
-  const searchInputTwo = document.querySelector('.text-2 input[type="text"]');
+  const searchTitleInput = document.getElementById("search-title");
+  const searchExperienceInput = document.getElementById("search-experience");
 
   if (searchForm) {
     searchForm.onsubmit = function (e) {
       e.preventDefault();
-      const searchTerm = searchInputOne
-        ? searchInputOne.value.toLowerCase()
+
+      const searchTitle = searchTitleInput
+        ? searchTitleInput.value.toLowerCase().trim()
         : "";
-      filterJobsBySearch(searchTerm);
+      const searchExperience = searchExperienceInput
+        ? searchExperienceInput.value.trim()
+        : "";
+
+      filterJobsBySearch(searchTitle, searchExperience);
     };
   }
 }
 
-function filterJobsBySearch(searchTerm) {
+function filterJobsBySearch(searchTitle, searchExperience) {
   const allJobs = getAllJobs();
-  const openJobs = allJobs.filter((job) => job.status === "open");
+  let filtered = allJobs.filter((job) => job.status === "open");
 
-  const filtered = openJobs.filter(
-    (job) =>
-      job.title.toLowerCase().includes(searchTerm) ||
-      job.company.toLowerCase().includes(searchTerm) ||
-      job.location.toLowerCase().includes(searchTerm),
-  );
+  // Filter by title (if search term provided)
+  if (searchTitle) {
+    filtered = filtered.filter(
+      (job) =>
+        job.title.toLowerCase().includes(searchTitle) ||
+        job.company.toLowerCase().includes(searchTitle) ||
+        job.location.toLowerCase().includes(searchTitle),
+    );
+  }
 
+  // Filter by experience (if experience provided)
+  if (searchExperience) {
+    const requiredYears = parseInt(searchExperience);
+    if (requiredYears) {
+      filtered = filtered.filter((job) => {
+        // Extract years from experience string (e.g., "3+ years", "5 years", "2-4 years")
+        const expStr = job.experience || "";
+
+        // Try to extract the first number from the experience string
+        const match = expStr.match(/(\d+)/);
+        if (match) {
+          const jobYears = parseInt(match[1]);
+          return jobYears <= requiredYears; // Show jobs requiring less than or equal to entered years
+        }
+        return true; // If no experience
+      });
+    }
+  }
+
+  // Update the job listings display
   const jobListings = document.querySelector(".job-listings");
   if (!jobListings) return;
 
@@ -161,9 +170,18 @@ function filterJobsBySearch(searchTerm) {
   if (title) jobListings.appendChild(title);
 
   if (filtered.length === 0) {
+    let emptyMessage = "No jobs found";
+    if (searchTitle && searchExperience) {
+      emptyMessage = `No jobs found matching "${searchTitle}" with ${searchExperience} years experience`;
+    } else if (searchTitle) {
+      emptyMessage = `No jobs found matching "${searchTitle}"`;
+    } else if (searchExperience) {
+      emptyMessage = `No jobs found requiring ${searchExperience} years experience`;
+    }
+
     const emptyState = document.createElement("div");
     emptyState.style.cssText = "text-align: center; padding: 40px;";
-    emptyState.innerHTML = `<p>No jobs found matching "${searchTerm}"</p>`;
+    emptyState.innerHTML = `<p>${emptyMessage}</p>`;
     jobListings.appendChild(emptyState);
   } else {
     filtered.forEach((job) => {
@@ -188,11 +206,10 @@ function setupJobFilters() {
 
   // Setup salary filter
   const salaryInputs = document.querySelectorAll(".salary-input-group input");
-  const filterBtn = document.querySelector(
-    ".filter-Applications_Button button",
-  );
-  if (filterBtn) {
-    filterBtn.onclick = applyFilters;
+  if (salaryInputs) {
+    salaryInputs.forEach((input) => {
+      input.addEventListener("change", applyFilters);
+    });
   }
 }
 
@@ -210,10 +227,8 @@ function applyFilters() {
 
   if (selectedTypes.length > 0) {
     filteredJobs = filteredJobs.filter((job) => {
-      return selectedTypes.some(
-        (type) =>
-          job.type.toLowerCase().includes(type.toLowerCase()) ||
-          job.locationType.toLowerCase().includes(type.toLowerCase()),
+      return selectedTypes.some((type) =>
+        job.type.toLowerCase().includes(type.toLowerCase()),
       );
     });
   }
@@ -221,15 +236,25 @@ function applyFilters() {
   // Filter by date posted
   const selectedDate = document.querySelector('input[name="date"]:checked');
   if (selectedDate) {
-    const dateFilter = selectedDate.parentElement.textContent.trim();
-    const today = new Date();
+    const dateFilter = selectedDate.value;
+    console.log("Date filter selected:", dateFilter);
 
     filteredJobs = filteredJobs.filter((job) => {
       const postedDate = new Date(job.postedDate);
-      const diffDays = Math.ceil((today - postedDate) / (1000 * 60 * 60 * 24));
+      const today = new Date();
 
-      if (dateFilter.includes("24 hours")) return diffDays <= 1;
-      if (dateFilter.includes("week")) return diffDays <= 7;
+      postedDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+
+      const diffTime = today - postedDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      if (dateFilter === "24h") {
+        return diffDays <= 1; // Posted today or yesterday
+      }
+      if (dateFilter === "week") {
+        return diffDays <= 7; // Posted within last 7 days
+      }
       return true;
     });
   }
@@ -269,10 +294,8 @@ function applyFilters() {
 }
 
 // ==================== JOB DETAILS PAGE ====================
-function setupJobDetailsPage() {
-  console.log("Setting up Job Details page");
 
-  // Get job ID from URL
+function setupJobDetailsPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const jobId = urlParams.get("id");
 
