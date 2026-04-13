@@ -1,3 +1,4 @@
+console.log("JS LOADED");
 document.addEventListener("DOMContentLoaded", function () {
   const currentPage = window.location.pathname;
 
