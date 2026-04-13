@@ -74,25 +74,35 @@ input[type="reset"] {
   margin-left: 3px;
 }
 
-/* Toast notification */
 #toast {
-position: fixed;
-bottom: 28px;
-right: 28px;
-background: var(--bg-card);
-color: var(--text-body);
-padding: 13px 22px;
-border-radius: 10px;
-font-size: 0.9rem;
-font-weight: 500;
-box-shadow: var(--shadow-xl);
-border: 1px solid var(--border-light);
-opacity: 0;
-transform: translateY(14px);
-transition: opacity 0.3s, transform 0.3s;
-pointer-events: none;
-z-index: 9999;
-max-width: 320px;
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--bg-card);
+  color: var(--text-body);
+  padding: 13px 22px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-light);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 9999;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#toast.success {
+  border-left: 4px solid #22c55e;
+}
+
+#toast.error {
+  border-left: 4px solid #ef4444;
 }
 
 /* Footer */

@@ -1,3 +1,4 @@
+console.log("JS LOADED");
 // ==================== STORAGE KEYS ====================
 const JOBS_KEY = "nexjob_jobs"; // job listings
 const APPLICATIONS_KEY = "nexjob_applications"; // job applications

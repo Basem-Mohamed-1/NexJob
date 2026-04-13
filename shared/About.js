@@ -1,3 +1,4 @@
+console.log("JS LOADED");
 const blocks = document.querySelectorAll(
   ".about-block-container1, .about-block-container2, .about-block-container3, .about-block-container4"
 );

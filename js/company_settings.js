@@ -1,3 +1,4 @@
+console.log("JS LOADED");
 document.addEventListener("DOMContentLoaded", () => {
   // ELEMENTS
   const desc = document.getElementById("company_desc");
