@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
           subject: formData.subject,
           message: formData.message,
         },
-        "ZpwXnIswvTFYwx_7N",
       );
       if (response.status === 200) {
         showToast("Message sent successfully", "success");
