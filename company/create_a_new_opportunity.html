@@ -1,27 +1,84 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create New Opportunity - NexJob</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="../css/global.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/Edit_job.css" />
-    <link rel="stylesheet" href="../css/company.css" />
-    <!-- Company page Does NOT Exist delete this line?! -->
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create New Opportunity - NexJob</title>
 
-  <body>
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="logo">
-          <a href="Dashboard.html"><i class="fa-solid fa-briefcase"></i></a>
-          <h2>NexJob</h2>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/Edit_job.css" />
+  <link rel="stylesheet" href="../css/company.css" /> <!-- Company page Does NOT Exist delete this line?! -->
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a href="Dashboard.html"><i class="fa-solid fa-briefcase"></i></a>
+        <h2>NexJob</h2>
+      </div>
+
+      <ul class="nav-menu">
+        <li><a href="Dashboard.html">Dashboard</a></li>
+        <li>
+          <a href="create_a_new_opportunity.html" class="active">Post a Job</a>
+        </li>
+        <li><a href="my_job_postings.html">My Jobs</a></li>
+        <li><a href="Company_settings.html">Settings</a></li>
+        <li><a href="../auth/login.html">Logout</a></li>
+      </ul>
+
+      <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
+
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <h2>Create New Opportunity</h2>
+    <p>Fill in the details below to publish your job listing.</p>
+
+    <form action="#" method="get">
+      <!-- Job Title -->
+      <div class="form-group">
+        <label for="job_title">Job Title:<span class="required">*</span></label><br />
+        <input type="text" id="job_title" name="job_title" placeholder="e.g. Senior Product Manager" required />
+      </div>
+      <br />
+
+      <!-- Company Name -->
+      <div class="form-group">
+        <label for="company_name">Company Name:<span class="required">*</span></label><br />
+        <input type="text" id="company_name" name="company_name" placeholder="Your company name" required />
+      </div>
+      <br />
+
+      <!-- Job Status -->
+      <div class="form-group">
+        <label for="status">Job Status:<span class="required">*</span></label><br />
+        <select id="status" name="status" required>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
+          <option value="draft">Draft</option>
+        </select>
+      </div>
+      <br />
+
+      <div class="form-group">
+        <label>Salary Range:<span class="required">*</span></label>
+
+        <div class="salary-row">
+          <input type="number" name="salary_min" placeholder="Minimum Salary" min="1000" step="500" required />
+          <input type="number" name="salary_max" placeholder="Maximum Salary" min="10000" step="500" required />
         </div>
 
         <ul class="nav-menu">
