@@ -1,0 +1,120 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - NexJob</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/confirm.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jobseeker.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'jobseeker_home' %}"><i class="fa-solid fa-briefcase"></i></a>
+                <h2>NexJob</h2>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="{% url 'jobseeker_home' %}" class="active">Home</a></li>
+                <li><a href="{% url 'find_jobs' %}">Find Jobs</a></li>
+                <li><a href="{% url 'my_applications' %}">My Applications</a></li>
+                <li class="nav-profile">
+                    <a href="#" class="profile-link">
+                        <i class="fa-solid fa-user-circle"></i>
+                        <span>Profile</span>
+                    </a>
+                    <div class="profile-dropdown">
+                        <a href="{% url 'jobseeker_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                        <a href="#" onclick="logoutUser(); window.location.href='{% url 'login' %}';">
+                            <i class="fa-solid fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button
+                id="darkModeToggle"
+                class="dark-mode-toggle"
+                aria-label="Toggle dark mode"
+            >
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-display" id="main">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Find Your Dream Job</h1>
+                <p>
+                    Discover thousands of opportunities from top companies. Your next
+                    career move starts here.
+                </p>
+                <a href="{% url 'find_jobs' %}" class="btn-primary">Browse Jobs</a>
+            </div>
+        </section>
+
+        <section class="categories-section">
+            <h2>Browse by Category</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <i class="fa-solid fa-laptop"></i>
+                    <h3>Technology</h3>
+                    <p>1,420+ Open Positions</p>
+                </div>
+                <div class="category-card">
+                    <i class="fa-solid fa-palette"></i>
+                    <h3>Design</h3>
+                    <p>860+ Open Positions</p>
+                </div>
+                <div class="category-card">
+                    <i class="fa-solid fa-money-bill"></i>
+                    <h3>Finance</h3>
+                    <p>530+ Open Positions</p>
+                </div>
+                <div class="category-card">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <h3>Marketing</h3>
+                    <p>740+ Open Positions</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Ready to Take the Next Step?</h2>
+            <p>
+                Join thousands of professionals who found their passion through
+                NexJob.
+            </p>
+            <a href="{% url 'find_jobs' %}" class="btn-primary">Start Searching Jobs</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 NexJob. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'contact' %}">Contact</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/jobseeker.js' %}"></script>
+</body>
+</html>

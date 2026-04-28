@@ -1,0 +1,254 @@
+/* ============================================
+   PROFILE.CSS - Profile Page Styles
+   ============================================ */
+
+.profile-page {
+  padding: 40px 0;
+}
+
+.profile-header {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  box-shadow: var(--shadow);
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.profile-info h1 {
+  font-size: 24px;
+  color: var(--text-heading);
+  margin-bottom: 8px;
+}
+
+.profile-info p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.profile-type {
+  display: inline-block;
+  background: var(--primary-bg-light);
+  color: var(--primary);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.profile-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.profile-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.profile-card h2 {
+  font-size: 18px;
+  color: var(--text-heading);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.profile-field {
+  margin-bottom: 16px;
+}
+
+.profile-field label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.profile-field span {
+  display: block;
+  font-size: 15px;
+  color: var(--text-body);
+}
+
+.profile-field input,
+.profile-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--bg-body);
+  color: var(--text-body);
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.profile-field input:focus,
+.profile-field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.profile-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.profile-actions {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  gap: 12px;
+}
+
+.btn-primary {
+  padding: 12px 24px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--text-body);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--tag-bg);
+}
+
+/* Navbar Profile Dropdown */
+.nav-profile {
+  position: relative;
+}
+
+.nav-profile .profile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.nav-profile .profile-link:hover {
+  background: var(--tag-bg);
+}
+
+.nav-profile .profile-link i {
+  font-size: 18px;
+  color: var(--primary);
+}
+
+.nav-profile .profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 180px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s;
+  z-index: 1000;
+  margin-top: 8px;
+}
+
+.nav-profile:hover .profile-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.profile-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: var(--text-body);
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.profile-dropdown a:hover {
+  background: var(--tag-bg);
+}
+
+.profile-dropdown a:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.profile-dropdown a:last-child {
+  border-radius: 0 0 8px 8px;
+  color: #ef4444;
+}
+
+.profile-dropdown a i {
+  width: 18px;
+  text-align: center;
+}
+
+/* Empty State */
+.no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.no-data i {
+  font-size: 32px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-sections {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,119 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NexJob - My Job Postings</title>
+    <!-- Global Styles + Navbar -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/confirm.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap"
+        rel="stylesheet"
+    />
+    <!-- Page Specific Styles -->
+    <link rel="stylesheet" href="{% static 'css/my_job_postings.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="{% url 'company_dashboard' %}"><i class="fa-solid fa-briefcase"></i></a>
+                    <h2>NexJob</h2>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="{% url 'company_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'create_job' %}">Post a Job</a></li>
+                    <li><a href="{% url 'my_jobs' %}" class="active">My Jobs</a></li>
+                    <li><a href="{% url 'applications' %}">Applications</a></li>
+                    <li><a href="{% url 'company_settings' %}">Settings</a></li>
+                    <li class="nav-profile">
+                        <a href="#" class="profile-link">
+                            <i class="fa-solid fa-user-circle"></i>
+                            <span>Profile</span>
+                        </a>
+                        <div class="profile-dropdown">
+                            <a href="{% url 'company_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                            <a href="#" onclick="logoutUser(); window.location.href='{% url 'login' %}';">
+                                <i class="fa-solid fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+                <button
+                    id="darkModeToggle"
+                    class="dark-mode-toggle"
+                    aria-label="Toggle dark mode"
+                >
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger"><span></span> <span></span> <span></span></div>
+            </div>
+        </nav>
+    </header>
+    <main class="main">
+        <div class="main-container">
+            <!-- Header Section -->
+            <div class="my-postings">
+                <div class="job-h1-p">
+                    <h1>My Job Postings</h1>
+                    <p>Manage your active listings and track applicant progress.</p>
+                </div>
+                <div class="post-job">
+                    <a href="{% url 'create_job' %}">
+                        <button><i class="fas fa-plus"></i> Post a Job</button>
+                    </a>
+                </div>
+            </div>
+            <!-- Search Bar -->
+            <div class="search-section">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input
+                        type="text"
+                        placeholder="Search by job title..."
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+            <!-- Job Listings Table -->
+            <div class="job-table-wrapper">
+                <table class="job-table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Status</th>
+                            <th>Date Posted</th>
+                            <th>Applicants</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Jobs will be loaded dynamically by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="pagination-row">
+                <div class="results-info">Showing 1 to 4 of 4 results</div>
+                <div class="pagination">
+                    <button class="page-btn">←</button>
+                    <button class="page-btn active-page">1</button>
+                    <button class="page-btn">→</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/storage.js' %}"></script>
+    <script src="{% static 'js/company.js' %}"></script>
+</body>
+</html>
