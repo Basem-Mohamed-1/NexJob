@@ -1,0 +1,104 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/confirm.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link
+        href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css"
+        rel="stylesheet"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <title>Log in – NexJob</title>
+</head>
+<body>
+    <!--NAV BAR-->
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}"><i class="fa-solid fa-briefcase"></i></a>
+                <h2>NexJob</h2>
+            </div>
+
+            <button
+                id="darkModeToggle"
+                class="dark-mode-toggle"
+                aria-label="Toggle dark mode"
+            >
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!--THE SECTION-->
+
+    <section class="sec">
+        <div class="cont">
+            <h1>Hello Again!</h1>
+            <h2>Enter your details to continue</h2>
+
+            <form id="login-form" onsubmit="loginSubmitFunction(event)">
+                <div class="userinputs">
+                    <label for="login-username">Username</label>
+                    <input
+                        type="text"
+                        id="login-username"
+                        name="username"
+                        placeholder="Enter your username"
+                    />
+                    <p
+                        class="usernamep"
+                        style="margin: -10px 0px 10px 0px; text-align: left; color: red"
+                    ></p>
+
+                    <label for="login-password">Password</label>
+                    <input
+                        type="password"
+                        id="login-password"
+                        name="password"
+                        placeholder="Enter your password"
+                    />
+                    <p
+                        class="passwordp"
+                        style="margin: -10px 0px 10px 0px; text-align: left; color: red"
+                    ></p>
+                </div>
+
+                <button type="submit" id="loginBtn">
+                    Login <ion-icon name="arrow-forward"></ion-icon>
+                </button>
+            </form>
+
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+        </div>
+    </section>
+
+    <!--THE FOOTER-->
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 NexJob. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'contact' %}">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/storage.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

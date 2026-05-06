@@ -1,0 +1,109 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Details - NexJob</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/confirm.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jobseeker.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'jobseeker_home' %}"><i class="fa-solid fa-briefcase"></i></a>
+                <h2>NexJob</h2>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="{% url 'jobseeker_home' %}">Home</a></li>
+                <li><a href="{% url 'find_jobs' %}">Find Jobs</a></li>
+                <li><a href="{% url 'my_applications' %}">My Applications</a></li>
+                <li class="nav-profile">
+                    <a href="#" class="profile-link">
+                        <i class="fa-solid fa-user-circle"></i>
+                        <span>Profile</span>
+                    </a>
+                    <div class="profile-dropdown">
+                        <a href="{% url 'jobseeker_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                        <a href="#" onclick="logoutUser(); window.location.href='{% url 'login' %}';">
+                            <i class="fa-solid fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button
+                id="darkModeToggle"
+                class="dark-mode-toggle"
+                aria-label="Toggle dark mode"
+            >
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="job-detail-container">
+            <a href="{% url 'find_jobs' %}" class="back-link"> ← Back to Jobs </a>
+
+            <div class="job-detail-card">
+                <h1 class="job-title"></h1>
+
+                <div class="job-meta">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="job-description">
+                    <h3 class="section-title">About the Role</h3>
+                    <p></p>
+
+                    <h3 class="section-title">Key Responsibilities</h3>
+                    <ul></ul>
+
+                    <h3 class="section-title">Requirements</h3>
+                    <ul></ul>
+                </div>
+
+                <div class="apply-section">
+                    <h3>Ready to apply for this position?</h3>
+                    <p>
+                        If you believe you are a good fit, submit your application now.
+                    </p>
+                    <a href="{% url 'apply_job' %}" class="apply-btn">Apply for this Job</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 NexJob. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'contact' %}">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/storage.js' %}"></script>
+    <script src="{% static 'js/jobseeker.js' %}"></script>
+</body>
+</html>

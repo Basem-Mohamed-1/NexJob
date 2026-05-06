@@ -1,0 +1,122 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NexJob - Company Profile</title>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/confirm.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap"
+        rel="stylesheet"
+    />
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="{% url 'company_dashboard' %}"><i class="fa-solid fa-briefcase"></i></a>
+                    <h2>NexJob</h2>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="{% url 'company_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'create_job' %}">Post a Job</a></li>
+                    <li><a href="{% url 'my_jobs' %}">My Jobs</a></li>
+                    <li><a href="{% url 'applications' %}">Applications</a></li>
+                    <li><a href="{% url 'company_settings' %}">Settings</a></li>
+                    <li class="nav-profile">
+                        <a href="#" class="profile-link">
+                            <i class="fa-solid fa-user-circle"></i>
+                            <span>Profile</span>
+                        </a>
+                        <div class="profile-dropdown">
+                            <a href="{% url 'company_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                            <a href="#" onclick="logoutUser(); window.location.href='{% url 'login' %}';">
+                                <i class="fa-solid fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+                <button
+                    id="darkModeToggle"
+                    class="dark-mode-toggle"
+                    aria-label="Toggle dark mode"
+                >
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger"><span></span> <span></span> <span></span></div>
+            </div>
+        </nav>
+    </header>
+    <main class="main">
+        <div class="main-container">
+            <div class="profile-page">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">C</div>
+                    <div class="profile-info">
+                        <h1 id="profileName">Company Name</h1>
+                        <p id="profileEmail">company@email.com</p>
+                        <span class="profile-type">Company</span>
+                    </div>
+                </div>
+                <div class="profile-sections">
+                    <div class="profile-card">
+                        <h2><i class="fa-solid fa-building"></i> Company Information</h2>
+                        <form id="companyForm">
+                            <div class="profile-field">
+                                <label>Company Name</label>
+                                <input type="text" id="companyName" name="companyName" />
+                            </div>
+                            <div class="profile-field">
+                                <label>Website</label>
+                                <input type="url" id="companyWebsite" name="website" placeholder="https://example.com" />
+                            </div>
+                            <div class="profile-field">
+                                <label>Location</label>
+                                <input type="text" id="companyLocation" name="location" />
+                            </div>
+                            <div class="profile-field">
+                                <label>Description</label>
+                                <textarea id="companyDesc" name="description" placeholder="Tell us about your company..."></textarea>
+                            </div>
+                            <div class="profile-actions">
+                                <button type="submit" class="btn-primary">Save Changes</button>
+                                <button type="button" class="btn-secondary" onclick="resetCompanyForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="profile-card">
+                        <h2><i class="fa-solid fa-user"></i> Account Information</h2>
+                        <form id="accountForm">
+                            <div class="profile-field">
+                                <label>Username</label>
+                                <input type="text" id="profileUsername" name="username" />
+                            </div>
+                            <div class="profile-field">
+                                <label>Email</label>
+                                <input type="email" id="profileEmailInput" name="email" />
+                            </div>
+                            <div class="profile-actions">
+                                <button type="submit" class="btn-primary">Update Account</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="{% static 'js/storage.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <script src="{% static 'js/company.js' %}"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/company_profile.js' %}"></script>
+</body>
+</html>
