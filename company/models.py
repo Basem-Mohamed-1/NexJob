@@ -1,8 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
-
 class Company(models.Model):
     companyName = models.CharField(max_length=50)
     website = models.TextField(max_length=300)
@@ -11,6 +9,13 @@ class Company(models.Model):
 
 
 class Opportunity(models.Model):
+
+
+    Company = models.ForeignKey(
+        Company,
+        on_delete= models.CASCADE,
+        related_name="opportunities",null=True
+    )
 
     title = models.TextField(max_length=100)
     companyName = models.CharField(max_length=100,null=True)
@@ -46,5 +51,3 @@ class Opportunity(models.Model):
         choices=EmploymentType.choices,
         default=EmploymentType.FULL_TIME,
     )
-
-    

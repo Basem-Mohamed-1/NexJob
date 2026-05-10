@@ -119,12 +119,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-<<<<<<< HEAD
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-=======
 
 STATIC_ROOT = os.path.join(BASE_DIR,"static")
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'NexJob/static')]
->>>>>>> 45f0b4e5c936ad29835a3619191a76697466d42e
