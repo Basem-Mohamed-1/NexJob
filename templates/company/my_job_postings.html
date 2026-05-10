@@ -42,7 +42,7 @@
                         </a>
                         <div class="profile-dropdown">
                             <a href="{% url 'company_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
-                            <a href="#" onclick="logoutUser(); window.location.href='{% url 'login' %}';">
+                            <a href="#" onclick=logoutUser(); window.location.href="{% url 'login' %}";>
                                 <i class="fa-solid fa-sign-out-alt"></i> Logout
                             </a>
                         </div>

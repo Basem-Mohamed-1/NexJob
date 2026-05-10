@@ -36,7 +36,7 @@
                     </a>
                     <div class="profile-dropdown">
                         <a href="{% url 'company_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
-                        <a href="#" onclick="logoutUser(); window.location.href='{% url 'login' %}';">
+                        <a href="#" onclick=logoutUser(); window.location.href="{% url 'login' %}";
                             <i class="fa-solid fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
@@ -136,7 +136,7 @@
 
             <!-- Form Actions -->
             <div class="form-actions">
-                <input type="reset" value="Cancel" onclick="window.location.href='{% url 'my_jobs' %}'" />
+                <input type="reset" value="Cancel" onclick=window.location.href="{% url 'login' %}"; />
                 <input type="submit" value="Publish Job" />
             </div>
         </form>
