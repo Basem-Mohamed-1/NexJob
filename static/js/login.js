@@ -8,7 +8,6 @@ loginUsername.oninput = checkInputs;
 loginPassword.oninput = checkInputs;
 
 function checkInputs() {
-  document.getElementsByClassName("passwordp")[0].innerHTML = "";
   if (loginUsername.value != "" && loginPassword.value != "") {
     Btn.disabled = false;
   } else {
@@ -19,34 +18,19 @@ function checkInputs() {
 function loginSubmitFunction(event) {
   event.preventDefault();
 
-  showLoader();
+  let passwordMSG = document.getElementsByClassName("passwordp")[0];
 
-  setTimeout(() => {
-    var users = JSON.parse(localStorage.getItem("users")) || [];
+  passwordMSG.innerHTML = "";
 
-    var found = users.find(
-      (user) =>
-        user.username === loginUsername.value &&
-        user.password === loginPassword.value,
-    );
+  if (loginUsername.value.trim() == "") {
+    passwordMSG.innerHTML = "Username is required";
+    return;
+  }
 
-    hideLoader();
+  if (loginPassword.value.trim() == "") {
+    passwordMSG.innerHTML = "Password is required";
+    return;
+  }
 
-    if (found) {
-      localStorage.setItem("currentUser", JSON.stringify(found));
-      showToast("Welcome back, " + found.username + "!", "success");
-
-      setTimeout(() => {
-        if (found.type == "admin") {
-          window.location.href = "../company/Dashboard.html";
-        } else {
-          window.location.href = "../jobseeker/home.html";
-        }
-      }, 1000);
-    } else {
-      document.getElementsByClassName("passwordp")[0].innerHTML =
-        "Invalid username or password";
-      showToast("Invalid username or password", "error");
-    }
-  }, 800);
+  document.getElementById("login-form").submit();
 }
