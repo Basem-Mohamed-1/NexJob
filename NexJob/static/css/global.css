@@ -1,0 +1,313 @@
+/* ============================================
+   GLOBAL.CSS - All Colors & Variables
+   ============================================ */
+
+/* Light Mode (Default) */
+:root {
+  /* Primary Colors */
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --primary-light: #3b82f6;
+  --primary-bg-light: #eff6ff;
+
+  /* Background Colors */
+  --bg-body: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-section: #f8fafc;
+  --bg-gradient-start: #e0f2fe;
+  --bg-gradient-end: #f0f9ff;
+
+  /* Text Colors */
+  --text-heading: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+
+  /* Border Colors */
+  --border-light: #e2e8f0;
+  --border-medium: #cbd5e1;
+
+  /* Status Colors */
+  --status-applied: #3b82f6;
+  --status-interview: #eab308;
+  --status-offer: #a855f7;
+  --status-hired: #22c55e;
+  --status-applied-bg: #dbeafe;
+  --status-interview-bg: #fef9c3;
+  --status-offer-bg: #f3e8ff;
+  --status-hired-bg: #dcfce7;
+
+  /* Tag Colors */
+  --tag-bg: #f1f5f9;
+  --tag-text: #475569;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+
+  /* Hero Gradient */
+  --hero-gradient-start: #2563eb;
+  --hero-gradient-end: #1e40af;
+
+  /* Footer */
+  --footer-bg: #0f172a;
+  --footer-text: #94a3b8;
+  --footer-link: #cbd5e1;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  /* Primary Colors */
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #60a5fa;
+  --primary-bg-light: #1e3a5f;
+
+  /* Background Colors */
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --bg-section: #1e293b;
+  --bg-gradient-start: #1e293b;
+  --bg-gradient-end: #0f172a;
+
+  /* Text Colors */
+  --text-heading: #f1f5f9;
+  --text-body: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+
+  /* Border Colors */
+  --border-light: #334155;
+  --border-medium: #475569;
+
+  /* Status Colors */
+  --status-applied-bg: #1e3a5f;
+  --status-interview-bg: #3f3a1a;
+  --status-offer-bg: #3a1e5f;
+  --status-hired-bg: #1a3f2a;
+
+  /* Tag Colors */
+  --tag-bg: #334155;
+  --tag-text: #cbd5e1;
+
+  /* Shadow */
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+
+  /* Hero Gradient */
+  --hero-gradient-start: #1e3a5f;
+  --hero-gradient-end: #0f172a;
+
+  /* Footer */
+  --footer-bg: #020617;
+  --footer-text: #64748b;
+  --footer-link: #94a3b8;
+}
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: var(--bg-body);
+  color: var(--text-body);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+#toast-container {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  color: var(--text-body);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  max-width: 400px;
+  transform: translateX(120%);
+  animation: slideIn 0.3s ease forwards;
+  border-left: 4px solid var(--primary);
+}
+
+.toast.success {
+  border-left-color: #22c55e;
+}
+
+.toast.success .toast-icon {
+  color: #22c55e;
+}
+
+.toast.error {
+  border-left-color: #ef4444;
+}
+
+.toast.error .toast-icon {
+  color: #ef4444;
+}
+
+.toast.warning {
+  border-left-color: #f59e0b;
+}
+
+.toast.warning .toast-icon {
+  color: #f59e0b;
+}
+
+.toast.info {
+  border-left-color: #3b82f6;
+}
+
+.toast.info .toast-icon {
+  color: #3b82f6;
+}
+
+.toast-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-heading);
+}
+
+.toast-message {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.toast-close:hover {
+  color: var(--text-heading);
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+.toast.removing {
+  animation: slideOut 0.3s ease forwards;
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.loader-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-light);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-light);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
