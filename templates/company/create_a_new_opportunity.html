@@ -37,7 +37,7 @@
                     <div class="profile-dropdown">
                         <a href="{% url 'company_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
                         <a href="#" onclick=logoutUser(); window.location.href="{% url 'login' %}";
-                            <i class="fa-solid fa-sign-out-alt"></i> Logout
+                            <i>class="fa-solid fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
                 </li>
@@ -59,7 +59,8 @@
         <h2>Create New Opportunity</h2>
         <p>Fill in the details below to publish your job listing.</p>
 
-        <form action="#" method="get">
+        <form  method="POST">
+            {% csrf_token %}
             <!-- Job Title -->
             <div class="form-group">
                 <label for="job_title">Job Title:<span class="required">*</span></label>
@@ -76,9 +77,9 @@
             <div class="form-group">
                 <label for="status">Job Status:<span class="required">*</span></label>
                 <select id="status" name="status" required>
-                    <option value="open">Open</option>
-                    <option value="closed">Closed</option>
-                    <option value="draft">Draft</option>
+                    <option value="OPEN">Open</option>
+                    <option value="CLOSED">Closed</option>
+                    <option value="DRAFT">Draft</option>
                 </select>
             </div>
 
@@ -101,9 +102,9 @@
             <div class="form-group">
                 <label for="employment_type">Employment Type:<span class="required">*</span></label>
                 <select id="employment_type" name="employment_type" required>
-                    <option value="Full-Time">Full-Time</option>
-                    <option value="Part-Time">Part-Time</option>
-                    <option value="Freelance">Freelance</option>
+                    <option value="FULL_TIME">Full-Time</option>
+                    <option value="PART_TIME">Part-Time</option>
+                    <option value="FREELANCE">Freelance</option>
                 </select>
             </div>
 
@@ -136,7 +137,7 @@
 
             <!-- Form Actions -->
             <div class="form-actions">
-                <input type="reset" value="Cancel" onclick=window.location.href="{% url 'login' %}"; />
+                <input type="reset" value="Cancel" onclick=window.location.href= "{% url 'login' %}"; />
                 <input type="submit" value="Publish Job" />
             </div>
         </form>
@@ -160,9 +161,9 @@
         </div>
     </footer>
 
-    <script src="{% static 'js/storage.js' %}"></script>
+    <!-- <script src="{% static 'js/storage.js' %}"></script> -->
     <script src="{% static 'js/navbar.js' %}"></script>
-    <script src="{% static 'js/company.js' %}"></script>
+    <!-- <script src="{% static 'js/company.js' %}"></script> -->
 </body>
 
 </html>
