@@ -64,7 +64,13 @@ function hideLoader() {
 }
 
 // ==================== CONFIRM DIALOG ====================
-function showConfirm(title, message, onConfirm, confirmText = "Delete", type = "danger") {
+function showConfirm(
+  title,
+  message,
+  onConfirm,
+  confirmText = "Delete",
+  type = "danger",
+) {
   const overlay = document.createElement("div");
   overlay.className = "confirm-overlay";
 
@@ -123,39 +129,39 @@ function daysAgo(dateString) {
 
 // ==================== PROTECTED ROUTE ====================
 function requireAuth() {
-  const user = getCurrentUser();
-  if (!user) {
-    showToast("Please login to continue", "warning");
-    setTimeout(() => {
-      window.location.href = "../auth/login.html";
-    }, 1500);
-    return false;
-  }
+  // const user = getCurrentUser();
+  // if (!user) {
+  //   showToast("Please login to continue", "warning");
+  //   setTimeout(() => {
+  //     window.location.href = "/login/";
+  //   }, 1500);
+  //   return false;
+  // }
   return true;
 }
 
 function requireCompany() {
-  if (!requireAuth()) return false;
-  const user = getCurrentUser();
-  if (user.type !== "admin") {
-    showToast("Access denied. Company only.", "error");
-    setTimeout(() => {
-      window.location.href = "../jobseeker/home.html";
-    }, 1500);
-    return false;
-  }
+  // if (!requireAuth()) return false;
+  // const user = getCurrentUser();
+  // if (user.type !== "admin") {
+  //   showToast("Access denied. Company only.", "error");
+  //   setTimeout(() => {
+  //     window.location.href = "/jobseeker/home/";
+  //   }, 1500);
+  //   return false;
+  // }
   return true;
 }
 
 function requireJobSeeker() {
-  if (!requireAuth()) return false;
-  const user = getCurrentUser();
-  if (user.type !== "seeker") {
-    showToast("Access denied. Job seeker only.", "error");
-    setTimeout(() => {
-      window.location.href = "../company/Dashboard.html";
-    }, 1500);
-    return false;
-  }
+  // if (!requireAuth()) return false;
+  // const user = getCurrentUser();
+  // if (user.type !== "seeker") {
+  //   showToast("Access denied. Job seeker only.", "error");
+  //   setTimeout(() => {
+  //     window.location.href = "/company/dashboard/";
+  //   }, 1500);
+  //   return false;
+  // }
   return true;
 }

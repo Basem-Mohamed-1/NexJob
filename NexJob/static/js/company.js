@@ -2,15 +2,15 @@ console.log("JS LOADED");
 document.addEventListener("DOMContentLoaded", function () {
   const currentPage = window.location.pathname;
 
-  if (!isCompany()) {
-    if (!currentPage.includes("login") && !currentPage.includes("signup")) {
-      showToast("Please login as a company", "error");
-      setTimeout(() => {
-        window.location.href = "/login/";
-      }, 1500);
-      return;
-    }
-  }
+  // if (!isCompany()) {
+  //   if (!currentPage.includes("login") && !currentPage.includes("signup")) {
+  //     showToast("Please login as a company", "error");
+  //     setTimeout(() => {
+  //       window.location.href = "/login/";
+  //     }, 1500);
+  //     return;
+  //   }
+  // }
 
   if (currentPage.includes("create-job")) {
     setupCreateJobPage();

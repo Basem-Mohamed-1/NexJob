@@ -217,5 +217,13 @@ function signupSubmitFunction(event) {
   } else {
     confirmpasswordMSG.innerHTML = "";
   }
+
+  console.log("Submitting:", {
+    username: Username.value,
+    email: Email.value,
+    user_type: document.getElementById("user_type_input").value,
+    company: company.value,
+  });
+
   document.getElementById("signup-form").submit();
 }
