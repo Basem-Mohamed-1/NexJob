@@ -1,0 +1,106 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>About - NexJob</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'css/global.css' %}">
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'css/About.css' %}">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <a href="{% url 'home' %}"><i class="fa-solid fa-briefcase"></i></a>
+          <h2>NexJob</h2>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'about' %}" class="active">About</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+
+        <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <section>
+        <div class="about-block-container1">
+          <h2>About Our Platform</h2>
+          <p>
+            NexJob is designed to connect talented professionals with leading
+            companies. We provide an easy-to-use platform where job seekers can
+            discover opportunities and companies can find the best candidates.
+          </p>
+        </div>
+      </section>
+      
+      <section>
+        <div class="about-block-container2">
+          <h2>Our Mission</h2>
+          <p>
+            Our mission is to simplify the hiring process by providing a
+            transparent and efficient job search experience for both job seekers
+            and employers.
+          </p>
+        </div>
+      </section>
+      
+      <section>
+        <div class="about-block-container3">
+          <h2>What We Offer</h2>
+          <ul>
+            <li>Search and apply for job opportunities</li>
+            <li>Company job postings and recruitment tools</li>
+            <li>Application tracking for job seekers</li>
+            <li>Employer dashboards to manage job listings</li>
+          </ul>
+        </div>
+      </section>
+      
+      <section>
+        <div class="about-block-container4">
+          <h2>Why Choose Our Job Portal?</h2>
+          <p>
+            We focus on usability, accessibility, and efficiency, ensuring both
+            employers and job seekers can achieve their goals quickly.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="about">
+          <div class="about-content">
+            <div class="icon">
+              <i class="main-icon fa-solid fa-briefcase"></i>
+              <h2>NexJob</h2>
+            </div>
+            <br />
+          </div>
+          <p class="copy-right">&copy; 2026 NexJob. All rights reserved</p>
+        </div>
+      </div>
+    </footer>
+    
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/About.js' %}"></script>
+</body>
+
+</html>

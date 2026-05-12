@@ -1,0 +1,156 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NexJob - Find Jobs & Hire Talent</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"/>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{% url 'home' %}"><i class="fa-solid fa-briefcase"></i></a>
+                <h2>NexJob</h2>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Find Your Dream Job <span>or</span> Hire Top Talent</h1>
+                <p>
+                    Connecting talented professionals with leading companies. Whether
+                    you're looking for work or looking to hire, your next move starts
+                    here.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{% url 'login' %}" class="btn-primary">
+                        <i class="fas fa-search"></i> Find Jobs
+                    </a>
+                    <a href="{% url 'login' %}" class="btn-secondary">
+                        <i class="fas fa-briefcase"></i> Post a Job
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="categories">
+            <div class="section-header">
+                <h2>Browse by Category</h2>
+                <p>Find the right role based on your expertise and interests.</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <i class="fa-solid fa-laptop"></i>
+                    <h3>Technology</h3>
+                    <p>1,420+ Open Positions</p>
+                </div>
+                <div class="category-card">
+                    <i class="fa-solid fa-palette"></i>
+                    <h3>Design</h3>
+                    <p>860+ Open Positions</p>
+                </div>
+                <div class="category-card">
+                    <i class="fa-solid fa-money-bill"></i>
+                    <h3>Finance</h3>
+                    <p>530+ Open Positions</p>
+                </div>
+                <div class="category-card">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <h3>Marketing</h3>
+                    <p>740+ Open Positions</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <div class="section-header">
+                <h2>How It Works</h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <h3>1. Create an Account</h3>
+                    <p>Sign up as a job seeker or a company recruiter.</p>
+                </div>
+                <div class="step-card">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>2. Search or Post</h3>
+                    <p>Browse jobs or post open positions at your company.</p>
+                </div>
+                <div class="step-card">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <h3>3. Apply or Hire</h3>
+                    <p>Submit applications or find the perfect candidate.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="cta-content">
+                <h2>Ready to Take the Next Step?</h2>
+                <p>Join thousands of professionals and companies who found success through NexJob.</p>
+                <div class="cta-buttons">
+                    <a href="{% url 'signup' %}" class="btn-primary">Create an Account</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="{% url 'home' %}"><i class="fa-solid fa-briefcase"></i></a>
+                <h3>NexJob</h3>
+                <p>Making the job hunt easier for everyone.</p>
+            </div>
+            <div class="footer-links">
+                <a href="{% url 'about' %}">About</a>
+                <span>|</span>
+                <a href="{% url 'contact' %}">Contact</a>
+                <span>|</span>
+                <a href="{% url 'login' %}">Log In</a>
+                <span>|</span>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </div>
+            <p class="copyright">&copy; 2026 NexJob. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+</body>
+</html>
