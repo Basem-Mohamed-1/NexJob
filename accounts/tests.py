@@ -1,4 +1,3 @@
-#<<<<<<< HEAD
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -159,8 +158,6 @@ class LoginViewTests(TestCase):
         self.client.login(username='seeker', password='StrongPass1!')
         response = self.client.get(self.url)
         self.assertRedirects(response, reverse('home'))
-#=======
 from django.test import TestCase
 
-# Create your tests here.
-#>>>>>>> 45f0b4e5c936ad29835a3619191a76697466d42e
+
