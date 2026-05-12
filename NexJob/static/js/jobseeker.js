@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
       !currentPage.includes("index")
     ) {
       showToast("Please login as a job seeker", "error");
-      window.location.href = "../auth/login.html";
+      window.location.href = "/login/";
       return;
     }
   }
@@ -400,7 +400,7 @@ function setupApplicationForm(jobId) {
     const currentUser = getCurrentUser();
     if (!currentUser) {
       showToast("Please login to apply", "warning");
-      window.location.href = "../auth/login.html";
+      window.location.href = "/login/";
       return;
     }
 
