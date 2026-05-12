@@ -158,3 +158,6 @@ class LoginViewTests(TestCase):
         self.client.login(username='seeker', password='StrongPass1!')
         response = self.client.get(self.url)
         self.assertRedirects(response, reverse('home'))
+from django.test import TestCase
+
+
