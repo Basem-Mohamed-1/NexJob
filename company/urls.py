@@ -17,6 +17,7 @@ urlpatterns = [
     path('api/job/<int:job_id>/delete/', views.api_delete_job, name='api_delete_job'),
     path('api/applications/', views.api_applications, name='api_applications'),
     path('api/application/<int:application_id>/status/', views.api_update_application_status, name='api_update_application_status'),
+    path('api/job/<int:job_id>/applicant-count/', views.api_job_applicant_count, name='api_job_applicant_count'),
     
     # Settings API
     path('api/settings/', views.api_get_settings, name='api_get_settings'),

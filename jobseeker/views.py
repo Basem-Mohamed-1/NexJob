@@ -86,20 +86,23 @@ def apply_job(request, job_id):
 
 def api_apply_job(request):
     if not request.user.is_authenticated:
-        return JsonResponse({'error': 'Unauthorized'}, status=401)
+        return JsonResponse({'success': False, 'error': 'Please login to apply'}, status=401)
     
     if request.method == 'POST':
         
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
         
         job_id = data.get('job_id')
         if not job_id:
-            return JsonResponse({'error': 'Missing job_id'}, status=400)
+            return JsonResponse({'success': False, 'error': 'Missing job_id'}, status=400)
         
-        opportunity = get_object_or_404(Opportunity, id=job_id)
+        try:
+            opportunity = get_object_or_404(Opportunity, id=job_id)
+        except:
+            return JsonResponse({'success': False, 'error': 'Job not found'}, status=404)
         
         application = Application(
             user=request.user,
@@ -117,7 +120,7 @@ def api_apply_job(request):
         
         return JsonResponse({'success': True, 'application_id': application.id})
     
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
 
 def api_profile(request):
