@@ -20,7 +20,7 @@ def api_create_job(request):
     if request.method == "POST" : 
 
 
-            data = json.load(request.body())
+            data = json.loads(request.body)
 
             title = data.get("title")
 
@@ -28,8 +28,8 @@ def api_create_job(request):
 
             status = data.get("status")
 
-            maxSalary =  int(data.get("salary_max"))
-            minSalary = int(data.get("salaryMax"))
+            maxSalary =  int(data.get("salaryMax"))
+            minSalary = int(data.get("salaryMin"))
 
             location = data.get("location")
 

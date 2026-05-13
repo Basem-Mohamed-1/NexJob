@@ -180,7 +180,7 @@ async function loadMyJobs() {
 
 
   try {
-    
+    console.log("im in in in ")
     const response = await fetch("/company/api/my-jobs/");
     const data = await response.json();
    
