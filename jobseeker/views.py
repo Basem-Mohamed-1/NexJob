@@ -55,14 +55,31 @@ def api_my_applications(request):
         return JsonResponse({'error': 'Unauthorized'}, status=401)
     
     applications = Application.objects.filter(user=request.user).order_by('-applied_at')
-    data = [{
-        'id': app.id,
-        'opportunity_id': app.opportunity_id,
-        'full_name': app.full_name,
-        'email': app.email,
-        'status': app.status,
-        'applied_at': app.applied_at.strftime('%b %d, %Y'),
-    } for app in applications]
+    data = []
+    for app in applications:
+        job_data = None
+        try:
+            opportunity = Opportunity.objects.get(id=app.opportunity_id)
+            job_data = {
+                'id': opportunity.id,
+                'title': opportunity.title,
+                'companyName': opportunity.companyName,
+                'location': opportunity.location,
+                'employment_type': opportunity.get_employment_type_display(),
+            }
+        except Opportunity.DoesNotExist:
+            job_data = None
+
+        data.append({
+            'id': app.id,
+            'opportunity_id': app.opportunity_id,
+            'full_name': app.full_name,
+            'email': app.email,
+            'status': app.status,
+            'status_display': app.get_status_display(),
+            'applied_at': app.applied_at.strftime('%b %d, %Y'),
+            'job': job_data,
+        })
     return JsonResponse({'applications': data})
 
 
@@ -172,7 +189,7 @@ def api_job_for_application(request, job_id):
         }
         return JsonResponse(data)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({'error': 'Job not found', 'deleted': True}, status=404)
 
 
 @login_required
