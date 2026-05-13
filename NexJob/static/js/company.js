@@ -1,5 +1,13 @@
-console.log("JS LOADED");
-console.log("JS LOADED");
+
+
+
+
+let opps = [];
+
+
+
+// loading the pages of company
+
 document.addEventListener("DOMContentLoaded", function () {
 console.log("im in");
 
@@ -23,14 +31,14 @@ console.log("im in");
 });
 
 
-let opps = [];
 
 
 
 
 
 
-// ==================== TOAST ====================
+
+// Toast 
 function showToast(message, type = "success") {
   let toast = document.getElementById("toast");
   if (!toast) {
@@ -44,9 +52,6 @@ function showToast(message, type = "success") {
   clearTimeout(toast.hideTimeout);
   toast.hideTimeout = setTimeout(() => toast.classList.remove("show"), 2500);
 }
-
-
-
 
 
 
@@ -155,8 +160,7 @@ function setupCreateJobPage() {
       return;
     }
 
-    // Save job
-    // saveJob(jobData);
+
 
     showToast("Job posted successfully!", "success");
     setTimeout(() => {
@@ -179,13 +183,7 @@ function setupMyJobsPage() {
   setupSearchFilter();
 }
 
-// async function getCompanyOpportunity(){
-//   const response = await fetch("/company/api/my-jobs/");
-//   const data = await response.json();
 
-//   opportunties = data.opportunties;
-  
-// }
 
 async function loadMyJobs() {
 
@@ -222,7 +220,7 @@ async function loadMyJobs() {
 
     // Render jobs
     data.opportunties.forEach(op => {
-      createJobTableRow(op)
+      createJobTableRow(op,data.count)
     });
 
   } catch (error) {
@@ -232,7 +230,7 @@ async function loadMyJobs() {
 
 
 
-function createJobTableRow(job) {
+function createJobTableRow(job,count=0) {
 
     const tbody = document.querySelector(".job-table tbody");
 
@@ -241,7 +239,7 @@ function createJobTableRow(job) {
       row.innerHTML = `
         <td>
           <div class="job-title-cell">${job.title}</div>
-          <span class="job-meta">${job}</span>
+          <span class="job-meta">${job.location}</span>
         </td>
 
         <td>
@@ -254,7 +252,7 @@ function createJobTableRow(job) {
 
         <td>
           <span class="total-count">
-            ${job.numOfApplications} applicants
+            ${0} applicants
           </span>
         </td>
 
