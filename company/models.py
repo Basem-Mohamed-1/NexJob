@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Company(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='company', null=True, blank=True)
     companyName = models.CharField(max_length=50)
     website = models.TextField(max_length=300)
     location = models.CharField(max_length=50)

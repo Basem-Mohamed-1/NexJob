@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from company.models import Opportunity
 from .models import Application, JobseekerProfile
+import json
 
 
 def home(request):
@@ -10,37 +11,43 @@ def home(request):
 
 
 def api_jobs(request):
-    jobs = Opportunity.objects.filter(status='OPEN').order_by('-postedDate')
-    data = [{
-        'id': job.id,
-        'title': job.title,
-        'companyName': job.companyName,
-        'location': job.location,
-        'employment_type': job.get_employment_type_display,
-        'salary_min': job.salary_min,
-        'salary_max': job.salary_max,
-        'postedDate': job.postedDate.strftime('%b %d, %Y'),
-    } for job in jobs]
-    return JsonResponse({'jobs': data})
+    try:
+        jobs = Opportunity.objects.filter(status='OPEN').order_by('-postedDate')
+        data = [{
+            'id': job.id,
+            'title': job.title,
+            'companyName': job.companyName,
+            'location': job.location,
+            'employment_type': job.get_employment_type_display(),
+            'salary_min': job.salary_min,
+            'salary_max': job.salary_max,
+            'postedDate': job.postedDate.strftime('%b %d, %Y'),
+        } for job in jobs]
+        return JsonResponse({'jobs': data})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 def api_job_detail(request, job_id):
-    job = get_object_or_404(Opportunity, id=job_id)
-    data = {
-        'id': job.id,
-        'title': job.title,
-        'companyName': job.companyName,
-        'location': job.location,
-        'employment_type': job.get_employment_type_display,
-        'salary_min': job.salary_min,
-        'salary_max': job.salary_max,
-        'experience': job.experience,
-        'jobDescription': job.jobDescription,
-        'responsibilities': job.responsibilities,
-        'requirements': job.requirements,
-        'postedDate': job.postedDate.strftime('%b %d, %Y'),
-    }
-    return JsonResponse(data)
+    try:
+        job = get_object_or_404(Opportunity, id=job_id)
+        data = {
+            'id': job.id,
+            'title': job.title,
+            'companyName': job.companyName,
+            'location': job.location,
+            'employment_type': job.get_employment_type_display(),
+            'salary_min': job.salary_min,
+            'salary_max': job.salary_max,
+            'experience': job.experience,
+            'jobDescription': job.jobDescription,
+            'responsibilities': job.responsibilities,
+            'requirements': job.requirements,
+            'postedDate': job.postedDate.strftime('%b %d, %Y'),
+        }
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 def api_my_applications(request):
@@ -74,23 +81,6 @@ def job_details(request, job_id):
 @login_required
 def apply_job(request, job_id):
     job = get_object_or_404(Opportunity, id=job_id)
-    
-    if request.method == 'POST':
-        application = Application(
-            user=request.user,
-            opportunity_id=job_id,
-            full_name=request.POST.get('fullname'),
-            email=request.POST.get('email'),
-            phone=request.POST.get('phone'),
-            resume=request.FILES.get('resume'),
-            cover_letter=request.POST.get('coverletter'),
-            experience=request.POST.get('experience', 0),
-            expected_salary=request.POST.get('salary', ''),
-            start_date=request.POST.get('startdate') or None,
-        )
-        application.save()
-        return redirect('my_applications')
-    
     return render(request, 'jobseeker/apply-job.html', {'job': job})
 
 
@@ -99,23 +89,29 @@ def api_apply_job(request):
         return JsonResponse({'error': 'Unauthorized'}, status=401)
     
     if request.method == 'POST':
-        job_id = request.POST.get('job_id')
+        
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        
+        job_id = data.get('job_id')
+        if not job_id:
+            return JsonResponse({'error': 'Missing job_id'}, status=400)
+        
         opportunity = get_object_or_404(Opportunity, id=job_id)
         
         application = Application(
             user=request.user,
             opportunity_id=job_id,
-            full_name=request.POST.get('full_name'),
-            email=request.POST.get('email'),
-            phone=request.POST.get('phone'),
-            cover_letter=request.POST.get('cover_letter', ''),
-            experience=request.POST.get('experience', 0),
-            expected_salary=request.POST.get('expected_salary', ''),
-            start_date=request.POST.get('start_date') or None,
+            full_name=data.get('full_name', ''),
+            email=data.get('email', ''),
+            phone=data.get('phone', ''),
+            cover_letter=data.get('cover_letter', ''),
+            experience=data.get('experience', 0),
+            expected_salary=data.get('expected_salary', ''),
+            start_date=data.get('start_date') or None,
         )
-        
-        if request.FILES.get('resume'):
-            application.resume = request.FILES.get('resume')
         
         application.save()
         
@@ -142,7 +138,6 @@ def api_profile(request):
         return JsonResponse(data)
     
     if request.method == 'POST':
-        import json
         data = json.loads(request.body)
         
         user = request.user
@@ -163,15 +158,18 @@ def api_profile(request):
 
 
 def api_job_for_application(request, job_id):
-    job = get_object_or_404(Opportunity, id=job_id)
-    data = {
-        'id': job.id,
-        'title': job.title,
-        'companyName': job.companyName,
-        'location': job.location,
-        'employment_type': job.get_employment_type_display,
-    }
-    return JsonResponse(data)
+    try:
+        job = get_object_or_404(Opportunity, id=job_id)
+        data = {
+            'id': job.id,
+            'title': job.title,
+            'companyName': job.companyName,
+            'location': job.location,
+            'employment_type': job.get_employment_type_display(),
+        }
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 @login_required

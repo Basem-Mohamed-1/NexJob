@@ -297,28 +297,25 @@ async function setupApplicationForm(jobId) {
   form.onsubmit = async function (e) {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('job_id', jobId);
-    formData.append('full_name', document.getElementById("fullname")?.value);
-    formData.append('email', document.getElementById("email")?.value);
-    formData.append('phone', document.getElementById("phone")?.value);
-    formData.append('cover_letter', document.getElementById("coverletter")?.value);
-    formData.append('experience', document.getElementById("experience")?.value);
-    formData.append('expected_salary', document.getElementById("salary")?.value);
-    formData.append('start_date', document.getElementById("startdate")?.value);
-    
-    const resumeFile = document.getElementById("resume")?.files[0];
-    if (resumeFile) {
-      formData.append('resume', resumeFile);
-    }
+    const data = {
+      job_id: jobId,
+      full_name: document.getElementById("fullname")?.value,
+      email: document.getElementById("email")?.value,
+      phone: document.getElementById("phone")?.value,
+      cover_letter: document.getElementById("coverletter")?.value,
+      experience: document.getElementById("experience")?.value || 0,
+      expected_salary: document.getElementById("salary")?.value,
+      start_date: document.getElementById("startdate")?.value || null,
+    };
 
     try {
       const response = await fetch('/jobseeker/api/apply/', {
         method: 'POST',
         headers: {
           'X-CSRFToken': getCSRFToken(),
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(data),
       });
 
       const data = await response.json();
