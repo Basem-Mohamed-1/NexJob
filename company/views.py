@@ -1,52 +1,104 @@
 from django.shortcuts import render
 from .models import Opportunity ,Company
+from django.http import JsonResponse
+import json
 
 def dashboard(request):
     return render(request, 'company/Dashboard.html')
 
+
+
+
 def create_job(request):
+    return render(request, 'company/create_a_new_opportunity.html')
+
+
+
+
+def api_create_job(request):
 
     if request.method == "POST" : 
 
-        title = request.POST.get("job_title")
 
-        companyName = request.POST.get("company_name")
+            data = json.load(request.body())
 
-        status = request.POST.get("status")
+            title = data.get("title")
 
-        maxSalary =  int(request.POST.get("salary_max"))
-        minSalary = int(request.POST.get("salary_min"))
+            companyName = data.get("company")
 
-        location = request.POST.get("location")
+            status = data.get("status")
 
-        employeeType = request.POST.get("employment_type")
+            maxSalary =  int(data.get("salary_max"))
+            minSalary = int(data.get("salaryMax"))
 
-        experience = int(request.POST.get("experience"))
+            location = data.get("location")
 
-        description = request.POST.get("description")
+            employeeType = data.get("type")
 
-        respons = request.POST.get("responsibilities")
+            experience = int(data.get("experience"))
 
-        requirements = request.POST.get("requirements")
+            description = data.get("description")
 
-        Opportunity.objects.create(
-            title = title,
-            companyName= companyName,
-            location = location,
-            experience = experience,
-            jobDescription = description,
-            responsibilities = respons,
-            requirements = requirements,
-            salary_min = minSalary,
-            salary_max = maxSalary ,
-            employment_type = employeeType,
-            status = status,
-        )
+            respons = data.get("responsibilities")
+
+            requirements = data.get("requirements")
+
+            job = Opportunity.objects.create(
+                title = title,
+                companyName= companyName,
+                location = location,
+                experience = experience,
+                jobDescription = description,
+                responsibilities = respons,
+                requirements = requirements,
+                salary_min = minSalary,
+                salary_max = maxSalary ,
+                employment_type = employeeType,
+                status = status,
+            )
+
+            return JsonResponse({
+                "message": "Job created successfully",
+                "id": job.id
+            })
+
+    return JsonResponse({"error": "Invalid method"}, status=400)
+
         
-    return render(request, 'company/create_a_new_opportunity.html')
+    
+
 
 def my_jobs(request):
     return render(request, 'company/my_job_postings.html')
+
+def api_my_jobs(request):
+
+    jobs = Opportunity.objects.all()
+
+    # If request wants JSON (API call)
+    # if request.headers.get('Accept') == 'application/json':
+    data = [
+        {
+            "id": op.id,
+            "title": op.title,
+            "companyName" : op.companyName,
+            "experience" : op.experience ,
+            "jobDescription" : op.jobDescription,
+            "responsibilities" : op.responsibilities,
+            "requirements" : op.requirements,
+            "location": op.location,
+            "status": op.status,
+            "postedDate": op.postedDate,
+            "employment_type" : op.employment_type,
+        }
+        for op in jobs
+    ]
+
+    return JsonResponse({
+        "count": len(data),
+        "opportunties": data
+    })
+
 
 def applications(request):
     return render(request, 'company/applications.html')
