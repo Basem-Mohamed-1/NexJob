@@ -23,6 +23,9 @@ console.log("im in");
 });
 
 
+let opps = [];
+
+
 
 
 
@@ -176,14 +179,22 @@ function setupMyJobsPage() {
   setupSearchFilter();
 }
 
-async function loadMyJobs() {
+// async function getCompanyOpportunity(){
+//   const response = await fetch("/company/api/my-jobs/");
+//   const data = await response.json();
 
+//   opportunties = data.opportunties;
+  
+// }
+
+async function loadMyJobs() {
 
   try {
     
     const response = await fetch("/company/api/my-jobs/");
     const data = await response.json();
-   
+    
+    opps = data.opportunties;
 
     console.log(data);
   
@@ -211,40 +222,53 @@ async function loadMyJobs() {
 
     // Render jobs
     data.opportunties.forEach(op => {
+      createJobTableRow(op)
+    });
 
-      const row = document.createElement("tr");
+  } catch (error) {
+    console.error("Error loading jobs:", error);
+  }
+}
+
+
+
+function createJobTableRow(job) {
+
+    const tbody = document.querySelector(".job-table tbody");
+
+    const row = document.createElement("tr");
 
       row.innerHTML = `
         <td>
-          <div class="job-title-cell">${op.title}</div>
-          <span class="job-meta">${op.location}</span>
+          <div class="job-title-cell">${job.title}</div>
+          <span class="job-meta">${job}</span>
         </td>
 
         <td>
-          <span class="status-badge status-${op.status}">
-            ${op.status}
+          <span class="status-badge status-${job.status}">
+            ${job.status}
           </span>
         </td>
 
-        <td>${op.postedDate}</td>
+        <td>${job.postedDate}</td>
 
         <td>
           <span class="total-count">
-            ${op.numOfApplications} applicants
+            ${job.numOfApplications} applicants
           </span>
         </td>
 
         <td>
           <div class="action-buttons">
-            <button class="action-icon" onclick="viewApplicants(${op.id})">
+            <button class="action-icon" onclick="viewApplicants(${job.id})">
               <i class="fas fa-users"></i>
             </button>
 
-            <button class="action-icon" onclick="editJob(${op.id})">
+            <button class="action-icon" onclick="editJob(${job.id})">
               <i class="fas fa-edit"></i>
             </button>
 
-            <button class="action-icon" onclick="deleteJobConfirm(${op.id})">
+            <button class="action-icon" onclick="deleteJobConfirm(${job.id})">
               <i class="fas fa-trash"></i>
             </button>
           </div>
@@ -252,38 +276,10 @@ async function loadMyJobs() {
       `;
 
       tbody.appendChild(row);
-    });
 
-  } catch (error) {
-    console.error("Error loading jobs:", error);
-  }
+      return row
+    
 }
-// function createJobTableRow(job) {
-
- 
-//     const statusClass =
-//       job.status === "open"
-//         ? "status-open"
-//         : job.status === "closed"
-//           ? "status-closed"
-//           : "status-draft";
-
-//     row.innerHTML = `
-//       <td><div class="job-title-cell">${job.title}</div><span class="job-meta">${job.location} • ${job.type}</span></td>
-//       <td><span class="status-badge ${statusClass}">${job.status}</span></td>
-//       <td>${formatDate(job.postedDate)}</td>
-//       <td><span class="total-count">${jobApps.length} applicant${jobApps.length !== 1 ? "s" : ""}</span></td>
-//       <td>
-//         <div class="action-buttons">
-//           <button class="action-icon" onclick="viewApplicants('${job.id}')"><i class="fas fa-users"></i></button>
-//           <button class="action-icon" onclick="editJob('${job.id}')"><i class="fas fa-edit"></i></button>
-//           <button class="action-icon" onclick="deleteJobConfirm('${job.id}')"><i class="fas fa-trash"></i></button>
-//         </div>
-//       </td>
-//     `;
-//     return row;
-
-// }
 
 function setupSearchFilter() {
   const searchInput = document.querySelector(".search-wrapper input");
@@ -295,15 +291,19 @@ function setupSearchFilter() {
 }
 
 function filterJobs(searchTerm) {
-  const myJobs = getMyCompanyJobs();
-  const filtered = myJobs.filter(
+ 
+  const filtered = opps.filter(
     (job) =>
       job.title.toLowerCase().includes(searchTerm) ||
       job.location.toLowerCase().includes(searchTerm),
   );
+  console.log(filtered)
   const tbody = document.querySelector(".job-table tbody");
   tbody.innerHTML = "";
+
   filtered.forEach((job) => tbody.appendChild(createJobTableRow(job)));
+
+
   updateResultsInfo(filtered.length);
 }
 
@@ -312,6 +312,12 @@ function updateResultsInfo(count) {
   if (resultsInfo)
     resultsInfo.textContent = `Showing 1 to ${count} of ${count} results`;
 }
+
+
+
+
+
+
 
 // ==================== ACTION FUNCTIONS ====================
 let viewApplicants = function (jobId) {
