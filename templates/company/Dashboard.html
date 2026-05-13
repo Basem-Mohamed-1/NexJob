@@ -35,19 +35,18 @@
                 <li><a href="{% url 'company_dashboard' %}" class="active">Dashboard</a></li>
                 <li><a href="{% url 'create_job' %}">Post a Job</a></li>
                 <li><a href="{% url 'my_jobs' %}">My Jobs</a></li>
-                <li><a href="{% url 'applications' %}">Applications</a></li>
                 <li><a href="{% url 'company_settings' %}">Settings</a></li>
                 <li class="nav-profile">
                     <a href="#" class="profile-link">
                         <i class="fa-solid fa-user-circle"></i>
                         <span>Profile</span>
                     </a>
-                    <div class="profile-dropdown">
-                        <a href="{% url 'company_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
-                        <a href="#" onclick=logoutUser(); window.location.href="{% url 'login' %}";>
+                        <div class="profile-dropdown">
+                        <a href="{% url 'jobseeker_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                        <a href="{% url 'logout' %}">
                             <i class="fa-solid fa-sign-out-alt"></i> Logout
                         </a>
-                    </div>
+                        </div>
                 </li>
             </ul>
 
