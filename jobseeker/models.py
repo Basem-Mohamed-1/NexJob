@@ -11,7 +11,7 @@ class JobseekerProfile(models.Model):
 
 class Application(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    opportunity_id = models.PositiveIntegerField()  # why not a ForeignKey to Opportunity? because we want to keep track of applications even if the job is deleted
+    opportunity_id = models.PositiveIntegerField()
     full_name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
@@ -30,6 +30,14 @@ class Application(models.Model):
         HIRED = "HIRED", "Hired"
 
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+
+    @property
+    def opportunity(self):
+        from company.models import Opportunity
+        try:
+            return Opportunity.objects.get(id=self.opportunity_id)
+        except Opportunity.DoesNotExist:
+            return None
 
     def __str__(self):
         return f"{self.full_name} - {self.opportunity_id}"

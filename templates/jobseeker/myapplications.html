@@ -70,22 +70,22 @@
         <div class="Statistics">
             <div class="Applied">
                 <h2>Applied</h2>
-                <p>{{ applications.count }}</p>
+                <p id="stat-applied">{{ applications.count }}</p>
             </div>
 
             <div class="Interview">
                 <h2>Interview</h2>
-                <p>{{ applications|length }}</p>
+                <p id="stat-interview">{{ applications.count }}</p>
             </div>
 
             <div class="Offer">
                 <h2>Pending</h2>
-                <p>{{ applications.count }}</p>
+                <p id="stat-pending">{{ applications.count }}</p>
             </div>
 
             <div class="Hired">
                 <h2>Hired</h2>
-                <p>0</p>
+                <p id="stat-hired">0</p>
             </div>
         </div>
     </section>
@@ -127,7 +127,7 @@
             {% for app in applications %}
             <div class="Applied_Jobs_Card-1">
                 <div class="Applied_Jobs_Card_Role">
-                    <h3>Job #{{ app.opportunity_id }}</h3>
+                    <h3>{{ app.opportunity.title|default:"Job No Longer Available" }}</h3>
                     <p>{{ app.email }}</p>
                 </div>
                 <div class="Applied_Jobs_Card_Date">
@@ -137,7 +137,11 @@
                     <p>{{ app.get_status_display }}</p>
                 </div>
                 <div class="Applied_Jobs_Card_Action">
-                    <a href="{% url 'job_details' app.opportunity_id %}">View Details →</a>
+                    {% if app.opportunity %}
+                    <a href="{% url 'job_details' app.opportunity.id %}">View Job →</a>
+                    {% else %}
+                    <span class="removed-job">Job Removed</span>
+                    {% endif %}
                 </div>
             </div>
             {% empty %}

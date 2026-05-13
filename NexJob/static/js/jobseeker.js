@@ -334,7 +334,6 @@ function getCSRFToken() {
 // ==================== MY APPLICATIONS PAGE ====================
 function setupMyApplicationsPage() {
   loadMyApplications();
-  updateApplicationStats();
 }
 
 async function loadMyApplications() {
@@ -347,6 +346,22 @@ async function loadMyApplications() {
     
     const data = await response.json();
     const applications = data.applications;
+
+    const stats = {
+      applied: applications.length,
+      interview: applications.filter((app) => app.status === "INTERVIEW").length,
+      pending: applications.filter((app) => app.status === "PENDING" || app.status === "REVIEWING").length,
+      hired: applications.filter((app) => app.status === "HIRED").length,
+    };
+
+    const statApplied = document.getElementById("stat-applied");
+    const statInterview = document.getElementById("stat-interview");
+    const statPending = document.getElementById("stat-pending");
+    const statHired = document.getElementById("stat-hired");
+    if (statApplied) statApplied.textContent = stats.applied;
+    if (statInterview) statInterview.textContent = stats.interview;
+    if (statPending) statPending.textContent = stats.pending;
+    if (statHired) statHired.textContent = stats.hired;
 
     if (applications.length === 0) {
       container.innerHTML = `
@@ -363,14 +378,8 @@ async function loadMyApplications() {
     container.innerHTML = "";
 
     for (const app of applications) {
-      try {
-        const jobResponse = await fetch(`/jobseeker/api/job-for-app/${app.opportunity_id}/`);
-        const job = await jobResponse.json();
-        const card = createApplicationCard(app, job);
-        container.appendChild(card);
-      } catch (err) {
-        console.error('Error loading job:', err);
-      }
+      const card = createApplicationCard(app);
+      container.appendChild(card);
     }
   } catch (error) {
     console.error('Error loading applications:', error);
@@ -378,7 +387,7 @@ async function loadMyApplications() {
   }
 }
 
-function createApplicationCard(application, job) {
+function createApplicationCard(application) {
   const card = document.createElement("div");
   card.className = "Applied_Jobs_Card-1";
 
@@ -391,21 +400,39 @@ function createApplicationCard(application, job) {
   };
 
   const statusColor = statusColors[application.status] || "#95a5a6";
+  const statusDisplay = application.status_display || application.status;
+
+  const job = application.job;
+  let jobTitle, jobCompany, jobLocation, viewLink, jobType;
+
+  if (job) {
+    jobTitle = job.title;
+    jobCompany = job.companyName;
+    jobLocation = job.location;
+    jobType = job.employment_type;
+    viewLink = `/jobseeker/job-details/${job.id}/`;
+  } else {
+    jobTitle = "Job No Longer Available";
+    jobCompany = "Company";
+    jobLocation = "";
+    jobType = "";
+    viewLink = "#";
+  }
 
   card.innerHTML = `
     <div class="Applied_Jobs_Card_Role">
-      <h3>${job.title}</h3>
-      <p>${job.companyName} - ${job.location}</p>
+      <h3>${jobTitle}</h3>
+      <p>${jobCompany}${jobLocation ? ' - ' + jobLocation : ''}</p>
     </div>
     <div class="Applied_Jobs_Card_Date">
       <p class="applied-time">${application.applied_at}</p>
     </div>
     <div class="Applied_Jobs_Card_Status">
-      <p>${job.employment_type}</p>
-      <p style="color: ${statusColor}; font-weight: bold;">${application.status}</p>
+      <p>${jobType || ''}</p>
+      <p style="color: ${statusColor}; font-weight: bold;">${statusDisplay}</p>
     </div>
     <div class="Applied_Jobs_Card_Action">
-      <a href="/jobseeker/job-details/${job.id}/">View Job →</a>
+      <a href="${viewLink}" class="${viewLink === '#' ? 'disabled-link' : ''}">${viewLink === '#' ? 'Job Removed' : 'View Job →'}</a>
     </div>
   `;
 
