@@ -199,8 +199,8 @@ function applyFilters() {
 // ==================== JOB DETAILS PAGE ====================
 
 function setupJobDetailsPage() {
-  const pathParts = window.location.pathname.split('/');
-  const jobId = pathParts[pathParts.length - 2];
+  const pathParts = window.location.pathname.split('/').filter(p => p);
+  const jobId = pathParts[pathParts.length - 1];
 
   if (!jobId) {
     showToast("No job selected", "error");
@@ -220,6 +220,7 @@ async function loadJobDetails(jobId) {
     populateJobDetails(job);
   } catch (error) {
     showToast("Job not found", "error");
+    console.error('Error loading job details:', error);
     window.location.href = "/jobseeker/find-jobs/";
   }
 }
@@ -256,7 +257,7 @@ function populateJobDetails(job) {
 
 // ==================== APPLY JOB PAGE ====================
 function setupApplyJobPage() {
-  const pathParts = window.location.pathname.split('/');
+  const pathParts = window.location.pathname.split('/').filter(p => p);
   const jobId = pathParts[pathParts.length - 1];
 
   if (!jobId) {
@@ -265,77 +266,53 @@ function setupApplyJobPage() {
     return;
   }
 
-  loadJobForApply(jobId);
+  window.currentJobId = jobId;
+  setupApplicationForm();
 }
 
-async function loadJobForApply(jobId) {
-  try {
-    const response = await fetch(`/jobseeker/api/job/${jobId}/`);
-    if (!response.ok) throw new Error('Job not found');
-    
-    const job = await response.json();
-    
-    const header = document.querySelector(".job-header");
-    if (header) {
-      header.innerHTML = `
-        <h1>Apply for ${job.title}</h1>
-        <p>${job.companyName} - ${job.location}</p>
-      `;
-    }
-    
-    setupApplicationForm(jobId);
-  } catch (error) {
-    showToast("Job not found", "error");
-    window.location.href = "/jobseeker/find-jobs/";
-  }
-}
-
-async function setupApplicationForm(jobId) {
+function setupApplicationForm() {
   const form = document.querySelector(".application-form");
   if (!form) return;
 
-  form.onsubmit = async function (e) {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('job_id', jobId);
-    formData.append('full_name', document.getElementById("fullname")?.value);
-    formData.append('email', document.getElementById("email")?.value);
-    formData.append('phone', document.getElementById("phone")?.value);
-    formData.append('cover_letter', document.getElementById("coverletter")?.value);
-    formData.append('experience', document.getElementById("experience")?.value);
-    formData.append('expected_salary', document.getElementById("salary")?.value);
-    formData.append('start_date', document.getElementById("startdate")?.value);
-    
-    const resumeFile = document.getElementById("resume")?.files[0];
-    if (resumeFile) {
-      formData.append('resume', resumeFile);
-    }
+    const data = {
+      job_id: window.currentJobId,
+      full_name: document.getElementById("fullname")?.value,
+      email: document.getElementById("email")?.value,
+      phone: document.getElementById("phone")?.value,
+      cover_letter: document.getElementById("coverletter")?.value,
+      experience: document.getElementById("experience")?.value || 0,
+      expected_salary: document.getElementById("salary")?.value,
+      start_date: document.getElementById("startdate")?.value || null,
+    };
 
     try {
       const response = await fetch('/jobseeker/api/apply/', {
         method: 'POST',
         headers: {
           'X-CSRFToken': getCSRFToken(),
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify(data),
       });
 
-      const data = await response.json();
-      
-      if (data.success) {
+      const result = await response.json();
+
+      if (result.success) {
         showToast("Application submitted successfully!", "success");
         setTimeout(() => {
           window.location.href = "/jobseeker/my-applications/";
         }, 1500);
       } else {
-        showToast("Error submitting application", "error");
+        showToast(result.error || "Error submitting application", "error");
       }
     } catch (error) {
       console.error('Error:', error);
-      showToast("Error submitting application", "error");
+      showToast("Error submitting application. Please try again.", "error");
     }
-  };
+  });
 }
 
 function getCSRFToken() {

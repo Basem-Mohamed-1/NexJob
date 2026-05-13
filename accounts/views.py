@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.http import JsonResponse
 
 def is_admin(user):
     if user.is_superuser:
@@ -122,3 +123,34 @@ def admin_dashboard(request):
         messages.error(request, "You do not have permission to access the admin dashboard.")
         return redirect('home')
     return render(request, 'company/Dashboard.html')
+
+
+@login_required
+def api_change_password(request):
+    if request.method == 'POST':
+        import json
+        data = json.loads(request.body)
+        
+        new_password = data.get('new_password', '')
+        confirm_password = data.get('confirm_password', '')
+        
+        if not new_password or not confirm_password:
+            return JsonResponse({'error': 'Password is required'}, status=400)
+        
+        if new_password != confirm_password:
+            return JsonResponse({'error': 'Passwords do not match'}, status=400)
+        
+        if len(new_password) < 6:
+            return JsonResponse({'error': 'Password must be at least 6 characters'}, status=400)
+        
+        # Set the new password
+        request.user.set_password(new_password)
+        request.user.save()
+        
+        # Re-login the user with the new password
+        from django.contrib.auth import login
+        login(request, request.user)
+        
+        return JsonResponse({'success': True, 'message': 'Password updated successfully'})
+    
+    return JsonResponse({'error': 'Invalid method'}, status=400)

@@ -1,10 +1,4 @@
-
-
-
-
 let opps = [];
-
-
 
 // loading the pages of company
 
@@ -31,13 +25,6 @@ console.log("im in");
 });
 
 
-
-
-
-
-
-
-
 // Toast 
 function showToast(message, type = "success") {
   let toast = document.getElementById("toast");
@@ -53,14 +40,8 @@ function showToast(message, type = "success") {
   toast.hideTimeout = setTimeout(() => toast.classList.remove("show"), 2500);
 }
 
-
-
-
-
-
-
 // ==================== CREATE JOB PAGE ====================
-function setupCreateJobPage() {
+async function setupCreateJobPage() {
 
 
   const form = document.querySelector("main form");
@@ -119,34 +100,17 @@ function setupCreateJobPage() {
     const jobData = {
       title: document.getElementById("job_title")?.value || "",
       company: document.getElementById("company_name")?.value || "",
-      status: document.getElementById("status")?.value || "open",
+      status: document.getElementById("status")?.value || "OPEN",
       salaryMin: parseInt(minSalary?.value) || 0,
       salaryMax: parseInt(maxSalary?.value) || 0,
       location: document.getElementById("location")?.value || "",
-      type: document.getElementById("employment_type")?.value || "Full-Time",
-      experience:
-        document.getElementById("experience")?.value || "Not specified",
+      type: document.getElementById("employment_type")?.value || "FULL_TIME",
+      experience: parseInt(document.getElementById("experience")?.value) || 0,
       description: document.getElementById("description")?.value || "",
-      responsibilities:
-        document.getElementById("responsibilities")?.value ||
-        "See job description",
-      requirements:
-        document.getElementById("requirements")?.value || "See job description",
+      responsibilities: document.getElementById("responsibilities")?.value || "",
+      requirements: document.getElementById("requirements")?.value || "",
     };
 
-    const data = await fetch("/company/api/create-job/",{
-      method : "POST",
-      headers : {
-        "Content-Type" : "application/json",
-          "X-CSRFToken": getCSRFToken()
-      },
-
-      body : JSON.stringify(jobData)
-    })
-
-    console.log("Job data:", jobData);
-
-    // Validate required fields
     if (!jobData.title) {
       showToast("Please enter a job title", "error");
       return;
@@ -160,12 +124,31 @@ function setupCreateJobPage() {
       return;
     }
 
+    try {
+      const response = await fetch("/company/api/create-job/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify(jobData)
+      });
 
+      const result = await response.json();
 
-    showToast("Job posted successfully!", "success");
-    setTimeout(() => {
-      window.location.href = "/company/my-jobs/";
-    }, 10000);
+      if (!response.ok) {
+        showToast(result.error || "Error posting job", "error");
+        return;
+      }
+
+      showToast("Job posted successfully!", "success");
+      setTimeout(() => {
+        window.location.href = "/company/my-jobs/";
+      }, 1000);
+    } catch (error) {
+      console.error("Error creating job:", error);
+      showToast("Error posting job. Please try again.", "error");
+    }
   });
 
   // Cancel button
@@ -192,7 +175,7 @@ async function loadMyJobs() {
     const response = await fetch("/company/api/my-jobs/");
     const data = await response.json();
     
-    opps = data.opportunties;
+    opps = data.opportunities;
 
     console.log(data);
   
@@ -219,8 +202,8 @@ async function loadMyJobs() {
     tbody.innerHTML = "";
 
     // Render jobs
-    data.opportunties.forEach(op => {
-      createJobTableRow(op,data.count)
+    data.opportunities.forEach(op => {
+      createJobTableRow(op)
     });
 
   } catch (error) {
@@ -228,15 +211,13 @@ async function loadMyJobs() {
   }
 }
 
-
-
-function createJobTableRow(job,count=0) {
+function createJobTableRow(job) {
 
     const tbody = document.querySelector(".job-table tbody");
 
     const row = document.createElement("tr");
 
-      row.innerHTML = `
+    row.innerHTML = `
         <td>
           <div class="job-title-cell">${job.title}</div>
           <span class="job-meta">${job.location}</span>
@@ -248,11 +229,11 @@ function createJobTableRow(job,count=0) {
           </span>
         </td>
 
-        <td>${job.postedDate}</td>
+        <td>${formatDate(job.postedDate)}</td>
 
         <td>
-          <span class="total-count">
-            ${0} applicants
+          <span class="total-count" id="applicant-count-${job.id}">
+            <i class="fa-solid fa-spinner fa-spin"></i>
           </span>
         </td>
 
@@ -275,8 +256,26 @@ function createJobTableRow(job,count=0) {
 
       tbody.appendChild(row);
 
+      fetchApplicantCount(job.id);
+
       return row
-    
+
+}
+
+async function fetchApplicantCount(jobId) {
+  try {
+    const response = await fetch(`/company/api/job/${jobId}/applicant-count/`);
+    const data = await response.json();
+    const countEl = document.getElementById(`applicant-count-${jobId}`);
+    if (countEl) {
+      countEl.innerHTML = `<span>${data.count} applicant${data.count !== 1 ? 's' : ''}</span>`;
+    }
+  } catch (error) {
+    const countEl = document.getElementById(`applicant-count-${jobId}`);
+    if (countEl) {
+      countEl.innerHTML = `<span>0 applicants</span>`;
+    }
+  }
 }
 
 function setupSearchFilter() {
@@ -311,12 +310,6 @@ function updateResultsInfo(count) {
     resultsInfo.textContent = `Showing 1 to ${count} of ${count} results`;
 }
 
-
-
-
-
-
-
 // ==================== ACTION FUNCTIONS ====================
 let viewApplicants = function (jobId) {
   window.location.href = `company/applications/?jobId=${jobId}`;
@@ -330,16 +323,25 @@ let deleteJobConfirm = function (jobId) {
   showConfirm(
     "Delete Job",
     "Are you sure you want to delete this job? This action cannot be undone.",
-    () => {
-      deleteJob(jobId);
-      showToast("Job deleted successfully", "success");
-      setTimeout(() => location.reload(), 1000);
+    async () => {
+      try {
+        await fetch(`/company/api/job/${jobId}/delete/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': getCSRFToken()
+          }
+        });
+        showToast("Job deleted successfully", "success");
+        setTimeout(() => location.reload(), 1000);
+      } catch (error) {
+        showToast("Error deleting job", "error");
+      }
     },
   );
 };
 
 // ==================== EDIT JOB PAGE ====================
-function setupEditJobPage() {
+async function setupEditJobPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const jobId = urlParams.get("id");
 
@@ -348,41 +350,41 @@ function setupEditJobPage() {
     return;
   }
 
-  const job = getJobById(jobId);
-  if (!job) {
+  let job;
+  try {
+    const res = await fetch(`/company/api/job/${jobId}/`);
+    if (!res.ok) throw new Error("Job not found");
+    job = await res.json();
+  } catch (error) {
+    console.error("Error loading job:", error);
+    showToast("Job not found", "error");
     window.location.href = "/company/my-jobs/";
     return;
   }
 
-  // Fill form
   document.getElementById("job_title").value = job.title || "";
-  document.getElementById("company_name").value = job.company || "";
-  document.getElementById("status").value = job.status || "open";
-  document.querySelector('input[name="salary_min"]').value =
-    job.salaryMin || "";
-  document.querySelector('input[name="salary_max"]').value =
-    job.salaryMax || "";
-  // document.getElementById("location").value = job.location || "";
-  // document.getElementById("employment_type").value = job.type || "Full-Time";
+  document.getElementById("company_name").value = job.companyName || "";
+  document.getElementById("status").value = job.status || "OPEN";
+  document.querySelector('input[name="salary_min"]').value = job.salary_min || "";
+  document.querySelector('input[name="salary_max"]').value = job.salary_max || "";
+  document.getElementById("location").value = job.location || "";
+  document.getElementById("employment_type").value = job.employment_type || "FULL_TIME";
   document.getElementById("experience").value = job.experience || "";
-  document.getElementById("description").value = job.description || "";
-  document.getElementById("responsibilities").value =
-    job.responsibilities || "";
+  document.getElementById("description").value = job.jobDescription || "";
+  document.getElementById("responsibilities").value = job.responsibilities || "";
   document.getElementById("requirements").value = job.requirements || "";
 
-  // Setup submit
   const form = document.querySelector("main form");
   const minSalary = form.querySelector('input[name="salary_min"]');
   const maxSalary = form.querySelector('input[name="salary_max"]');
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const min = Number(minSalary.value);
     const max = Number(maxSalary.value);
     if (min > max) {
-      document.getElementById("salaryError").textContent =
-        "Minimum must be ≤ maximum";
+      document.getElementById("salaryError").textContent = "Minimum must be <= maximum";
       document.getElementById("salaryError").classList.add("visible");
       return;
     }
@@ -393,111 +395,332 @@ function setupEditJobPage() {
       status: document.getElementById("status").value,
       salaryMin: min,
       salaryMax: max,
-      // location: document.getElementById("location").value,
-      // type: document.getElementById("employment_type").value,
+      location: document.getElementById("location").value,
+      type: document.getElementById("employment_type").value,
       experience: document.getElementById("experience").value,
       description: document.getElementById("description").value,
       responsibilities: document.getElementById("responsibilities").value,
       requirements: document.getElementById("requirements").value,
     };
 
-    const jobs = getAllJobs();
-    const index = jobs.findIndex((j) => j.id === jobId);
-    if (index !== -1) {
-      jobs[index] = { ...jobs[index], ...updatedJob };
-      saveToStorage(JOBS_KEY, jobs);
+    try {
+      const res = await fetch(`/company/api/job/${jobId}/edit/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify(updatedJob),
+      });
+
+      if (!res.ok) throw new Error("Update failed");
+
       showToast("Job updated successfully!", "success");
       setTimeout(() => (window.location.href = "/company/my-jobs/"), 1500);
+    } catch (error) {
+      console.error("Error updating job:", error);
+      showToast("Error updating job", "error");
     }
   });
 }
 
 // ==================== DASHBOARD PAGE ====================
-function setupDashboardPage() {
-  const myJobs = getMyCompanyJobs();
-  myJobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
-  const latestJobs = myJobs.slice(0, 3);
-  const cardsContainer = document.getElementById("cards");
-  if (!cardsContainer) return;
+async function setupDashboardPage() {
+  try {
+    const response = await fetch("/company/api/my-jobs/");
+    const data = await response.json();
+    const jobs = data.opportunities || [];
 
-  // Clear existing cards
-  cardsContainer.querySelectorAll(".job-card").forEach((card) => card.remove());
+    jobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+    const latestJobs = jobs.slice(0, 3);
+    const cardsContainer = document.getElementById("cards");
+    if (!cardsContainer) return;
 
-  latestJobs.forEach((job) => {
-    const card = document.createElement("div");
-    card.className = "job-card";
-    const minK = Math.round(job.salaryMin / 1000);
-    const maxK = Math.round(job.salaryMax / 1000);
+    cardsContainer.querySelectorAll(".job-card").forEach((card) => card.remove());
 
-    card.innerHTML = `
-      <div class="job-content">
-        <div>
-          <i class="company-icons fa-solid fa-building"></i>
-          <div class="left-content">
-            <h3>${job.title}</h3>
-            <div class="job-details">
-              <div class="company"><i class="fa-solid fa-building"></i><h6>${job.company}</h6></div>
-              <div class="company"><i class="fa-solid fa-location-dot"></i><h6>${job.location}</h6></div>
-              <div class="company"><i class="fa-solid fa-clock"></i><h6>${job.type}</h6></div>
+    for (const job of latestJobs) {
+      let applicantCount = 0;
+      try {
+        const countRes = await fetch(`/company/api/job/${job.id}/applicant-count/`);
+        const countData = await countRes.json();
+        applicantCount = countData.count;
+      } catch (e) {}
+
+      const card = document.createElement("div");
+      card.className = "job-card";
+      const minK = Math.round(job.salary_min / 1000);
+      const maxK = Math.round(job.salary_max / 1000);
+
+      card.innerHTML = `
+        <div class="job-content">
+          <div>
+            <i class="company-icons fa-solid fa-building"></i>
+            <div class="left-content">
+              <h3>${job.title}</h3>
+              <div class="job-details">
+                <div class="company"><i class="fa-solid fa-building"></i><h6>${job.companyName}</h6></div>
+                <div class="company"><i class="fa-solid fa-location-dot"></i><h6>${job.location}</h6></div>
+                <div class="company"><i class="fa-solid fa-clock"></i><h6>${job.employment_type}</h6></div>
+              </div>
             </div>
           </div>
-        </div>
-        <hr class="horizontal-line" />
-        <div class="job-applying">
-          <div class="job-salary">
-            <h4>$${minK}k - $${maxK}k</h4>
-            <p>Posted ${daysAgo(job.postedDate)}</p>
+          <hr class="horizontal-line" />
+          <div class="job-applying">
+            <div class="job-salary">
+              <h4>$${minK}k - $${maxK}k</h4>
+              <p>${applicantCount} applicant${applicantCount !== 1 ? 's' : ''}</p>
+            </div>
+            <h3>Apply Now</h3>
           </div>
-          <h3>Apply Now</h3>
         </div>
-      </div>
-    `;
-    const position = document.querySelector(".browse-more");
-    cardsContainer.insertBefore(card, position);
-  });
-}
-
-// ==================== SETTINGS PAGE ====================
-function setupSettingsPage() {
-  const currentUser = getCurrentUser();
-  if (!currentUser) return;
-
-  document.getElementById("username").value = currentUser.username || "";
-  document.getElementById("email").value = currentUser.email || "";
-
-  loadCompanyProfile();
-
-  document.querySelectorAll("form").forEach((form) => {
-    form.onsubmit = (e) => {
-      e.preventDefault();
-    };
-  });
-}
-
-function loadCompanyProfile() {
-  const profile = getCompanyProfile();
-  if (profile) {
-    document.getElementById("company_name").value = profile.companyName || "";
-    document.getElementById("website").value = profile.website || "";
-    document.getElementById("location").value = profile.location || "";
-    document.getElementById("company_desc").value = profile.description || "";
+      `;
+      const position = document.querySelector(".browse-more");
+      cardsContainer.insertBefore(card, position);
+    }
+  } catch (error) {
+    console.error("Error loading dashboard:", error);
   }
 }
 
-function getCompanyProfile() {
-  const currentUser = getCurrentUser();
-  if (!currentUser) return null;
-  const data = localStorage.getItem(`company_profile_${currentUser.username}`);
-  return data ? JSON.parse(data) : null;
+// ==================== SETTINGS PAGE ====================
+async function setupSettingsPage() {
+  // Load settings from Django API
+  await loadSettingsFromAPI();
+  
+  // Setup character counter for company description
+  const desc = document.getElementById("company_desc");
+  const counter = document.querySelector(".char-counter");
+  if (desc && counter) {
+    counter.textContent = `${desc.value.length} / 500`;
+    desc.addEventListener("input", () => {
+      counter.textContent = `${desc.value.length} / 500`;
+    });
+  }
+  
+  // Setup password strength indicator
+  const password = document.getElementById("new_password");
+  const confirmPassword = document.getElementById("confirm_password");
+  const strengthBar = document.getElementById("strengthBar");
+  const strengthLabel = document.getElementById("strengthLabel");
+  
+  function getStrength(pwd) {
+    let score = 0;
+    if (pwd.length >= 6) score++;
+    if (pwd.length >= 10) score++;
+    if (/[A-Z]/.test(pwd)) score++;
+    if (/[0-9]/.test(pwd)) score++;
+    if (/[^A-Za-z0-9]/.test(pwd)) score++;
+    return score;
+  }
+  
+  if (password && strengthBar && strengthLabel) {
+    password.addEventListener("input", () => {
+      const strength = getStrength(password.value);
+      const levels = [
+        { label: "Very Weak", color: "#ef4444", width: "20%" },
+        { label: "Weak", color: "#f97316", width: "40%" },
+        { label: "Fair", color: "#eab308", width: "60%" },
+        { label: "Good", color: "#22c55e", width: "80%" },
+        { label: "Strong", color: "#16a34a", width: "100%" },
+      ];
+      const level = levels[strength - 1] || levels[0];
+      strengthBar.style.width = level.width;
+      strengthBar.style.background = level.color;
+      strengthLabel.textContent = level.label;
+    });
+  }
+  
+  // Setup toggle password visibility
+  document.querySelectorAll(".toggle-password").forEach((icon) => {
+    icon.addEventListener("click", function () {
+      const inputId = this.dataset.target;
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      this.classList.toggle("fa-eye", !isHidden);
+      this.classList.toggle("fa-eye-slash", isHidden);
+    });
+  });
+
+  // Setup form submissions
+  document.querySelectorAll("main form").forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      // Account form (username, email)
+      if (form.querySelector("#username") || form.querySelector("#email")) {
+        await saveAccountSettings(data);
+      }
+      
+      // Company Profile form
+      if (form.querySelector("#company_name") || form.querySelector("#company_desc")) {
+        await saveCompanySettings({
+          company_name: data.company_name,
+          website: data.website,
+          location: data.location,
+          description: data.company_desc
+        });
+      }
+      
+      // Notifications form (can be expanded later)
+      if (form.querySelector('input[name="email_notif"]')) {
+        showToast("Notification preferences saved", "success");
+      }
+    });
+  });
+  
+  // Setup security form (password change)
+  const securityForm = document.querySelector('input[name="new_password"]')?.closest("form");
+  if (securityForm) {
+    securityForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await changePassword(securityForm);
+    });
+  }
 }
 
-function saveCompanyProfile(profileData) {
-  const currentUser = getCurrentUser();
-  if (!currentUser) return;
-  localStorage.setItem(
-    `company_profile_${currentUser.username}`,
-    JSON.stringify(profileData),
-  );
+async function loadSettingsFromAPI() {
+  try {
+    const response = await fetch('/company/api/settings/');
+    
+    if (!response.ok) {
+      console.error("Failed to load settings");
+      return;
+    }
+    
+    const data = await response.json();
+    console.log("Settings loaded:", data);
+    
+    // Account form
+    const usernameInput = document.getElementById("username");
+    const emailInput = document.getElementById("email");
+    if (usernameInput && data.username) usernameInput.value = data.username;
+    if (emailInput && data.email) emailInput.value = data.email;
+    
+    // Company profile form
+    const companyNameInput = document.getElementById("company_name");
+    const websiteInput = document.getElementById("website");
+    const locationInput = document.getElementById("location");
+    const descInput = document.getElementById("company_desc");
+    
+    if (companyNameInput && data.company_name) companyNameInput.value = data.company_name;
+    if (websiteInput && data.website) websiteInput.value = data.website;
+    if (locationInput && data.location) locationInput.value = data.location;
+    if (descInput && data.description) {
+      descInput.value = data.description;
+      const counter = document.querySelector(".char-counter");
+      if (counter) counter.textContent = `${descInput.value.length} / 500`;
+    }
+    
+  } catch (error) {
+    console.error("Error loading settings:", error);
+  }
+}
+
+async function saveAccountSettings(data) {
+  try {
+    const response = await fetch('/company/api/settings/account/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      showToast("Account settings saved", "success");
+    } else {
+      showToast(result.error || "Failed to save account settings", "error");
+    }
+  } catch (error) {
+    console.error("Error saving account:", error);
+    showToast("Error saving account settings", "error");
+  }
+}
+
+async function saveCompanySettings(data) {
+  try {
+    const response = await fetch('/company/api/settings/company/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      showToast("Company profile saved", "success");
+      // Update character counter
+      const descInput = document.getElementById("company_desc");
+      const counter = document.querySelector(".char-counter");
+      if (descInput && counter) counter.textContent = `${descInput.value.length} / 500`;
+    } else {
+      showToast(result.error || "Failed to save company profile", "error");
+    }
+  } catch (error) {
+    console.error("Error saving company:", error);
+    showToast("Error saving company profile", "error");
+  }
+}
+
+async function changePassword(form) {
+  const newPassword = form.querySelector('input[name="new_password"]')?.value;
+  const confirmPassword = form.querySelector('input[name="confirm_password"]')?.value;
+  const strengthBar = form.querySelector(".strength-bar");
+  const strengthLabel = form.querySelector(".strength-label");
+  
+  if (!newPassword || !confirmPassword) {
+    showToast("Please fill in both password fields", "error");
+    return;
+  }
+  
+  if (newPassword !== confirmPassword) {
+    showToast("Passwords do not match", "error");
+    return;
+  }
+  
+  if (newPassword.length < 6) {
+    showToast("Password must be at least 6 characters", "error");
+    return;
+  }
+  
+  try {
+    const response = await fetch('/accounts/api/change-password/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify({
+        new_password: newPassword,
+        confirm_password: confirmPassword
+      })
+    });
+
+    const result = await response.json();
+    
+    if (result.success) {
+      showToast("Password updated successfully", "success");
+      form.reset();
+      if (strengthBar) strengthBar.style.width = "0%";
+      if (strengthLabel) strengthLabel.textContent = "";
+    } else {
+      showToast(result.error || "Failed to update password", "error");
+    }
+  } catch (error) {
+    console.error("Error updating password:", error);
+    showToast("Error updating password", "error");
+  }
 }
 
 // ==================== HELPERS ====================
@@ -531,116 +754,198 @@ function setupApplicationsPage() {
   loadApplications();
 }
 
-function loadJobSelector() {
-  const myJobs = getMyCompanyJobs();
-  const select = document.getElementById("jobSelect");
-  if (!select) return;
+async function loadJobSelector() {
+  try {
+    const response = await fetch("/company/api/my-jobs/");
+    const data = await response.json();
+    const myJobs = data.opportunties || [];
+    
+    const select = document.getElementById("jobSelect");
+    if (!select) return;
 
-  select.innerHTML = '<option value="">Select a job</option>';
+    select.innerHTML = '<option value="">Select a job</option>';
 
-  myJobs.forEach((job) => {
-    const option = document.createElement("option");
-    option.value = job.id;
-    option.textContent = `${job.title} (${job.location})`;
-    select.appendChild(option);
-  });
+    myJobs.forEach((job) => {
+      const option = document.createElement("option");
+      option.value = job.id;
+      option.textContent = `${job.title} (${job.location})`;
+      select.appendChild(option);
+    });
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const jobId = urlParams.get("jobId");
-  if (jobId) {
-    select.value = jobId;
-    loadApplicationsForJob(jobId);
-  }
-
-  select.addEventListener("change", () => {
-    const selectedJobId = select.value;
-    if (selectedJobId) {
-      loadApplicationsForJob(selectedJobId);
-    } else {
-      loadApplications();
+    const urlParams = new URLSearchParams(window.location.search);
+    const jobId = urlParams.get("jobId");
+    if (jobId) {
+      select.value = jobId;
+      loadApplicationsForJob(jobId);
     }
-  });
+
+    select.addEventListener("change", () => {
+      const selectedJobId = select.value;
+      if (selectedJobId) {
+        loadApplicationsForJob(selectedJobId);
+      } else {
+        loadApplications();
+      }
+    });
+  } catch (error) {
+    console.error("Error loading job selector:", error);
+  }
 }
 
-function loadApplications() {
-  const applications = getApplicationsForMyJobs();
+async function loadApplications() {
   const container = document.querySelector(".applications-container");
   if (!container) return;
 
-  if (applications.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-users"></i>
-        <h3>No Applications Yet</h3>
-        <p>Post a job to start receiving applications.</p>
-      </div>
-    `;
-    return;
-  }
+  try {
+    const settingsResponse = await fetch('/company/api/settings/');
+    const settingsData = await settingsResponse.json();
+    const companyName = settingsData.company_name || '';
+    
+    if (!companyName) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-users"></i>
+          <h3>No Company Profile</h3>
+          <p>Please set up your company profile first.</p>
+        </div>
+      `;
+      return;
+    }
+    
+    const response = await fetch('/company/api/applications/');
+    const data = await response.json();
+    
+    if (data.error) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-exclamation-triangle"></i>
+          <h3>Error</h3>
+          <p>${data.error}</p>
+        </div>
+      `;
+      return;
+    }
+    
+    const applications = data.applications || [];
 
-  container.innerHTML = "";
-  applications.forEach((app) => {
-    const job = getJobById(app.jobId);
-    const card = createApplicationCard(app, job);
-    container.appendChild(card);
-  });
+    if (applications.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-users"></i>
+          <h3>No Applications Yet</h3>
+          <p>Post a job to start receiving applications.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = "";
+    applications.forEach((app) => {
+      const card = createApplicationCard(app, companyName);
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error loading applications:", error);
+  }
 }
 
-function loadApplicationsForJob(jobId) {
-  const applications = getApplicationsForJob(jobId);
+async function loadApplicationsForJob(jobId) {
   const container = document.querySelector(".applications-container");
   if (!container) return;
 
-  if (applications.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-user-slash"></i>
-        <h3>No Applicants</h3>
-        <p>No one has applied to this job yet.</p>
-      </div>
-    `;
-    return;
-  }
+  try {
+    const settingsResponse = await fetch('/company/api/settings/');
+    const settingsData = await settingsResponse.json();
+    const companyName = settingsData.company_name || '';
+    
+    if (!companyName) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-user-slash"></i>
+          <h3>No Company Profile</h3>
+          <p>Please set up your company profile first.</p>
+        </div>
+      `;
+      return;
+    }
+    
+    const response = await fetch(`/company/api/applications/?opportunity_id=${jobId}`);
+    const data = await response.json();
+    
+    if (data.error) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-exclamation-triangle"></i>
+          <h3>Error</h3>
+          <p>${data.error}</p>
+        </div>
+      `;
+      return;
+    }
+    
+    const applications = data.applications || [];
 
-  container.innerHTML = "";
-  const job = getJobById(jobId);
-  applications.forEach((app) => {
-    const card = createApplicationCard(app, job);
-    container.appendChild(card);
-  });
+    if (applications.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-user-slash"></i>
+          <h3>No Applicants</h3>
+          <p>No one has applied to this job yet.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = "";
+    applications.forEach((app) => {
+      const card = createApplicationCard(app, companyName);
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error loading applications for job:", error);
+  }
 }
 
-function createApplicationCard(application, job) {
+async function createApplicationCard(application, companyName) {
   const card = document.createElement("div");
   card.className = "application-card";
 
+  let jobTitle = `Job #${application.opportunity_id}`;
+  try {
+    const jobRes = await fetch(`/company/api/job/${application.opportunity_id}/`);
+    if (jobRes.ok) {
+      const job = await jobRes.json();
+      jobTitle = job.title;
+    }
+  } catch (e) {}
+
   const statusColors = {
-    pending: "#f59e0b",
-    reviewed: "#3b82f6",
-    interview: "#8b5cf6",
-    hired: "#22c55e",
-    rejected: "#ef4444",
+    PENDING: "#f59e0b",
+    REVIEWING: "#3b82f6",
+    INTERVIEW: "#8b5cf6",
+    HIRED: "#22c55e",
+    REJECTED: "#ef4444",
   };
 
   const statusLabels = {
-    pending: "Pending",
-    reviewed: "Reviewed",
-    interview: "Interview",
-    hired: "Hired",
-    rejected: "Rejected",
+    PENDING: "Pending",
+    REVIEWING: "Reviewing",
+    INTERVIEW: "Interview",
+    HIRED: "Hired",
+    REJECTED: "Rejected",
   };
 
-  const statusColor = statusColors[application.status] || statusColors.pending;
+  const statusColor = statusColors[application.status] || statusColors.PENDING;
   const statusLabel = statusLabels[application.status] || "Pending";
 
   card.innerHTML = `
     <div class="app-header">
       <div class="app-info">
-        <h3>${application.fullName || application.applicantUsername}</h3>
+        <h3>${application.full_name || "Applicant"}</h3>
         <p><i class="fa-solid fa-envelope"></i> ${application.email || "No email"}</p>
         <p><i class="fa-solid fa-phone"></i> ${application.phone || "No phone"}</p>
       </div>
-      <div class="app-job">${job ? job.title : "Unknown Job"}</div>
+      <div class="app-job">${jobTitle}</div>
     </div>
     <div class="app-details">
       <div class="detail-item">
@@ -649,29 +954,29 @@ function createApplicationCard(application, job) {
       </div>
       <div class="detail-item">
         <span class="label">Expected Salary:</span>
-        <span>${application.expectedSalary || "Not specified"}</span>
+        <span>${application.expected_salary || "Not specified"}</span>
       </div>
       <div class="detail-item">
         <span class="label">Start Date:</span>
-        <span>${application.startDate || "Flexible"}</span>
+        <span>${application.start_date || "Flexible"}</span>
       </div>
       <div class="detail-item">
         <span class="label">Applied:</span>
-        <span>${formatDate(application.appliedDate)}</span>
+        <span>${application.applied_at}</span>
       </div>
     </div>
-    ${application.coverLetter ? `<div class="app-cover-letter"><p>${application.coverLetter}</p></div>` : ""}
+    ${application.cover_letter ? `<div class="app-cover-letter"><p>${application.cover_letter}</p></div>` : ""}
     <div class="app-footer">
-      <div class="app-status-badge">
+      <div class="app-status-badge" style="background-color: ${statusColor}">
         ${statusLabel}
       </div>
       <div class="app-actions">
-        <select class="status-select" onchange="updateStatus('${application.id}', this.value)">
-          <option value="pending" ${application.status === "pending" ? "selected" : ""}>Pending</option>
-          <option value="reviewed" ${application.status === "reviewed" ? "selected" : ""}>Reviewed</option>
-          <option value="interview" ${application.status === "interview" ? "selected" : ""}>Interview</option>
-          <option value="hired" ${application.status === "hired" ? "selected" : ""}>Hired</option>
-          <option value="rejected" ${application.status === "rejected" ? "selected" : ""}>Rejected</option>
+        <select class="status-select" onchange="updateStatus(${application.id}, this.value)">
+          <option value="PENDING" ${application.status === "PENDING" ? "selected" : ""}>Pending</option>
+          <option value="REVIEWING" ${application.status === "REVIEWING" ? "selected" : ""}>Reviewing</option>
+          <option value="INTERVIEW" ${application.status === "INTERVIEW" ? "selected" : ""}>Interview</option>
+          <option value="HIRED" ${application.status === "HIRED" ? "selected" : ""}>Hired</option>
+          <option value="REJECTED" ${application.status === "REJECTED" ? "selected" : ""}>Rejected</option>
         </select>
       </div>
     </div>
@@ -680,11 +985,18 @@ function createApplicationCard(application, job) {
   return card;
 }
 
-function updateStatus(applicationId, newStatus) {
-  const success = updateApplicationStatus(applicationId, newStatus);
-  if (success) {
+async function updateStatus(applicationId, newStatus) {
+  try {
+    await fetch(`/company/api/application/${applicationId}/status/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: JSON.stringify({ status: newStatus })
+    });
     showToast(`Application status updated to ${newStatus}`, "success");
-  } else {
+  } catch (error) {
     showToast("Failed to update status", "error");
   }
 }

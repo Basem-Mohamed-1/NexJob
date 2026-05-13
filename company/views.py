@@ -1,110 +1,337 @@
-from django.shortcuts import render
-from .models import Opportunity ,Company
+from django.shortcuts import render, get_object_or_404
+from .models import Opportunity, Company
 from django.http import JsonResponse
+from jobseeker.models import Application
 import json
 
 def dashboard(request):
+    
     return render(request, 'company/Dashboard.html')
-
-
 
 
 def create_job(request):
     return render(request, 'company/create_a_new_opportunity.html')
 
 
-
-
 def api_create_job(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    if request.method == "POST":
+        data = json.loads(request.body)
 
-    if request.method == "POST" : 
+        title = data.get("title")
+        companyName = data.get("company")
+        status = data.get("status")
+        maxSalary = int(data.get("salaryMax"))
+        minSalary = int(data.get("salaryMin"))
+        location = data.get("location")
+        employeeType = data.get("type")
+        experience = int(data.get("experience"))
+        description = data.get("description")
+        respons = data.get("responsibilities")
+        requirements = data.get("requirements")
 
+        # Get or create company record for this user
+        company, created = Company.objects.get_or_create(
+            user=request.user,
+            defaults={'companyName': companyName or request.user.username}
+        )
+        # Update company name if it changed
+        if companyName and company.companyName != companyName:
+            company.companyName = companyName
+            company.save()
+        elif not companyName:
+            companyName = company.companyName
 
-            data = json.loads(request.body)
+        job = Opportunity.objects.create(
+            title=title,
+            companyName=companyName,
+            location=location,
+            experience=experience,
+            jobDescription=description,
+            responsibilities=respons,
+            requirements=requirements,
+            salary_min=minSalary,
+            salary_max=maxSalary,
+            employment_type=employeeType,
+            status=status,
+        )
 
-            title = data.get("title")
-
-            companyName = data.get("company")
-
-            status = data.get("status")
-
-            maxSalary =  int(data.get("salaryMax"))
-            minSalary = int(data.get("salaryMin"))
-
-            location = data.get("location")
-
-            employeeType = data.get("type")
-
-            experience = int(data.get("experience"))
-
-            description = data.get("description")
-
-            respons = data.get("responsibilities")
-
-            requirements = data.get("requirements")
-
-            job = Opportunity.objects.create(
-                title = title,
-                companyName= companyName,
-                location = location,
-                experience = experience,
-                jobDescription = description,
-                responsibilities = respons,
-                requirements = requirements,
-                salary_min = minSalary,
-                salary_max = maxSalary ,
-                employment_type = employeeType,
-                status = status,
-            )
-
-            return JsonResponse({
-                "message": "Job created successfully",
-                "id": job.id
-            })
+        return JsonResponse({
+            "message": "Job created successfully",
+            "id": job.id
+        })
 
     return JsonResponse({"error": "Invalid method"}, status=400)
-
-        
-    
 
 
 def my_jobs(request):
     return render(request, 'company/my_job_postings.html')
 
 def api_my_jobs(request):
-
-    jobs = Opportunity.objects.all()
-
-    # If request wants JSON (API call)
-    # if request.headers.get('Accept') == 'application/json':
-    data = [
-        {
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    try:
+        company = Company.objects.get(user=request.user)
+        jobs = Opportunity.objects.filter(companyName=company.companyName)
+    except Company.DoesNotExist:
+        jobs = Opportunity.objects.none()
+    
+    data = []
+    for op in jobs:
+        data.append({
             "id": op.id,
             "title": op.title,
-            "companyName" : op.companyName,
-            "experience" : op.experience ,
-            "jobDescription" : op.jobDescription,
-            "responsibilities" : op.responsibilities,
-            "requirements" : op.requirements,
+            "companyName": op.companyName,
+            "experience": op.experience,
+            "jobDescription": op.jobDescription,
+            "responsibilities": op.responsibilities,
+            "requirements": op.requirements,
             "location": op.location,
             "status": op.status,
             "postedDate": op.postedDate,
-            "employment_type" : op.employment_type,
-        }
-        for op in jobs
-    ]
+            "employment_type": op.employment_type,
+            "salary_min": op.salary_min,
+            "salary_max": op.salary_max,
+        })
 
     return JsonResponse({
         "count": len(data),
-        "opportunties": data
+        "opportunities": data
     })
+
+
+def api_get_job(request, job_id):
+    job = get_object_or_404(Opportunity, id=job_id)
+    data = {
+        "id": job.id,
+        "title": job.title,
+        "companyName": job.companyName,
+        "location": job.location,
+        "experience": job.experience,
+        "salary_min": job.salary_min,
+        "salary_max": job.salary_max,
+        "jobDescription": job.jobDescription,
+        "responsibilities": job.responsibilities,
+        "requirements": job.requirements,
+        "status": job.status,
+        "employment_type": job.employment_type,
+        "postedDate": job.postedDate,
+    }
+    return JsonResponse(data)
+
+
+def api_edit_job(request, job_id):
+    if request.method == "POST":
+        job = get_object_or_404(Opportunity, id=job_id)
+        data = json.loads(request.body)
+
+        job.title = data.get("title", job.title)
+        job.companyName = data.get("company", job.companyName)
+        job.location = data.get("location", job.location)
+        job.experience = data.get("experience", job.experience)
+        job.salary_min = data.get("salaryMin", job.salary_min)
+        job.salary_max = data.get("salaryMax", job.salary_max)
+        job.jobDescription = data.get("description", job.jobDescription)
+        job.responsibilities = data.get("responsibilities", job.responsibilities)
+        job.requirements = data.get("requirements", job.requirements)
+        job.status = data.get("status", job.status)
+        job.employment_type = data.get("type", job.employment_type)
+
+        job.save()
+
+        return JsonResponse({"message": "Job updated successfully"})
+
+    return JsonResponse({"error": "Invalid method"}, status=400)
+
+
+def api_delete_job(request, job_id):
+    if request.method == "POST":
+        job = get_object_or_404(Opportunity, id=job_id)
+        job.delete()
+        return JsonResponse({"message": "Job deleted successfully"})
+    
+    return JsonResponse({"error": "Invalid method"}, status=400)
 
 
 def applications(request):
     return render(request, 'company/applications.html')
 
+def api_applications(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    try:
+        company = Company.objects.get(user=request.user)
+        company_name = company.companyName
+    except Company.DoesNotExist:
+        return JsonResponse({"error": "Company profile not found"}, status=400)
+    
+    company_opportunity_ids = Opportunity.objects.filter(companyName=company_name).values_list('id', flat=True)
+    applications = Application.objects.filter(opportunity_id__in=company_opportunity_ids).order_by('-applied_at')
+    
+    opportunity_id = request.GET.get('opportunity_id')
+    if opportunity_id:
+        applications = applications.filter(opportunity_id=opportunity_id)
+    
+    status = request.GET.get('status')
+    if status:
+        applications = applications.filter(status=status)
+    
+    data = [
+        {
+            "id": app.id,
+            "full_name": app.full_name,
+            "email": app.email,
+            "phone": app.phone,
+            "opportunity_id": app.opportunity_id,
+            "experience": app.experience,
+            "expected_salary": app.expected_salary,
+            "start_date": app.start_date.isoformat() if app.start_date else None,
+            "applied_at": app.applied_at.strftime('%b %d, %Y'),
+            "status": app.status,
+            "cover_letter": app.cover_letter,
+        }
+        for app in applications
+    ]
+    
+    return JsonResponse({
+        "count": len(data),
+        "applications": data
+    })
+
+
+def api_update_application_status(request, application_id):
+    if request.method == "POST":
+        application = get_object_or_404(Application, id=application_id)
+        data = json.loads(request.body)
+        
+        application.status = data.get("status", application.status)
+        application.save()
+        
+        return JsonResponse({"message": "Status updated successfully"})
+    
+    return JsonResponse({"error": "Invalid method"}, status=400)
+
+
+def api_job_applicant_count(request, job_id):
+    if request.method == "GET":
+        count = Application.objects.filter(opportunity_id=job_id).count()
+        return JsonResponse({"count": count})
+    
+    return JsonResponse({"error": "Invalid method"}, status=400)
+
+
 def settings(request):
     return render(request, 'company/Company_settings.html')
 
+
 def profile(request):
     return render(request, 'company/profile.html')
+
+
+# ==================== Company Settings API ====================
+
+def api_get_settings(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    user = request.user
+    data = {
+        'username': user.username,
+        'email': user.email,
+    }
+    
+    # Try to get company profile
+    try:
+        company = Company.objects.get(user=user)
+        data['company_name'] = company.companyName
+        data['website'] = company.website
+        data['location'] = company.location
+        data['description'] = company.description
+    except Company.DoesNotExist:
+        # Get company name from Profile if exists
+        profile = getattr(user, 'profile', None)
+        if profile and profile.company_name:
+            data['company_name'] = profile.company_name
+            data['website'] = ''
+            data['location'] = ''
+            data['description'] = ''
+        else:
+            data['company_name'] = ''
+            data['website'] = ''
+            data['location'] = ''
+            data['description'] = ''
+    
+    return JsonResponse(data)
+
+
+def api_save_account(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        
+        user = request.user
+        new_username = data.get('username', '').strip()
+        new_email = data.get('email', '').strip()
+        
+        if not new_username or not new_email:
+            return JsonResponse({'error': 'Username and email are required'}, status=400)
+        
+        # Check if username is taken by another user
+        if User.objects.exclude(pk=user.pk).filter(username=new_username).exists():
+            return JsonResponse({'error': 'Username is already taken'}, status=400)
+        
+        # Check if email is taken by another user
+        if User.objects.exclude(pk=user.pk).filter(email=new_email).exists():
+            return JsonResponse({'error': 'Email is already taken'}, status=400)
+        
+        user.username = new_username
+        user.email = new_email
+        user.save()
+        
+        return JsonResponse({'success': True, 'message': 'Account updated successfully'})
+    
+    return JsonResponse({'error': 'Invalid method'}, status=400)
+
+
+def api_save_company_profile(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        
+        company_name = data.get('company_name', '').strip()
+        website = data.get('website', '').strip()
+        location = data.get('location', '').strip()
+        description = data.get('description', '').strip()
+        
+        if not company_name:
+            return JsonResponse({'error': 'Company name is required'}, status=400)
+        
+        # Try to update existing or create new
+        company, created = Company.objects.get_or_create(
+            user=request.user,
+            defaults={
+                'companyName': company_name,
+                'website': website,
+                'location': location,
+                'description': description,
+            }
+        )
+        
+        if not created:
+            company.companyName = company_name
+            company.website = website
+            company.location = location
+            company.description = description
+            company.save()
+        
+        return JsonResponse({'success': True, 'message': 'Company profile saved successfully'})
+    
+    return JsonResponse({'error': 'Invalid method'}, status=400)
