@@ -1,5 +1,13 @@
-console.log("JS LOADED");
-console.log("JS LOADED");
+
+
+
+
+let opps = [];
+
+
+
+// loading the pages of company
+
 document.addEventListener("DOMContentLoaded", function () {
 console.log("im in");
 
@@ -23,14 +31,14 @@ console.log("im in");
 });
 
 
-let opps = [];
 
 
 
 
 
 
-// ==================== TOAST ====================
+
+// Toast 
 function showToast(message, type = "success") {
   let toast = document.getElementById("toast");
   if (!toast) {
@@ -44,9 +52,6 @@ function showToast(message, type = "success") {
   clearTimeout(toast.hideTimeout);
   toast.hideTimeout = setTimeout(() => toast.classList.remove("show"), 2500);
 }
-
-
-
 
 
 
@@ -155,8 +160,7 @@ function setupCreateJobPage() {
       return;
     }
 
-    // Save job
-    // saveJob(jobData);
+
 
     showToast("Job posted successfully!", "success");
     setTimeout(() => {
@@ -179,13 +183,7 @@ function setupMyJobsPage() {
   setupSearchFilter();
 }
 
-// async function getCompanyOpportunity(){
-//   const response = await fetch("/company/api/my-jobs/");
-//   const data = await response.json();
 
-//   opportunties = data.opportunties;
-  
-// }
 
 async function loadMyJobs() {
 
