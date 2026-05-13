@@ -101,7 +101,7 @@ def login_view(request):
             profile = getattr(user, 'profile', None)          
             if profile and profile.user_type == 'admin':
                 return redirect('admin_dashboard')
-            return redirect('home')
+            return redirect('jobseeker_home')
         else:
             messages.error(request, "Invalid username or password")
 

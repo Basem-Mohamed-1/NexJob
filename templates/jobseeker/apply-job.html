@@ -35,7 +35,7 @@
                     </a>
                     <div class="profile-dropdown">
                         <a href="{% url 'jobseeker_profile' %}"><i class="fa-solid fa-id-card"></i> My Profile</a>
-                        <a href="#" onclick="logoutUser(); window.location.href='{% url 'login' %}';">
+                        <a href="{% url 'logout' %}">
                             <i class="fa-solid fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
@@ -57,14 +57,15 @@
     </nav>
 
     <main class="apply-container">
-        <a href="{% url 'job_details' %}" class="back-link">&larr; Back to Job Details</a>
+        <a href="{% url 'job_details' job.id %}" class="back-link">&larr; Back to Job Details</a>
 
         <div class="job-header">
-            <h1>Apply for Software Engineer</h1>
-            <p>Google - Mountain View, CA</p>
+            <h1>Apply for {{ job.title }}</h1>
+            <p>{{ job.companyName }} - {{ job.location }}</p>
         </div>
 
-        <form class="application-form">
+        <form class="application-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="form-section">
                 <h3>Personal Information</h3>
 
