@@ -1,5 +1,3 @@
-console.log("Utils loaded");
-
 // ==================== TOAST SYSTEM ====================
 function showToast(message, type = "success", duration = 3000) {
   let container = document.getElementById("toast-container");
@@ -100,68 +98,4 @@ function showConfirm(
     overlay.classList.remove("active");
     setTimeout(() => overlay.remove(), 300);
   };
-}
-
-// ==================== DATE FORMATTING ====================
-function formatDate(dateString) {
-  if (!dateString) return "N/A";
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-function daysAgo(dateString) {
-  if (!dateString) return "recently";
-  const today = new Date().toISOString().split("T")[0];
-  if (dateString === today) return "today";
-
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  if (dateString === yesterday.toISOString().split("T")[0]) return "yesterday";
-
-  const diffDays = Math.floor(
-    (new Date() - new Date(dateString)) / (1000 * 60 * 60 * 24),
-  );
-  return `${diffDays} days ago`;
-}
-
-// ==================== PROTECTED ROUTE ====================
-function requireAuth() {
-  // const user = getCurrentUser();
-  // if (!user) {
-  //   showToast("Please login to continue", "warning");
-  //   setTimeout(() => {
-  //     window.location.href = "/login/";
-  //   }, 1500);
-  //   return false;
-  // }
-  return true;
-}
-
-function requireCompany() {
-  // if (!requireAuth()) return false;
-  // const user = getCurrentUser();
-  // if (user.type !== "admin") {
-  //   showToast("Access denied. Company only.", "error");
-  //   setTimeout(() => {
-  //     window.location.href = "/jobseeker/home/";
-  //   }, 1500);
-  //   return false;
-  // }
-  return true;
-}
-
-function requireJobSeeker() {
-  // if (!requireAuth()) return false;
-  // const user = getCurrentUser();
-  // if (user.type !== "seeker") {
-  //   showToast("Access denied. Job seeker only.", "error");
-  //   setTimeout(() => {
-  //     window.location.href = "/company/dashboard/";
-  //   }, 1500);
-  //   return false;
-  // }
-  return true;
 }

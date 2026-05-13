@@ -9,13 +9,12 @@ min-height: 100vh;
 }
 
 /* Main content container */
-.main-content,
-.main {
-flex: 1;
-max-width: 860px;
-width: 100%;
-margin: 0 auto;
-padding: 80px 24px 60px;
+
+
+.main-content{
+    margin-top: 60px;
+    padding: 30px;
+
 }
 
 /* Page heading */

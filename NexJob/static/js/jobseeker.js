@@ -1,29 +1,20 @@
+let cachedJobs = [];
+
 document.addEventListener("DOMContentLoaded", function () {
   initSmoothScroll();
 
   const currentPage = window.location.pathname;
 
-  if (!isJobSeeker()) {
-    // Only redirect if not on login/signup pages
-    if (
-      !currentPage.includes("login") &&
-      !currentPage.includes("signup") &&
-      !currentPage.includes("index")
-    ) {
-      showToast("Please login as a job seeker", "error");
-      window.location.href = "/login/";
-      return;
-    }
-  }
-
-  if (currentPage.includes("findJob")) {
+  if (currentPage.includes("find-jobs")) {
     setupFindJobPage();
-  } else if (currentPage.includes("JobDetails")) {
+  } else if (currentPage.includes("job-details")) {
     setupJobDetailsPage();
-  } else if (currentPage.includes("apply-job")) {
+  } else if (currentPage.includes("apply")) {
     setupApplyJobPage();
-  } else if (currentPage.includes("myapplications")) {
+  } else if (currentPage.includes("my-applications")) {
     setupMyApplicationsPage();
+  } else if (currentPage.includes("profile")) {
+    setupProfilePage();
   }
 });
 
@@ -34,47 +25,36 @@ function setupFindJobPage() {
   setupJobFilters();
 }
 
-function loadAllJobs() {
-  const allJobs = getAllJobs();
-  const openJobs = allJobs.filter((job) => job.status === "open");
-
-  const jobListings = document.querySelector(".job-listings");
+async function loadAllJobs() {
+  const jobListings = document.getElementById("jobs-container");
   if (!jobListings) return;
 
-  const title = jobListings.querySelector("h2");
-  jobListings.innerHTML = "";
-  if (title) jobListings.appendChild(title);
+  try {
+    const response = await fetch('/jobseeker/api/jobs/');
+    const data = await response.json();
+    cachedJobs = data.jobs;
 
-  if (openJobs.length === 0) {
-    const emptyState = document.createElement("div");
-    emptyState.className = "empty-state";
-    emptyState.innerHTML = `
-      <i class="fa-solid fa-briefcase" style="font-size: 48px; color: var(--text-secondary); margin-bottom: 20px;"></i>
-      <h3>No Jobs Available</h3>
-      <p>Check back later for new opportunities.</p>
-    `;
-    jobListings.appendChild(emptyState);
-    return;
+    if (cachedJobs.length === 0) {
+      jobListings.innerHTML = '<p>No jobs available at the moment.</p>';
+      return;
+    }
+
+    jobListings.innerHTML = '';
+    cachedJobs.forEach((job) => {
+      const jobCard = createJobCard(job);
+      jobListings.appendChild(jobCard);
+    });
+  } catch (error) {
+    console.error('Error loading jobs:', error);
+    jobListings.innerHTML = "<p>Error loading jobs. Please try again.</p>";
   }
-
-  // Sort by newest first
-  openJobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
-
-  // Create job cards
-  openJobs.forEach((job) => {
-    const jobCard = createJobCard(job);
-    jobListings.appendChild(jobCard);
-  });
 }
 
 function createJobCard(job) {
   const card = document.createElement("div");
   card.className = "job-card";
 
-  // Get company initial
-  const companyInitial = job.company
-    ? job.company.charAt(0).toUpperCase()
-    : "C";
+  const companyInitial = job.companyName ? job.companyName.charAt(0).toUpperCase() : "C";
 
   card.innerHTML = `
     <div class="job-header">
@@ -82,21 +62,18 @@ function createJobCard(job) {
       <div class="job-title-section">
         <h3>${job.title}</h3>
         <p class="company">
-          <i class="fa-solid fa-building"></i> ${job.company} - ${job.location}
+          <i class="fa-solid fa-building"></i> ${job.companyName} - ${job.location}
         </p>
       </div>
     </div>
     <div class="job-tags">
-      <span class="job-tag"><i class="fa-solid fa-clock"></i> ${job.type}</span>
-      <span class="job-tag"><i class="fa-solid fa-location-dot"></i> ${job.locationType || "On-site"}</span>
-      <span class="job-tag"><i class="fa-solid fa-dollar-sign"></i> $${Math.round(job.salaryMin / 1000)}k - $${Math.round(job.salaryMax / 1000)}k</span>
+      <span class="job-tag"><i class="fa-solid fa-clock"></i> ${job.employment_type}</span>
+      <span class="job-tag"><i class="fa-solid fa-dollar-sign"></i> $${job.salary_min} - $${job.salary_max}</span>
+      <span class="job-tag"><i class="fa-regular fa-calendar"></i> ${job.postedDate}</span>
     </div>
     <div class="h-line"></div>
     <div class="show-job">
-      <span class="posted-time">
-        <i class="fa-regular fa-calendar"></i> Posted ${daysAgo(job.postedDate)}
-      </span>
-      <a href="JobDetails.html?id=${job.id}" class="view-details">
+      <a href="/jobseeker/job-details/${job.id}/" class="view-details">
         View Details <i class="fa-solid fa-arrow-right"></i>
       </a>
     </div>
@@ -127,61 +104,24 @@ function setupJobSearch() {
 }
 
 function filterJobsBySearch(searchTitle, searchExperience) {
-  const allJobs = getAllJobs();
-  let filtered = allJobs.filter((job) => job.status === "open");
+  let filtered = [...cachedJobs];
 
-  // Filter by title (if search term provided)
   if (searchTitle) {
     filtered = filtered.filter(
       (job) =>
         job.title.toLowerCase().includes(searchTitle) ||
-        job.company.toLowerCase().includes(searchTitle) ||
+        job.companyName.toLowerCase().includes(searchTitle) ||
         job.location.toLowerCase().includes(searchTitle),
     );
   }
 
-  // Filter by experience (if experience provided)
-  if (searchExperience) {
-    const requiredYears = parseInt(searchExperience);
-    if (requiredYears) {
-      filtered = filtered.filter((job) => {
-        // Extract years from experience string (e.g., "3+ years", "5 years", "2-4 years")
-        const expStr = job.experience || "";
-
-        // Try to extract the first number from the experience string
-        const match = expStr.match(/(\d+)/);
-        if (match) {
-          const jobYears = parseInt(match[1]);
-          return jobYears <= requiredYears; // Show jobs requiring less than or equal to entered years
-        }
-        return true; // If no experience
-      });
-    }
-  }
-
-  // Update the job listings display
-  const jobListings = document.querySelector(".job-listings");
+  const jobListings = document.getElementById("jobs-container");
   if (!jobListings) return;
 
-  const title = jobListings.querySelector("h2");
-  jobListings.innerHTML = "";
-  if (title) jobListings.appendChild(title);
-
   if (filtered.length === 0) {
-    let emptyMessage = "No jobs found";
-    if (searchTitle && searchExperience) {
-      emptyMessage = `No jobs found matching "${searchTitle}" with ${searchExperience} years experience`;
-    } else if (searchTitle) {
-      emptyMessage = `No jobs found matching "${searchTitle}"`;
-    } else if (searchExperience) {
-      emptyMessage = `No jobs found requiring ${searchExperience} years experience`;
-    }
-
-    const emptyState = document.createElement("div");
-    emptyState.className = "empty-state-simple";
-    emptyState.innerHTML = `<p>${emptyMessage}</p>`;
-    jobListings.appendChild(emptyState);
+    jobListings.innerHTML = '<p>No jobs found matching your search.</p>';
   } else {
+    jobListings.innerHTML = '';
     filtered.forEach((job) => {
       const jobCard = createJobCard(job);
       jobListings.appendChild(jobCard);
@@ -212,9 +152,8 @@ function setupJobFilters() {
 }
 
 function applyFilters() {
-  let filteredJobs = getAllJobs().filter((job) => job.status === "open");
+  let filteredJobs = [...cachedJobs];
 
-  // Filter by job type
   const jobTypeChecks = document.querySelectorAll(".filter-checkbox input");
   const selectedTypes = [];
   jobTypeChecks.forEach((cb) => {
@@ -226,64 +165,30 @@ function applyFilters() {
   if (selectedTypes.length > 0) {
     filteredJobs = filteredJobs.filter((job) => {
       return selectedTypes.some((type) =>
-        job.type.toLowerCase().includes(type.toLowerCase()),
+        job.employment_type.toLowerCase().includes(type.toLowerCase()),
       );
     });
   }
 
-  // Filter by date posted
-  const selectedDate = document.querySelector('input[name="date"]:checked');
-  if (selectedDate) {
-    const dateFilter = selectedDate.value;
-    console.log("Date filter selected:", dateFilter);
-
-    filteredJobs = filteredJobs.filter((job) => {
-      const postedDate = new Date(job.postedDate);
-      const today = new Date();
-
-      postedDate.setHours(0, 0, 0, 0);
-      today.setHours(0, 0, 0, 0);
-
-      const diffTime = today - postedDate;
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-      if (dateFilter === "24h") {
-        return diffDays <= 1; // Posted today or yesterday
-      }
-      if (dateFilter === "week") {
-        return diffDays <= 7; // Posted within last 7 days
-      }
-      return true;
-    });
-  }
-
-  // Filter by salary
   const salaryInputs = document.querySelectorAll(".salary-input-group input");
   const minSalary = salaryInputs[0]?.value;
   const maxSalary = salaryInputs[1]?.value;
 
   if (minSalary || maxSalary) {
     filteredJobs = filteredJobs.filter((job) => {
-      if (minSalary && job.salaryMax < parseInt(minSalary)) return false;
-      if (maxSalary && job.salaryMin > parseInt(maxSalary)) return false;
+      if (minSalary && job.salary_max < parseInt(minSalary)) return false;
+      if (maxSalary && job.salary_min > parseInt(maxSalary)) return false;
       return true;
     });
   }
 
-  // Update display
-  const jobListings = document.querySelector(".job-listings");
+  const jobListings = document.getElementById("jobs-container");
   if (!jobListings) return;
 
-  const title = jobListings.querySelector("h2");
-  jobListings.innerHTML = "";
-  if (title) jobListings.appendChild(title);
-
   if (filteredJobs.length === 0) {
-    const emptyState = document.createElement("div");
-    emptyState.className = "empty-state-simple";
-    emptyState.innerHTML = "<p>No jobs match your filters</p>";
-    jobListings.appendChild(emptyState);
+    jobListings.innerHTML = "<p>No jobs match your filters</p>";
   } else {
+    jobListings.innerHTML = '';
     filteredJobs.forEach((job) => {
       const jobCard = createJobCard(job);
       jobListings.appendChild(jobCard);
@@ -294,211 +199,218 @@ function applyFilters() {
 // ==================== JOB DETAILS PAGE ====================
 
 function setupJobDetailsPage() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const jobId = urlParams.get("id");
+  const pathParts = window.location.pathname.split('/');
+  const jobId = pathParts[pathParts.length - 2];
 
   if (!jobId) {
     showToast("No job selected", "error");
-    window.location.href = "findJob.html";
+    window.location.href = "/jobseeker/find-jobs/";
     return;
   }
 
-  const job = getJobById(jobId);
-  if (!job) {
+  loadJobDetails(jobId);
+}
+
+async function loadJobDetails(jobId) {
+  try {
+    const response = await fetch(`/jobseeker/api/job/${jobId}/`);
+    if (!response.ok) throw new Error('Job not found');
+    
+    const job = await response.json();
+    populateJobDetails(job);
+  } catch (error) {
     showToast("Job not found", "error");
-    window.location.href = "findJob.html";
-    return;
+    window.location.href = "/jobseeker/find-jobs/";
   }
-
-  // Populate page with job details
-  populateJobDetails(job);
 }
 
 function populateJobDetails(job) {
-  // Update title
   const titleEl = document.querySelector(".job-title");
   if (titleEl) titleEl.textContent = job.title;
 
-  // Update meta info
   const metaEls = document.querySelectorAll(".job-meta span");
   if (metaEls.length >= 4) {
-    metaEls[0].innerHTML = `<i class="fa-solid fa-building"></i> ${job.company}`;
+    metaEls[0].innerHTML = `<i class="fa-solid fa-building"></i> ${job.companyName}`;
     metaEls[1].innerHTML = `<i class="fa-solid fa-location-dot"></i> ${job.location}`;
-    metaEls[2].innerHTML = `<i class="fa-solid fa-clock"></i> ${job.type}`;
-    metaEls[3].innerHTML = `<i class="fa-solid fa-dollar-sign"></i> $${Math.round(job.salaryMin / 1000)}k - $${Math.round(job.salaryMax / 1000)}k`;
+    metaEls[2].innerHTML = `<i class="fa-solid fa-dollar-sign"></i> $${job.salary_min} - $${job.salary_max}`;
+    metaEls[3].innerHTML = `<i class="fa-solid fa-clock"></i> ${job.employment_type}`;
   }
 
-  // Update description
   const descEl = document.querySelector(".job-description p");
-  if (descEl) descEl.textContent = job.description;
+  if (descEl) descEl.textContent = job.jobDescription || "No description available.";
 
-  // Update requirements and responsibilities
-  const lists = document.querySelectorAll(".job-description ul");
-  if (lists.length >= 2) {
-    // Requirements
-    if (job.requirements) {
-      const reqList = job.requirements.split(",").map((r) => r.trim());
-      lists[1].innerHTML = reqList.map((r) => `<li>${r}</li>`).join("");
-    }
-
-    // Responsibilities
-    if (job.responsibilities) {
-      const respList = job.responsibilities.split(",").map((r) => r.trim());
-      lists[0].innerHTML = respList.map((r) => `<li>${r}</li>`).join("");
+  const respEl = document.querySelector(".job-description");
+  if (respEl && job.responsibilities) {
+    const respHtml = job.responsibilities.split('\n').filter(r => r.trim()).map(r => `<li>${r}</li>`).join('');
+    const existingUl = respEl.querySelector('ul');
+    if (existingUl) {
+      existingUl.innerHTML = respHtml;
     }
   }
 
-  // Update apply button link
   const applyBtn = document.querySelector(".apply-btn");
   if (applyBtn) {
-    applyBtn.href = `apply-job.html?id=${job.id}`;
+    applyBtn.href = `/jobseeker/apply/${job.id}/`;
   }
 }
 
 // ==================== APPLY JOB PAGE ====================
 function setupApplyJobPage() {
-  console.log("Setting up Apply Job page");
-
-  // Get job ID from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const jobId = urlParams.get("id");
+  const pathParts = window.location.pathname.split('/');
+  const jobId = pathParts[pathParts.length - 1];
 
   if (!jobId) {
     showToast("No job selected", "error");
-    window.location.href = "findJob.html";
+    window.location.href = "/jobseeker/find-jobs/";
     return;
   }
 
-  const job = getJobById(jobId);
-  if (!job) {
-    showToast("Job not found", "error");
-    window.location.href = "findJob.html";
-    return;
-  }
-
-  // Update header with job info
-  const header = document.querySelector(".job-header");
-  if (header) {
-    header.innerHTML = `
-      <h1>Apply for ${job.title}</h1>
-      <p>${job.company} - ${job.location}</p>
-    `;
-  }
-
-  // Setup form submission
-  setupApplicationForm(jobId);
+  loadJobForApply(jobId);
 }
 
-function setupApplicationForm(jobId) {
+async function loadJobForApply(jobId) {
+  try {
+    const response = await fetch(`/jobseeker/api/job/${jobId}/`);
+    if (!response.ok) throw new Error('Job not found');
+    
+    const job = await response.json();
+    
+    const header = document.querySelector(".job-header");
+    if (header) {
+      header.innerHTML = `
+        <h1>Apply for ${job.title}</h1>
+        <p>${job.companyName} - ${job.location}</p>
+      `;
+    }
+    
+    setupApplicationForm(jobId);
+  } catch (error) {
+    showToast("Job not found", "error");
+    window.location.href = "/jobseeker/find-jobs/";
+  }
+}
+
+async function setupApplicationForm(jobId) {
   const form = document.querySelector(".application-form");
   if (!form) return;
 
-  form.onsubmit = function (e) {
+  form.onsubmit = async function (e) {
     e.preventDefault();
 
-    // Get current user
-    const currentUser = getCurrentUser();
-    if (!currentUser) {
-      showToast("Please login to apply", "warning");
-      window.location.href = "/login/";
-      return;
+    const formData = new FormData();
+    formData.append('job_id', jobId);
+    formData.append('full_name', document.getElementById("fullname")?.value);
+    formData.append('email', document.getElementById("email")?.value);
+    formData.append('phone', document.getElementById("phone")?.value);
+    formData.append('cover_letter', document.getElementById("coverletter")?.value);
+    formData.append('experience', document.getElementById("experience")?.value);
+    formData.append('expected_salary', document.getElementById("salary")?.value);
+    formData.append('start_date', document.getElementById("startdate")?.value);
+    
+    const resumeFile = document.getElementById("resume")?.files[0];
+    if (resumeFile) {
+      formData.append('resume', resumeFile);
     }
 
-    // Get form data
-    const formData = {
-      fullname: document.getElementById("fullname")?.value,
-      email: document.getElementById("email")?.value,
-      phone: document.getElementById("phone")?.value,
-      coverletter: document.getElementById("coverletter")?.value,
-      experience: document.getElementById("experience")?.value,
-      salary: document.getElementById("salary")?.value,
-      startdate: document.getElementById("startdate")?.value,
-    };
+    try {
+      const response = await fetch('/jobseeker/api/apply/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCSRFToken(),
+        },
+        body: formData,
+      });
 
-    // Get file name
-    const fileInput = document.getElementById("resume");
-    const resumeFile = fileInput?.files[0]?.name || "resume.pdf";
-
-    // Create application object
-    const application = {
-      id: "app_" + Date.now(),
-      jobId: jobId,
-      applicantId: currentUser.id || currentUser.username,
-      applicantUsername: currentUser.username,
-      fullName: formData.fullname,
-      email: formData.email,
-      phone: formData.phone,
-      resumeFile: resumeFile,
-      coverLetter: formData.coverletter,
-      experience: formData.experience,
-      expectedSalary: formData.salary,
-      startDate: formData.startdate,
-      status: "pending",
-      appliedDate: new Date().toISOString().split("T")[0],
-    };
-
-    // Save application
-    const applications = getAllApplications();
-    applications.push(application);
-    localStorage.setItem("nexjob_applications", JSON.stringify(applications));
-
-    showToast("Application submitted successfully!", "success");
-    setTimeout(() => {
-      window.location.href = "myapplications.html";
-    }, 1500);
+      const data = await response.json();
+      
+      if (data.success) {
+        showToast("Application submitted successfully!", "success");
+        setTimeout(() => {
+          window.location.href = "/jobseeker/my-applications/";
+        }, 1500);
+      } else {
+        showToast("Error submitting application", "error");
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showToast("Error submitting application", "error");
+    }
   };
+}
+
+function getCSRFToken() {
+  const name = 'csrftoken';
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
 }
 
 // ==================== MY APPLICATIONS PAGE ====================
 function setupMyApplicationsPage() {
-  console.log("Setting up My Applications page");
   loadMyApplications();
   updateApplicationStats();
 }
 
-function loadMyApplications() {
-  const myApps = getMyApplications();
+async function loadMyApplications() {
   const container = document.querySelector(".Applied_Jobs_Cards");
-
   if (!container) return;
 
-  if (myApps.length === 0) {
-    container.innerHTML = `
-      <div class="no-applications-empty">
-        <i class="fa-solid fa-file-alt"></i>
-        <h3>No Applications Yet</h3>
-        <p>Start applying to jobs to track your applications here.</p>
-        <a href="findJob.html" class="btn-primary">Browse Jobs</a>
-      </div>
-    `;
-    return;
+  try {
+    const response = await fetch('/jobseeker/api/applications/');
+    if (!response.ok) throw new Error('Failed to load applications');
+    
+    const data = await response.json();
+    const applications = data.applications;
+
+    if (applications.length === 0) {
+      container.innerHTML = `
+        <div class="no-applications-empty">
+          <i class="fa-solid fa-file-alt"></i>
+          <h3>No Applications Yet</h3>
+          <p>Start applying to jobs to track your applications here.</p>
+          <a href="/jobseeker/find-jobs/" class="btn-primary">Browse Jobs</a>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = "";
+
+    for (const app of applications) {
+      try {
+        const jobResponse = await fetch(`/jobseeker/api/job-for-app/${app.opportunity_id}/`);
+        const job = await jobResponse.json();
+        const card = createApplicationCard(app, job);
+        container.appendChild(card);
+      } catch (err) {
+        console.error('Error loading job:', err);
+      }
+    }
+  } catch (error) {
+    console.error('Error loading applications:', error);
+    container.innerHTML = '<p>Error loading applications.</p>';
   }
-
-  // Sort by newest first
-  myApps.sort((a, b) => new Date(b.appliedDate) - new Date(a.appliedDate));
-
-  container.innerHTML = "";
-
-  myApps.forEach((app) => {
-    const job = getJobById(app.jobId);
-    if (!job) return;
-
-    const card = createApplicationCard(app, job);
-    container.appendChild(card);
-  });
 }
 
 function createApplicationCard(application, job) {
   const card = document.createElement("div");
   card.className = "Applied_Jobs_Card-1";
 
-  // Get status color
   const statusColors = {
-    pending: "#f39c12",
-    reviewed: "#3498db",
-    interview: "#9b59b6",
-    hired: "#27ae60",
-    rejected: "#e74c3c",
+    PENDING: "#f39c12",
+    REVIEWING: "#3498db",
+    INTERVIEW: "#9b59b6",
+    REJECTED: "#e74c3c",
+    HIRED: "#27ae60",
   };
 
   const statusColor = statusColors[application.status] || "#95a5a6";
@@ -506,43 +418,45 @@ function createApplicationCard(application, job) {
   card.innerHTML = `
     <div class="Applied_Jobs_Card_Role">
       <h3>${job.title}</h3>
-      <p>${job.company} - ${job.location}</p>
+      <p>${job.companyName} - ${job.location}</p>
     </div>
     <div class="Applied_Jobs_Card_Date">
-      <p class="applied-time">${formatDate(application.appliedDate)}</p>
+      <p class="applied-time">${application.applied_at}</p>
     </div>
     <div class="Applied_Jobs_Card_Status">
-      <p>${job.type}</p>
-      <p style="color: ${statusColor}; font-weight: bold;">${application.status.toUpperCase()}</p>
+      <p>${job.employment_type}</p>
+      <p style="color: ${statusColor}; font-weight: bold;">${application.status}</p>
     </div>
     <div class="Applied_Jobs_Card_Action">
-      <a href="JobDetails.html?id=${job.id}">View Job →</a>
+      <a href="/jobseeker/job-details/${job.id}/">View Job →</a>
     </div>
   `;
 
   return card;
 }
 
-function updateApplicationStats() {
-  const myApps = getMyApplications();
+async function updateApplicationStats() {
+  try {
+    const response = await fetch('/jobseeker/api/applications/');
+    const data = await response.json();
+    const applications = data.applications;
 
-  // Update stats cards
-  const stats = {
-    applied: myApps.length,
-    interview: myApps.filter((app) => app.status === "interview").length,
-    offer: myApps.filter(
-      (app) => app.status === "hired" || app.status === "offer",
-    ).length,
-    hired: myApps.filter((app) => app.status === "hired").length,
-  };
+    const stats = {
+      applied: applications.length,
+      interview: applications.filter((app) => app.status === "INTERVIEW").length,
+      pending: applications.filter((app) => app.status === "PENDING" || app.status === "REVIEWING").length,
+      hired: applications.filter((app) => app.status === "HIRED").length,
+    };
 
-  // Find stats elements
-  const statCards = document.querySelectorAll(".Statistics > div p");
-  if (statCards.length >= 4) {
-    statCards[0].textContent = stats.applied;
-    statCards[1].textContent = stats.interview;
-    statCards[2].textContent = stats.offer;
-    statCards[3].textContent = stats.hired;
+    const statCards = document.querySelectorAll(".Statistics > div p");
+    if (statCards.length >= 4) {
+      statCards[0].textContent = stats.applied;
+      statCards[1].textContent = stats.interview;
+      statCards[2].textContent = stats.pending;
+      statCards[3].textContent = stats.hired;
+    }
+  } catch (error) {
+    console.error('Error updating stats:', error);
   }
 }
 

@@ -6,6 +6,12 @@
   padding: 40px 0;
 }
 
+.main-container{
+    margin-top: 60px;
+    padding: 30px;
+
+}
+
 .profile-header {
   background: var(--bg-card);
   border-radius: 16px;
