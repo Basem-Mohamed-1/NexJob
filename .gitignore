@@ -8,3 +8,5 @@ staticfiles/
 media/
 .DS_Store
 *.log
+.venv
+.idea/
