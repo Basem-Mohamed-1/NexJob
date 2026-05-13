@@ -11,11 +11,11 @@ class Company(models.Model):
 class Opportunity(models.Model):
 
 
-    Company = models.ForeignKey(
-        Company,
-        on_delete= models.CASCADE,
-        related_name="opportunities",null=True
-    )
+    # Company = models.ForeignKey(
+    #     Company,
+    #     on_delete= models.CASCADE,
+    #     related_name="opportunities",null=True
+    # )
 
     title = models.TextField(max_length=100)
     companyName = models.CharField(max_length=100,null=True)

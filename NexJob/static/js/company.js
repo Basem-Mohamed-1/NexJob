@@ -1,20 +1,15 @@
 console.log("JS LOADED");
+console.log("JS LOADED");
 document.addEventListener("DOMContentLoaded", function () {
+console.log("im in");
+
   const currentPage = window.location.pathname;
 
-  // if (!isCompany()) {
-  //   if (!currentPage.includes("login") && !currentPage.includes("signup")) {
-  //     showToast("Please login as a company", "error");
-  //     setTimeout(() => {
-  //       window.location.href = "/login/";
-  //     }, 1500);
-  //     return;
-  //   }
-  // }
-
+  console.log("im in")
   if (currentPage.includes("create-job")) {
     setupCreateJobPage();
-  } else if (currentPage.includes("my_job_postings")) {
+  } else if (currentPage.includes("my-jobs")) {
+    console.log("im here")
     setupMyJobsPage();
   } else if (currentPage.includes("dashboard")) {
     setupDashboardPage();
@@ -26,6 +21,14 @@ document.addEventListener("DOMContentLoaded", function () {
     setupApplicationsPage();
   }
 });
+
+
+let opps = [];
+
+
+
+
+
 
 // ==================== TOAST ====================
 function showToast(message, type = "success") {
@@ -41,9 +44,19 @@ function showToast(message, type = "success") {
   clearTimeout(toast.hideTimeout);
   toast.hideTimeout = setTimeout(() => toast.classList.remove("show"), 2500);
 }
+
+
+
+
+
+
+
+
+
+
 // ==================== CREATE JOB PAGE ====================
 function setupCreateJobPage() {
-  console.log("Setting up Create Job page");
+
 
   const form = document.querySelector("main form");
   if (!form) {
@@ -52,11 +65,11 @@ function setupCreateJobPage() {
   }
 
   // Pre-fill company name from current user
-  const currentUser = getCurrentUser();
-  if (currentUser && currentUser.company) {
-    const companyInput = document.getElementById("company_name");
-    if (companyInput) companyInput.value = currentUser.company;
-  }
+  // const currentUser = getCurrentUser();
+  // if (currentUser && currentUser.company) {
+  //   const companyInput = document.getElementById("company_name");
+  //   if (companyInput) companyInput.value = currentUser.company;
+  // }
 
   const minSalary = form.querySelector('input[name="salary_min"]');
   const maxSalary = form.querySelector('input[name="salary_max"]');
@@ -88,7 +101,7 @@ function setupCreateJobPage() {
   }
 
   // Form submit
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     console.log("Form submitted");
 
@@ -116,6 +129,16 @@ function setupCreateJobPage() {
         document.getElementById("requirements")?.value || "See job description",
     };
 
+    const data = await fetch("/company/api/create-job/",{
+      method : "POST",
+      headers : {
+        "Content-Type" : "application/json",
+          "X-CSRFToken": getCSRFToken()
+      },
+
+      body : JSON.stringify(jobData)
+    })
+
     console.log("Job data:", jobData);
 
     // Validate required fields
@@ -133,12 +156,12 @@ function setupCreateJobPage() {
     }
 
     // Save job
-    saveJob(jobData);
+    // saveJob(jobData);
 
     showToast("Job posted successfully!", "success");
     setTimeout(() => {
-      window.location.href = "my_job_postings.html";
-    }, 1500);
+      window.location.href = "/company/my-jobs/";
+    }, 10000);
   });
 
   // Cancel button
@@ -156,52 +179,106 @@ function setupMyJobsPage() {
   setupSearchFilter();
 }
 
-function loadMyJobs() {
-  const myJobs = getMyCompanyJobs();
-  const tbody = document.querySelector(".job-table tbody");
-  if (!tbody) return;
+// async function getCompanyOpportunity(){
+//   const response = await fetch("/company/api/my-jobs/");
+//   const data = await response.json();
 
-  if (myJobs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="empty-postings">
-      <p>No jobs posted yet.</p>
-      <a href="create_a_new_opportunity.html" class="btn-post-first">Post Your First Job</a>
-    </td></tr>`;
-    updateResultsInfo(0);
-    return;
+//   opportunties = data.opportunties;
+  
+// }
+
+async function loadMyJobs() {
+
+  try {
+    
+    const response = await fetch("/company/api/my-jobs/");
+    const data = await response.json();
+    
+    opps = data.opportunties;
+
+    console.log(data);
+  
+
+    const tbody = document.querySelector(".job-table tbody");
+    if (!tbody) return;
+
+    // Empty state
+    if (data.count === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="empty-postings">
+            <p>No jobs posted yet.</p>
+            <a href="/company/create-job/" class="btn-post-first">
+              Post Your First Job
+            </a>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    // Clear table
+    tbody.innerHTML = "";
+
+    // Render jobs
+    data.opportunties.forEach(op => {
+      createJobTableRow(op)
+    });
+
+  } catch (error) {
+    console.error("Error loading jobs:", error);
   }
-
-  tbody.innerHTML = "";
-  myJobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
-  myJobs.forEach((job) => tbody.appendChild(createJobTableRow(job)));
-  updateResultsInfo(myJobs.length);
 }
 
+
+
 function createJobTableRow(job) {
-  const row = document.createElement("tr");
-  const applications = getAllApplications();
-  const jobApps = applications.filter((app) => app.jobId === job.id);
 
-  const statusClass =
-    job.status === "open"
-      ? "status-open"
-      : job.status === "closed"
-        ? "status-closed"
-        : "status-draft";
+    const tbody = document.querySelector(".job-table tbody");
 
-  row.innerHTML = `
-    <td><div class="job-title-cell">${job.title}</div><span class="job-meta">${job.location} • ${job.type}</span></td>
-    <td><span class="status-badge ${statusClass}">${job.status}</span></td>
-    <td>${formatDate(job.postedDate)}</td>
-    <td><span class="total-count">${jobApps.length} applicant${jobApps.length !== 1 ? "s" : ""}</span></td>
-    <td>
-      <div class="action-buttons">
-        <button class="action-icon" onclick="viewApplicants('${job.id}')"><i class="fas fa-users"></i></button>
-        <button class="action-icon" onclick="editJob('${job.id}')"><i class="fas fa-edit"></i></button>
-        <button class="action-icon" onclick="deleteJobConfirm('${job.id}')"><i class="fas fa-trash"></i></button>
-      </div>
-    </td>
-  `;
-  return row;
+    const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>
+          <div class="job-title-cell">${job.title}</div>
+          <span class="job-meta">${job}</span>
+        </td>
+
+        <td>
+          <span class="status-badge status-${job.status}">
+            ${job.status}
+          </span>
+        </td>
+
+        <td>${job.postedDate}</td>
+
+        <td>
+          <span class="total-count">
+            ${job.numOfApplications} applicants
+          </span>
+        </td>
+
+        <td>
+          <div class="action-buttons">
+            <button class="action-icon" onclick="viewApplicants(${job.id})">
+              <i class="fas fa-users"></i>
+            </button>
+
+            <button class="action-icon" onclick="editJob(${job.id})">
+              <i class="fas fa-edit"></i>
+            </button>
+
+            <button class="action-icon" onclick="deleteJobConfirm(${job.id})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      `;
+
+      tbody.appendChild(row);
+
+      return row
+    
 }
 
 function setupSearchFilter() {
@@ -214,15 +291,19 @@ function setupSearchFilter() {
 }
 
 function filterJobs(searchTerm) {
-  const myJobs = getMyCompanyJobs();
-  const filtered = myJobs.filter(
+ 
+  const filtered = opps.filter(
     (job) =>
       job.title.toLowerCase().includes(searchTerm) ||
       job.location.toLowerCase().includes(searchTerm),
   );
+  console.log(filtered)
   const tbody = document.querySelector(".job-table tbody");
   tbody.innerHTML = "";
+
   filtered.forEach((job) => tbody.appendChild(createJobTableRow(job)));
+
+
   updateResultsInfo(filtered.length);
 }
 
@@ -231,6 +312,12 @@ function updateResultsInfo(count) {
   if (resultsInfo)
     resultsInfo.textContent = `Showing 1 to ${count} of ${count} results`;
 }
+
+
+
+
+
+
 
 // ==================== ACTION FUNCTIONS ====================
 let viewApplicants = function (jobId) {
@@ -602,4 +689,22 @@ function updateStatus(applicationId, newStatus) {
   } else {
     showToast("Failed to update status", "error");
   }
+}
+
+
+
+function getCSRFToken() {
+  const name = 'csrftoken';
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
 }
