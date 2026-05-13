@@ -220,7 +220,7 @@ async function loadMyJobs() {
 
     // Render jobs
     data.opportunties.forEach(op => {
-      createJobTableRow(op)
+      createJobTableRow(op,data.count)
     });
 
   } catch (error) {
@@ -230,7 +230,7 @@ async function loadMyJobs() {
 
 
 
-function createJobTableRow(job) {
+function createJobTableRow(job,count=0) {
 
     const tbody = document.querySelector(".job-table tbody");
 
@@ -239,7 +239,7 @@ function createJobTableRow(job) {
       row.innerHTML = `
         <td>
           <div class="job-title-cell">${job.title}</div>
-          <span class="job-meta">${job}</span>
+          <span class="job-meta">${job.location}</span>
         </td>
 
         <td>
@@ -252,7 +252,7 @@ function createJobTableRow(job) {
 
         <td>
           <span class="total-count">
-            ${job.numOfApplications} applicants
+            ${0} applicants
           </span>
         </td>
 
