@@ -3,7 +3,14 @@ let opps = [];
 // loading the pages of company
 
 document.addEventListener("DOMContentLoaded", function () {
-console.log("im in");
+  // Fix malformed URLs (browser cache issue)
+  if (window.location.pathname.includes('my-jobs/company/')) {
+    const jobId = new URLSearchParams(window.location.search).get('jobId');
+    if (jobId) {
+      window.location.href = `/company/applications/?jobId=${jobId}`;
+      return;
+    }
+  }
 
   const currentPage = window.location.pathname;
 
@@ -15,7 +22,7 @@ console.log("im in");
     setupMyJobsPage();
   } else if (currentPage.includes("dashboard")) {
     setupDashboardPage();
-  } else if (currentPage.includes("Edit_job")) {
+  } else if (currentPage.includes("edit-job")) {
     setupEditJobPage();
   } else if (currentPage.includes("settings")) {
     setupSettingsPage();
@@ -312,7 +319,7 @@ function updateResultsInfo(count) {
 
 // ==================== ACTION FUNCTIONS ====================
 let viewApplicants = function (jobId) {
-  window.location.href = `company/applications/?jobId=${jobId}`;
+  window.location.href = `/company/applications/?jobId=${jobId}`;
 };
 
 let editJob = function (jobId) {
@@ -758,7 +765,7 @@ async function loadJobSelector() {
   try {
     const response = await fetch("/company/api/my-jobs/");
     const data = await response.json();
-    const myJobs = data.opportunties || [];
+    const myJobs = data.opportunities || [];
     
     const select = document.getElementById("jobSelect");
     if (!select) return;
@@ -797,21 +804,6 @@ async function loadApplications() {
   if (!container) return;
 
   try {
-    const settingsResponse = await fetch('/company/api/settings/');
-    const settingsData = await settingsResponse.json();
-    const companyName = settingsData.company_name || '';
-    
-    if (!companyName) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <i class="fa-solid fa-users"></i>
-          <h3>No Company Profile</h3>
-          <p>Please set up your company profile first.</p>
-        </div>
-      `;
-      return;
-    }
-    
     const response = await fetch('/company/api/applications/');
     const data = await response.json();
     
@@ -840,10 +832,10 @@ async function loadApplications() {
     }
 
     container.innerHTML = "";
-    applications.forEach((app) => {
-      const card = createApplicationCard(app, companyName);
+    for (const app of applications) {
+      const card = await createApplicationCard(app, '');
       container.appendChild(card);
-    });
+    }
   } catch (error) {
     console.error("Error loading applications:", error);
   }
@@ -854,21 +846,6 @@ async function loadApplicationsForJob(jobId) {
   if (!container) return;
 
   try {
-    const settingsResponse = await fetch('/company/api/settings/');
-    const settingsData = await settingsResponse.json();
-    const companyName = settingsData.company_name || '';
-    
-    if (!companyName) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <i class="fa-solid fa-user-slash"></i>
-          <h3>No Company Profile</h3>
-          <p>Please set up your company profile first.</p>
-        </div>
-      `;
-      return;
-    }
-    
     const response = await fetch(`/company/api/applications/?opportunity_id=${jobId}`);
     const data = await response.json();
     
@@ -897,10 +874,10 @@ async function loadApplicationsForJob(jobId) {
     }
 
     container.innerHTML = "";
-    applications.forEach((app) => {
-      const card = createApplicationCard(app, companyName);
+    for (const app of applications) {
+      const card = await createApplicationCard(app, '');
       container.appendChild(card);
-    });
+    }
   } catch (error) {
     console.error("Error loading applications for job:", error);
   }
@@ -964,6 +941,14 @@ async function createApplicationCard(application, companyName) {
         <span class="label">Applied:</span>
         <span>${application.applied_at}</span>
       </div>
+      ${application.resume ? `
+      <div class="detail-item">
+        <span class="label">Resume:</span>
+        <a href="${application.resume}" target="_blank" class="resume-link">
+          <i class="fa-solid fa-file-pdf"></i> Download CV
+        </a>
+      </div>
+      ` : ''}
     </div>
     ${application.cover_letter ? `<div class="app-cover-letter"><p>${application.cover_letter}</p></div>` : ""}
     <div class="app-footer">
