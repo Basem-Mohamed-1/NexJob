@@ -702,8 +702,8 @@ async function changePassword(form) {
   }
   
   try {
-    const response = await fetch('/accounts/api/change-password/', {
-      method: 'POST',
+    const response = await fetch("/api/change-password/", {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': getCSRFToken()
