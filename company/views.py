@@ -21,7 +21,7 @@ def api_create_job(request):
         data = json.loads(request.body)
 
         title = data.get("title")
-        companyName = data.get("company")
+        form_company_name = data.get("company")
         status = data.get("status")
         maxSalary = int(data.get("salaryMax"))
         minSalary = int(data.get("salaryMin"))
@@ -32,21 +32,29 @@ def api_create_job(request):
         respons = data.get("responsibilities")
         requirements = data.get("requirements")
 
-        # Get or create company record for this user
+        # Get company name from stored Company record or Profile
+        company_name = None
+        try:
+            company = Company.objects.get(user=request.user)
+            company_name = company.companyName
+        except Company.DoesNotExist:
+            profile = getattr(request.user, 'profile', None)
+            if profile and profile.company_name:
+                company_name = profile.company_name
+        
+        # Fallback to form input if no stored company name
+        if not company_name:
+            company_name = form_company_name or request.user.username
+        
+        # Create or update company record with the name
         company, created = Company.objects.get_or_create(
             user=request.user,
-            defaults={'companyName': companyName or request.user.username}
+            defaults={'companyName': company_name}
         )
-        # Update company name if it changed
-        if companyName and company.companyName != companyName:
-            company.companyName = companyName
-            company.save()
-        elif not companyName:
-            companyName = company.companyName
 
         job = Opportunity.objects.create(
             title=title,
-            companyName=companyName,
+            companyName=company_name,
             location=location,
             experience=experience,
             jobDescription=description,
@@ -73,11 +81,22 @@ def api_my_jobs(request):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'Unauthorized'}, status=401)
     
+    company_name = None
     try:
         company = Company.objects.get(user=request.user)
-        jobs = Opportunity.objects.filter(companyName=company.companyName)
+        company_name = company.companyName
     except Company.DoesNotExist:
-        jobs = Opportunity.objects.none()
+        profile = getattr(request.user, 'profile', None)
+        if profile and profile.company_name:
+            company_name = profile.company_name
+    
+    # If company name exists, filter by it; otherwise show all jobs as fallback
+    if company_name:
+        jobs = Opportunity.objects.filter(companyName=company_name)
+    else:
+        jobs = Opportunity.objects.all()
+    
+    jobs = jobs.order_by('-postedDate')
     
     data = []
     for op in jobs:
@@ -129,11 +148,11 @@ def api_edit_job(request, job_id):
         data = json.loads(request.body)
 
         job.title = data.get("title", job.title)
-        job.companyName = data.get("company", job.companyName)
         job.location = data.get("location", job.location)
-        job.experience = data.get("experience", job.experience)
-        job.salary_min = data.get("salaryMin", job.salary_min)
-        job.salary_max = data.get("salaryMax", job.salary_max)
+        # Convert to integers explicitly
+        job.experience = int(data.get("experience", job.experience) or 0)
+        job.salary_min = int(data.get("salaryMin", job.salary_min) or 0)
+        job.salary_max = int(data.get("salaryMax", job.salary_max) or 0)
         job.jobDescription = data.get("description", job.jobDescription)
         job.responsibilities = data.get("responsibilities", job.responsibilities)
         job.requirements = data.get("requirements", job.requirements)
@@ -163,14 +182,11 @@ def api_applications(request):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'Unauthorized'}, status=401)
     
-    try:
-        company = Company.objects.get(user=request.user)
-        company_name = company.companyName
-    except Company.DoesNotExist:
-        return JsonResponse({"error": "Company profile not found"}, status=400)
+    # Get all valid (non-deleted) job IDs
+    valid_job_ids = Opportunity.objects.values_list('id', flat=True)
     
-    company_opportunity_ids = Opportunity.objects.filter(companyName=company_name).values_list('id', flat=True)
-    applications = Application.objects.filter(opportunity_id__in=company_opportunity_ids).order_by('-applied_at')
+    # Filter out applications for deleted jobs
+    applications = Application.objects.filter(opportunity_id__in=valid_job_ids).order_by('-applied_at')
     
     opportunity_id = request.GET.get('opportunity_id')
     if opportunity_id:
@@ -193,6 +209,7 @@ def api_applications(request):
             "applied_at": app.applied_at.strftime('%b %d, %Y'),
             "status": app.status,
             "cover_letter": app.cover_letter,
+            "resume": app.resume.url if app.resume else None,
         }
         for app in applications
     ]
@@ -230,6 +247,10 @@ def settings(request):
 
 def profile(request):
     return render(request, 'company/profile.html')
+
+
+def edit_job(request):
+    return render(request, 'company/Edit_job.html')
 
 
 # ==================== Company Settings API ====================
