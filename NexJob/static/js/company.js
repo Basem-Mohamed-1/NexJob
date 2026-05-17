@@ -370,7 +370,6 @@ async function setupEditJobPage() {
   }
 
   document.getElementById("job_title").value = job.title || "";
-  document.getElementById("company_name").value = job.companyName || "";
   document.getElementById("status").value = job.status || "OPEN";
   document.querySelector('input[name="salary_min"]').value = job.salary_min || "";
   document.querySelector('input[name="salary_max"]').value = job.salary_max || "";
@@ -398,7 +397,6 @@ async function setupEditJobPage() {
 
     const updatedJob = {
       title: document.getElementById("job_title").value,
-      company: document.getElementById("company_name").value,
       status: document.getElementById("status").value,
       salaryMin: min,
       salaryMax: max,
@@ -569,7 +567,7 @@ async function setupSettingsPage() {
           company_name: data.company_name,
           website: data.website,
           location: data.location,
-          description: data.company_desc
+          description: data.description
         });
       }
       
@@ -702,8 +700,8 @@ async function changePassword(form) {
   }
   
   try {
-    const response = await fetch("/api/change-password/", {
-      method: "POST",
+    const response = await fetch('/api/change-password/', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': getCSRFToken()

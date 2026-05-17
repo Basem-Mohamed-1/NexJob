@@ -1,59 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
   loadCompanyProfile();
-  setupProfileForms();
 });
 
-function loadCompanyProfile() {
-  const user = getCurrentUser();
-  if (!user) return;
+async function loadCompanyProfile() {
+  try {
+    const response = await fetch('/company/api/settings/');
+    const data = await response.json();
 
-  document.getElementById("profileName").textContent = user.company || "Company";
-  document.getElementById("profileEmail").textContent = user.email || "";
-  document.getElementById("profileAvatar").textContent = (user.company || "C").charAt(0).toUpperCase();
-
-  document.getElementById("profileUsername").value = user.username || "";
-  document.getElementById("profileEmailInput").value = user.email || "";
-
-  const profile = getCompanyProfile();
-  if (profile) {
-    document.getElementById("companyName").value = profile.companyName || "";
-    document.getElementById("companyWebsite").value = profile.website || "";
-    document.getElementById("companyLocation").value = profile.location || "";
-    document.getElementById("companyDesc").value = profile.description || "";
-  }
-}
-
-function setupProfileForms() {
-  document.getElementById("companyForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const formData = {
-      companyName: document.getElementById("companyName").value,
-      website: document.getElementById("companyWebsite").value,
-      location: document.getElementById("companyLocation").value,
-      description: document.getElementById("companyDesc").value,
-    };
-    saveCompanyProfile(formData);
-    showToast("Company profile saved!", "success");
-    loadCompanyProfile();
-  });
-
-  document.getElementById("accountForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = getCurrentUser();
-    const userIndex = users.findIndex((u) => u.username === user.username);
-
-    if (userIndex !== -1) {
-      users[userIndex].username = document.getElementById("profileUsername").value;
-      users[userIndex].email = document.getElementById("profileEmailInput").value;
-      localStorage.setItem("users", JSON.stringify(users));
-      localStorage.setItem("currentUser", JSON.stringify(users[userIndex]));
-      showToast("Account updated!", "success");
-      loadCompanyProfile();
+    if (data.error) {
+      console.error('Error loading profile:', data.error);
+      return;
     }
-  });
-}
 
-function resetCompanyForm() {
-  loadCompanyProfile();
+    // Update header
+    document.getElementById("profileName").textContent = data.company_name || "Company";
+    document.getElementById("profileEmail").textContent = data.email || "";
+    document.getElementById("profileAvatar").textContent = (data.company_name || "C").charAt(0).toUpperCase();
+
+    // Update company information
+    document.getElementById("companyName").textContent = data.company_name || "-";
+    document.getElementById("companyWebsite").textContent = data.website || "-";
+    document.getElementById("companyLocation").textContent = data.location || "-";
+    document.getElementById("companyDesc").textContent = data.description || "-";
+
+    // Update account information
+    document.getElementById("profileUsername").textContent = data.username || "-";
+    document.getElementById("profileEmailInput").textContent = data.email || "-";
+
+  } catch (error) {
+    console.error('Error loading profile:', error);
+  }
 }

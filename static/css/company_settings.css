@@ -8,6 +8,20 @@ flex-direction: column;
 min-height: 100vh;
 }
 
+/* Main Layout */
+.main {
+  padding-top: 50px;
+  background: var(--bg-body);
+  min-height: 800px;
+}
+
+.main-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 32px 48px;
+}
+
 /* Main content container */
 
 

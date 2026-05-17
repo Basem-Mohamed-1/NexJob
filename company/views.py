@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Opportunity, Company
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 from jobseeker.models import Application
 import json
 
@@ -21,7 +22,6 @@ def api_create_job(request):
         data = json.loads(request.body)
 
         title = data.get("title")
-        form_company_name = data.get("company")
         status = data.get("status")
         maxSalary = int(data.get("salaryMax"))
         minSalary = int(data.get("salaryMin"))
@@ -32,21 +32,17 @@ def api_create_job(request):
         respons = data.get("responsibilities")
         requirements = data.get("requirements")
 
-        # Get company name from stored Company record or Profile
+        # Get company name ONLY from Profile (set at signup)
         company_name = None
-        try:
-            company = Company.objects.get(user=request.user)
-            company_name = company.companyName
-        except Company.DoesNotExist:
-            profile = getattr(request.user, 'profile', None)
-            if profile and profile.company_name:
-                company_name = profile.company_name
+        profile = getattr(request.user, 'profile', None)
+        if profile and profile.company_name:
+            company_name = profile.company_name
         
-        # Fallback to form input if no stored company name
+        # Fallback to username if no company name in profile
         if not company_name:
-            company_name = form_company_name or request.user.username
+            company_name = request.user.username
         
-        # Create or update company record with the name
+        # Create or update Company record
         company, created = Company.objects.get_or_create(
             user=request.user,
             defaults={'companyName': company_name}
@@ -90,11 +86,12 @@ def api_my_jobs(request):
         if profile and profile.company_name:
             company_name = profile.company_name
     
-    # If company name exists, filter by it; otherwise show all jobs as fallback
-    if company_name:
-        jobs = Opportunity.objects.filter(companyName=company_name)
-    else:
-        jobs = Opportunity.objects.all()
+    # If no company name, fallback to username
+    if not company_name:
+        company_name = request.user.username
+    
+    # Filter jobs by company name
+    jobs = Opportunity.objects.filter(companyName=company_name)
     
     jobs = jobs.order_by('-postedDate')
     
@@ -182,11 +179,24 @@ def api_applications(request):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'Unauthorized'}, status=401)
     
-    # Get all valid (non-deleted) job IDs
-    valid_job_ids = Opportunity.objects.values_list('id', flat=True)
+    # Get company name from Profile (set at signup)
+    company_name = None
+    profile = getattr(request.user, 'profile', None)
+    if profile and profile.company_name:
+        company_name = profile.company_name
     
-    # Filter out applications for deleted jobs
-    applications = Application.objects.filter(opportunity_id__in=valid_job_ids).order_by('-applied_at')
+    # If no company name in profile, show empty (user needs to set up company in signup)
+    if not company_name:
+        return JsonResponse({
+            "count": 0,
+            "applications": []
+        })
+    
+    # Get jobs for this company
+    company_jobs = Opportunity.objects.filter(companyName=company_name).values_list('id', flat=True)
+    
+    # Get applications only for this company's jobs
+    applications = Application.objects.filter(opportunity_id__in=company_jobs).order_by('-applied_at')
     
     opportunity_id = request.GET.get('opportunity_id')
     if opportunity_id:
@@ -335,7 +345,17 @@ def api_save_company_profile(request):
         if not company_name:
             return JsonResponse({'error': 'Company name is required'}, status=400)
         
-        # Try to update existing or create new
+        # Get old company name (for updating old opportunities)
+        old_company_name = None
+        try:
+            company = Company.objects.get(user=request.user)
+            old_company_name = company.companyName
+        except Company.DoesNotExist:
+            profile = getattr(request.user, 'profile', None)
+            if profile and profile.company_name:
+                old_company_name = profile.company_name
+        
+        # Update or create Company record
         company, created = Company.objects.get_or_create(
             user=request.user,
             defaults={
@@ -352,6 +372,16 @@ def api_save_company_profile(request):
             company.location = location
             company.description = description
             company.save()
+        
+        # Also update Profile.company_name
+        profile = getattr(request.user, 'profile', None)
+        if profile:
+            profile.company_name = company_name
+            profile.save()
+        
+        # Update ALL old opportunities if company name changed
+        if old_company_name and old_company_name != company_name:
+            Opportunity.objects.filter(companyName=old_company_name).update(companyName=company_name)
         
         return JsonResponse({'success': True, 'message': 'Company profile saved successfully'})
     

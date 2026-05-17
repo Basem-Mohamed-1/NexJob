@@ -1,1 +1,1 @@
-// company_settings.js is now empty - all functionality moved to company.js
+// legacy code, not used anymore.

@@ -70,44 +70,33 @@
                 <div class="profile-sections">
                     <div class="profile-card">
                         <h2><i class="fa-solid fa-building"></i> Company Information</h2>
-                        <form id="companyForm">
-                            <div class="profile-field">
-                                <label>Company Name</label>
-                                <input type="text" id="companyName" name="companyName" />
-                            </div>
-                            <div class="profile-field">
-                                <label>Website</label>
-                                <input type="url" id="companyWebsite" name="website" placeholder="https://example.com" />
-                            </div>
-                            <div class="profile-field">
-                                <label>Location</label>
-                                <input type="text" id="companyLocation" name="location" />
-                            </div>
-                            <div class="profile-field">
-                                <label>Description</label>
-                                <textarea id="companyDesc" name="description" placeholder="Tell us about your company..."></textarea>
-                            </div>
-                            <div class="profile-actions">
-                                <button type="submit" class="btn-primary">Save Changes</button>
-                                <button type="button" class="btn-secondary" onclick="resetCompanyForm()">Cancel</button>
-                            </div>
-                        </form>
+                        <div class="profile-field">
+                            <label>Company Name</label>
+                            <span id="companyName" class="display-value">-</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Website</label>
+                            <span id="companyWebsite" class="display-value">-</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Location</label>
+                            <span id="companyLocation" class="display-value">-</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Description</label>
+                            <span id="companyDesc" class="display-value">-</span>
+                        </div>
                     </div>
                     <div class="profile-card">
                         <h2><i class="fa-solid fa-user"></i> Account Information</h2>
-                        <form id="accountForm">
-                            <div class="profile-field">
-                                <label>Username</label>
-                                <input type="text" id="profileUsername" name="username" />
-                            </div>
-                            <div class="profile-field">
-                                <label>Email</label>
-                                <input type="email" id="profileEmailInput" name="email" />
-                            </div>
-                            <div class="profile-actions">
-                                <button type="submit" class="btn-primary">Update Account</button>
-                            </div>
-                        </form>
+                        <div class="profile-field">
+                            <label>Username</label>
+                            <span id="profileUsername" class="display-value">-</span>
+                        </div>
+                        <div class="profile-field">
+                            <label>Email</label>
+                            <span id="profileEmailInput" class="display-value">-</span>
+                        </div>
                     </div>
                 </div>
             </div>
